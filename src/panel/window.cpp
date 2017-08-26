@@ -26,13 +26,13 @@ namespace Budgie::Panel
         setAttribute(Qt::WA_X11DoNotAcceptFocus);
         setFixedSize(0, 0);
 
-        auto qw = new QWidget(this);
-        auto layout = new QHBoxLayout();
-        setLayout(layout);
-        layout->setMargin(0);
-        layout->addWidget(qw);
+        packArea = new QWidget(this);
+        setLayout(new QHBoxLayout());
+        layout()->setMargin(0);
+        layout()->addWidget(packArea);
 
-        qw->setStyleSheet("background-color: rgba(0, 0, 0, 75%);");
+        packArea->setObjectName("packArea");
+        packArea->setStyleSheet("#packArea { background-color: rgba(0, 0, 0, 75%); }");
     }
 
     void Window::updateGeometry(QRect &rect, Position p)
