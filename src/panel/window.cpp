@@ -24,6 +24,7 @@ namespace Budgie::Panel
         setAttribute(Qt::WA_TranslucentBackground);
         setAttribute(Qt::WA_X11NetWmWindowTypeDock);
         setAttribute(Qt::WA_X11DoNotAcceptFocus);
+        setFixedSize(0, 0);
 
         auto qw = new QWidget(this);
         auto layout = new QHBoxLayout();
