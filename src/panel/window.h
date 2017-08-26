@@ -21,5 +21,6 @@ namespace Budgie::Panel
 
     public:
         explicit Window();
+        void updateGeometry(QRect &rect);
     };
 }

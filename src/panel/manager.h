@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include "window.h"
 #include <QApplication>
 
 namespace Budgie::Panel
@@ -22,5 +23,8 @@ namespace Budgie::Panel
     public:
         explicit Manager(int &argc, char **argv);
         void loadPanels();
+
+    private:
+        QScopedPointer<Window> demoWindow;
     };
 }

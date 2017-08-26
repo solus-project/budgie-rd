@@ -11,16 +11,19 @@
 
 #include "manager.h"
 #include <QDebug>
+#include <QDesktopWidget>
 
 namespace Budgie::Panel
 {
-    Manager::Manager(int &argc, char **argv) : QApplication(argc, argv)
+    Manager::Manager(int &argc, char **argv) : QApplication(argc, argv), demoWindow(new Window())
     {
         qDebug() << "I r have a manager";
     }
 
     void Manager::loadPanels()
     {
+        QRect r = QApplication::desktop()->screenGeometry();
+        demoWindow->updateGeometry(r);
         qDebug() << "I haz no panels";
     }
 }
