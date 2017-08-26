@@ -28,7 +28,7 @@ am_cppflags = [
 add_global_arguments(am_cppflags, language: 'cpp')
 
 qt5 = import('qt5')
-qt_min_version = '>= 5.6.2'
+qt_min_version = '>= 5.9.1'
 dep_qtwidgets = dependency('Qt5Widgets', version: qt_min_version)
 
 subdir('src')
