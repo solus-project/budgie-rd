@@ -9,14 +9,18 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QApplication>
-
 #include "manager.h"
+#include <QDebug>
 
-int main(int argc, char *argv[])
+namespace Budgie::Panel
 {
-    QApplication app(argc, argv);
-    Budgie::Panel::Manager manager;
-    manager.loadPanels();
-    return app.exec();
+    Manager::Manager()
+    {
+        qDebug() << "I r have a manager";
+    }
+
+    void Manager::loadPanels()
+    {
+        qDebug() << "I haz no panels";
+    }
 }

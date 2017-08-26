@@ -6,7 +6,7 @@ project(
         'LGPL-2.1',
     ],
     default_options: [
-        'cpp_std=c++11',
+        'cpp_std=c++1z',
     ],
 )
 
@@ -26,5 +26,9 @@ am_cppflags = [
 ]
 
 add_global_arguments(am_cppflags, language: 'cpp')
+
+qt5 = import('qt5')
+qt_min_version = '>= 5.6.2'
+dep_qtwidgets = dependency('Qt5Widgets', version: qt_min_version)
 
 subdir('src')

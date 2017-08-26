@@ -9,14 +9,18 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QApplication>
+#pragma once
 
-#include "manager.h"
+#include <QObject>
 
-int main(int argc, char *argv[])
+namespace Budgie::Panel
 {
-    QApplication app(argc, argv);
-    Budgie::Panel::Manager manager;
-    manager.loadPanels();
-    return app.exec();
+    class Manager : public QObject
+    {
+        Q_OBJECT
+
+    public:
+        explicit Manager();
+        void loadPanels();
+    };
 }
