@@ -10,6 +10,7 @@
  */
 
 #include "window.h"
+#include <KWindowSystem>
 #include <QDebug>
 
 namespace Budgie::Panel
@@ -27,13 +28,17 @@ namespace Budgie::Panel
     void Window::updateGeometry(QRect &rect, Position p)
     {
         QRect finalPosition;
+        // TODO: Listen for changes to the window ID to reset all dock + strut bits
+        auto wid = effectiveWinId();
 
+        // TODO: Switch to extended struts
         switch (p) {
         case Position::Top:
             finalPosition.setX(rect.x());
             finalPosition.setY(rect.y());
             finalPosition.setWidth(rect.width());
             finalPosition.setHeight(intendedSize);
+            KWindowSystem::setStrut(wid, 0, 0, intendedSize, 0);
             break;
         case Position::Bottom:
         default:
@@ -41,6 +46,7 @@ namespace Budgie::Panel
             finalPosition.setY((rect.y() + rect.height()) - intendedSize);
             finalPosition.setWidth(rect.width());
             finalPosition.setHeight(intendedSize);
+            KWindowSystem::setStrut(wid, 0, 0, 0, intendedSize);
             break;
         }
         setFixedSize(finalPosition.width(), finalPosition.height());
