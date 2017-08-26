@@ -25,6 +25,6 @@ namespace Budgie::Panel
         QRect r = QApplication::desktop()->screenGeometry();
         demoWindow->show();
         demoWindow->updateGeometry(r);
-        qDebug() << "I haz no panels";
+        qDebug() << "I haz panels nao";
     }
 }
