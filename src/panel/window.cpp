@@ -13,6 +13,7 @@
 #include <KWindowSystem>
 #include <QBoxLayout>
 #include <QDebug>
+#include <QPushButton>
 
 namespace Budgie::Panel
 {
@@ -33,6 +34,21 @@ namespace Budgie::Panel
 
         packArea->setObjectName("packArea");
         packArea->setStyleSheet("#packArea { background-color: rgba(0, 0, 0, 75%); }");
+
+        packArea->setLayout(new QHBoxLayout());
+        packArea->layout()->setMargin(0);
+
+        this->demoCode();
+    }
+
+    void Window::demoCode()
+    {
+        auto widget = new QPushButton("Menu");
+        widget->setIcon(QIcon::fromTheme("open-menu"));
+        widget->setStyleSheet("color: white;");
+        widget->setFlat(true);
+        auto layout = qobject_cast<QHBoxLayout *>(packArea->layout());
+        layout->addWidget(widget, 0, Qt::AlignLeft | Qt::AlignVCenter);
     }
 
     void Window::updateGeometry(QRect &rect, Position p)

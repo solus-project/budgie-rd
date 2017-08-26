@@ -35,5 +35,6 @@ namespace Budgie::Panel
     private:
         int intendedSize;
         QWidget *packArea;
+        void demoCode();
     };
 }
