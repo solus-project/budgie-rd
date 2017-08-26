@@ -11,6 +11,7 @@
 
 #include "window.h"
 #include <KWindowSystem>
+#include <QBoxLayout>
 #include <QDebug>
 
 namespace Budgie::Panel
@@ -20,9 +21,17 @@ namespace Budgie::Panel
         qDebug() << "I r have a panel";
 
         // Push dock bits
-        // setAttribute(Qt::WA_TranslucentBackground);
+        setAttribute(Qt::WA_TranslucentBackground);
         setAttribute(Qt::WA_X11NetWmWindowTypeDock);
         setAttribute(Qt::WA_X11DoNotAcceptFocus);
+
+        auto qw = new QWidget(this);
+        auto layout = new QHBoxLayout();
+        setLayout(layout);
+        layout->setMargin(0);
+        layout->addWidget(qw);
+
+        qw->setStyleSheet("background-color: rgba(0, 0, 0, 75%);");
     }
 
     void Window::updateGeometry(QRect &rect, Position p)
