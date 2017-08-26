@@ -30,7 +30,7 @@ namespace Budgie::Panel
         };
 
         explicit Window();
-        void updateGeometry(QRect &rect, Position p = Position::Top);
+        void updateGeometry(QRect &rect, Position p = Position::Bottom);
 
     private:
         int intendedSize;
