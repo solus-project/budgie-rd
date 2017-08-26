@@ -14,6 +14,6 @@
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Not yet implemented";
-    return EXIT_SUCCESS;
+    std::cout << "Not yet implemented" << std::endl;
+    return EXIT_FAILURE;
 }
