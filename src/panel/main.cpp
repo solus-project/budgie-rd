@@ -9,14 +9,11 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QApplication>
-
 #include "manager.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
-    Budgie::Panel::Manager manager;
+    Budgie::Panel::Manager manager(argc, argv);
     manager.loadPanels();
-    return app.exec();
+    return manager.exec();
 }

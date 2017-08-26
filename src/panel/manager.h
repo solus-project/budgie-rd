@@ -11,16 +11,16 @@
 
 #pragma once
 
-#include <QObject>
+#include <QApplication>
 
 namespace Budgie::Panel
 {
-    class Manager : public QObject
+    class Manager : public QApplication
     {
         Q_OBJECT
 
     public:
-        explicit Manager();
+        explicit Manager(int &argc, char **argv);
         void loadPanels();
     };
 }
