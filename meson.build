@@ -26,6 +26,7 @@ am_cppflags = [
 ]
 
 add_global_arguments(am_cppflags, language: 'cpp')
+compiler = meson.get_compiler('cpp')
 
 qt5 = import('qt5')
 qt_min_version = '>= 5.9.1'
