@@ -1,1 +1,2 @@
+subdir('panel')
 subdir('raven')
