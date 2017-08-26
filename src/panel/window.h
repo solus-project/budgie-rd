@@ -18,9 +18,21 @@ namespace Budgie::Panel
     class Window : public QWidget
     {
         Q_OBJECT
+        Q_ENUMS(Position)
 
     public:
+        enum Position {
+            Undetermined,
+            Top,
+            Left,
+            Right,
+            Bottom,
+        };
+
         explicit Window();
-        void updateGeometry(QRect &rect);
+        void updateGeometry(QRect &rect, Position p = Position::Top);
+
+    private:
+        int intendedSize;
     };
 }

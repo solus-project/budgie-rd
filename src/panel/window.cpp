@@ -14,7 +14,7 @@
 
 namespace Budgie::Panel
 {
-    Window::Window()
+    Window::Window() : intendedSize(42)
     {
         qDebug() << "I r have a panel";
 
@@ -24,8 +24,8 @@ namespace Budgie::Panel
         setAttribute(Qt::WA_X11DoNotAcceptFocus);
     }
 
-    void Window::updateGeometry(QRect &rect)
+    void Window::updateGeometry(QRect &rect, Position p)
     {
-        qDebug() << "Update geom plox.";
+        qDebug() << "Update geom plox: " << rect << " @ " << p;
     }
 }
