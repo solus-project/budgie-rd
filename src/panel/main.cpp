@@ -11,11 +11,14 @@
 
 #include "manager.h"
 #include <QIcon>
+#include <QQuickWindow>
 
 int main(int argc, char *argv[])
 {
     // HACKY:
     QIcon::setThemeName("Papirus-Dark");
+    // Need alpha-composite panel windows
+    QQuickWindow::setDefaultAlphaBuffer(true);
     Budgie::Panel::Manager manager(argc, argv);
     manager.loadPanels();
     return manager.exec();
