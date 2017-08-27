@@ -38,6 +38,7 @@ panel = executable(
     ],
     dependencies: [
         dep_qtwidgets,
+        dep_qtquick,
         dep_kf5,
     ],
 )

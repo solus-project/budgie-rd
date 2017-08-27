@@ -13,6 +13,8 @@
 
 #include "window.h"
 #include <QApplication>
+#include <QQmlComponent>
+#include <QQmlEngine>
 
 namespace Budgie::Panel
 {
@@ -26,5 +28,7 @@ namespace Budgie::Panel
 
     private:
         QScopedPointer<Window> demoWindow;
+        QScopedPointer<QQmlEngine> engine;
+        QScopedPointer<QQmlComponent> panelComponent;
     };
 }

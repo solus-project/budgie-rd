@@ -12,19 +12,37 @@
 #include "manager.h"
 #include <QDebug>
 #include <QDesktopWidget>
+#include <QQuickItem>
 
 namespace Budgie::Panel
 {
     Manager::Manager(int &argc, char **argv) : QApplication(argc, argv), demoWindow(new Window())
     {
+        this->engine.reset(new QQmlEngine());
+        auto url = QUrl::fromLocalFile("qml/panel.qml");
+        this->panelComponent.reset(new QQmlComponent(engine.data(), url));
+        if (panelComponent->isError()) {
+            qDebug() << "Failed loading panel.qml";
+            for (auto &err : panelComponent->errors()) {
+                qDebug() << err;
+            }
+        }
         qDebug() << "I r have a manager";
     }
 
     void Manager::loadPanels()
     {
+        /*
         QRect r = QApplication::desktop()->screenGeometry();
         demoWindow->show();
         demoWindow->updateGeometry(r);
         qDebug() << "I haz panels nao";
+        */
+        QQuickItem *item = qobject_cast<QQuickItem *>(panelComponent->create());
+        if (!item) {
+            return;
+        }
+        item->setParent(engine.data());
+        item->setVisible(true);
     }
 }
