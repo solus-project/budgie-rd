@@ -18,9 +18,9 @@ namespace Budgie::Panel
 {
     Manager::Manager(int &argc, char **argv) : QApplication(argc, argv), demoWindow(new Window())
     {
-        this->engine.reset(new QQmlEngine());
+        engine.reset(new QQmlEngine());
         auto url = QUrl::fromLocalFile("qml/panel.qml");
-        this->panelComponent.reset(new QQmlComponent(engine.data(), url));
+        panelComponent.reset(new QQmlComponent(engine.data(), url));
         if (panelComponent->isError()) {
             qDebug() << "Failed loading panel.qml";
             for (auto &err : panelComponent->errors()) {
@@ -38,6 +38,8 @@ namespace Budgie::Panel
         demoWindow->updateGeometry(r);
         qDebug() << "I haz panels nao";
         */
+
+        /* Sell our souls: panel.qml will contain the main UI for each panel */
         QQuickItem *item = qobject_cast<QQuickItem *>(panelComponent->create());
         if (!item) {
             return;
