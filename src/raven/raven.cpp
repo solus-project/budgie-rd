@@ -11,6 +11,8 @@
 
 #include "raven.h"
 
+#include <QDebug>
+
 namespace Raven
 {
     Window::Window()
@@ -22,5 +24,20 @@ namespace Raven
         setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
         setFocusPolicy(Qt::NoFocus);
         setFixedSize(0, 0);
+    }
+
+    void Window::updateGeometry(QRect &rect)
+    {
+        QRect finalPosition;
+
+        // We're always on the RHS for now with a size equalling 15% of width
+        int width = (int)(rect.width() * 0.15);
+        finalPosition.setX((rect.x() + rect.width()) - width);
+        finalPosition.setY(rect.y());
+        finalPosition.setHeight(rect.height());
+        finalPosition.setWidth(width);
+
+        setFixedSize(finalPosition.width(), finalPosition.height());
+        move(finalPosition.x(), finalPosition.y());
     }
 }

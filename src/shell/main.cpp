@@ -11,13 +11,21 @@
 
 #include "../panel/manager.h"
 #include "../raven/raven.h"
+
 #include <QApplication>
+#include <QDesktopWidget>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     Budgie::Panel::Manager manager;
-    Raven::Window window;
+    Raven::Window raven;
     manager.loadPanels();
+
+    // TODO: Add DesktopManager for panels + raven alike within shell component
+    QRect r = QApplication::desktop()->screenGeometry();
+    raven.updateGeometry(r);
+    raven.show();
+
     return app.exec();
 }

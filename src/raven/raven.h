@@ -21,5 +21,6 @@ namespace Raven
 
     public:
         explicit Window();
+        void updateGeometry(QRect &rect);
     };
 }
