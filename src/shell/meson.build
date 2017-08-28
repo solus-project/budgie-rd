@@ -24,6 +24,12 @@ shell_mocs = qt5.preprocess(
     ],
 )
 
+shell_qrc = qt5.preprocess(
+    qresources: [
+        'shell.qrc'
+    ]
+)
+
 shell_sources = [
     'desktop-manager.cpp',
     'main.cpp',
@@ -34,6 +40,7 @@ shell = executable(
     'budgie-shell',
     sources: [
         shell_sources,
+        shell_qrc,
         shell_mocs,
     ],
     dependencies: [
