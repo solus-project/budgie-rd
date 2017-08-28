@@ -15,6 +15,7 @@
 #include "../raven/raven.h"
 
 #include <QObject>
+#include <QScreen>
 
 namespace Desktop
 {
@@ -29,5 +30,11 @@ namespace Desktop
     private:
         Panel::Manager panelManager;
         Raven::Window raven;
+        int numScreens;
+
+    public slots:
+        void primaryScreenChanged(QScreen *screen);
+        void screenAdded(QScreen *screen);
+        void screenRemoved(QScreen *screen);
     };
 }
