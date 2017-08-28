@@ -11,6 +11,7 @@
 
 #include "raven.h"
 
+#include <QBoxLayout>
 #include <QDebug>
 
 namespace Raven
@@ -24,6 +25,14 @@ namespace Raven
         setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
         setFocusPolicy(Qt::NoFocus);
         setFixedSize(0, 0);
+
+        packArea = new QWidget(this);
+        setLayout(new QHBoxLayout());
+        layout()->setMargin(0);
+        layout()->addWidget(packArea);
+
+        packArea->setObjectName("packArea");
+        packArea->setStyleSheet("#packArea { background-color: rgba(0, 0, 0, 75%); }");
     }
 
     void Window::updateGeometry(QRect &rect)
