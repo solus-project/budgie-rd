@@ -9,5 +9,6 @@ shell = executable(
     ],
     dependencies: [
         dep_qtwidgets,
+        link_panel,
     ],
 )

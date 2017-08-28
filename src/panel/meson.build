@@ -30,7 +30,7 @@ panel_sources = [
     'window.cpp',
 ]
 
-panel = executable(
+panel = library(
     'panel',
     sources: [
         panel_sources,
@@ -40,4 +40,9 @@ panel = executable(
         dep_qtwidgets,
         dep_kf5,
     ],
+)
+
+link_panel = declare_dependency(
+    link_with: panel,
+    include_directories: include_directories('.'),
 )
