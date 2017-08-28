@@ -10,12 +10,14 @@
  */
 
 #include "../panel/manager.h"
+#include "../raven/raven.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     Budgie::Panel::Manager manager;
+    Raven::Window window;
     manager.loadPanels();
     return app.exec();
 }

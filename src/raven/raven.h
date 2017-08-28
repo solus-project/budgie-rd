@@ -9,11 +9,17 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <cstdlib>
-#include <iostream>
+#pragma once
 
-int main(int argc, char *argv[])
+#include <QWidget>
+
+namespace Raven
 {
-    std::cout << "Not yet implemented" << std::endl;
-    return EXIT_FAILURE;
+    class Window : public QWidget
+    {
+        Q_OBJECT
+
+    public:
+        explicit Window();
+    };
 }
