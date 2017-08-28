@@ -14,6 +14,7 @@
 #include <KWindowEffects>
 #include <QBoxLayout>
 #include <QDebug>
+#include <QLabel>
 
 namespace Raven
 {
@@ -34,6 +35,13 @@ namespace Raven
 
         packArea->setObjectName("packArea");
         packArea->setStyleSheet("#packArea { background-color: rgba(0, 0, 0, 75%); }");
+        packArea->setLayout(new QVBoxLayout());
+        packArea->layout()->setMargin(0);
+
+        auto layout = qobject_cast<QVBoxLayout *>(packArea->layout());
+        auto labelr = new QLabel("I could be your next Raven ... ");
+        labelr->setStyleSheet("color: white;");
+        layout->addWidget(labelr, 0, Qt::AlignHCenter | Qt::AlignVCenter);
     }
 
     void Window::updateGeometry(QRect &rect)
