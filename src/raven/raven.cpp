@@ -52,7 +52,7 @@ namespace Raven
         int width = (int)(rect.width() * 0.15);
         finalPosition.setX((rect.x() + rect.width()) - width);
         finalPosition.setY(rect.y());
-        finalPosition.setHeight(rect.height());
+        finalPosition.setHeight(rect.height() - 42);
         finalPosition.setWidth(width);
 
         setFixedSize(finalPosition.width(), finalPosition.height());
