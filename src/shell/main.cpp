@@ -24,8 +24,8 @@ int main(int argc, char *argv[])
 
     // TODO: Add DesktopManager for panels + raven alike within shell component
     QRect r = QApplication::desktop()->screenGeometry();
-    raven.updateGeometry(r);
     raven.show();
+    raven.updateGeometry(r);
 
     return app.exec();
 }
