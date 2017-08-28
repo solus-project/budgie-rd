@@ -19,12 +19,14 @@ namespace Desktop
 {
     RootWindow::RootWindow(int screenNumber) : screenNumber(screenNumber)
     {
-        setAttribute(Qt::WA_ShowWithoutActivating);
-        setWindowFlags(Qt::FramelessWindowHint);
-        setFocusPolicy(Qt::NoFocus);
-        setFixedSize(0, 0);
-
-        setStyleSheet("background-color: rgb(0, 191, 255);");
+        // https://bugreports.qt.io/browse/QTBUG-54886
+        //         setAttribute(Qt::WA_ShowWithoutActivating);
+        setProperty("_q_showWithoutActivating", QVariant(true));
+        setFlags(Qt::FramelessWindowHint | Qt::Tool);
+        resize(0, 0);
+        // Parent size dictates QML size
+        setResizeMode(QQuickView::SizeRootObjectToView);
+        setSource(QUrl::fromLocalFile("qml/backdrop.qml"));
     }
 
     void RootWindow::updateGeometry()
@@ -33,11 +35,14 @@ namespace Desktop
         auto desktop = QApplication::desktop();
         // Copy our geom from the target geom
         this->visibleArea = desktop->screenGeometry(this->screenNumber);
-        move(visibleArea.x(), visibleArea.y());
-        setFixedSize(visibleArea.width(), visibleArea.height());
+        setMaximumWidth(visibleArea.width());
+        setMaximumHeight(visibleArea.width());
+        setWidth(visibleArea.width());
+        setHeight(visibleArea.height());
+        setPosition(visibleArea.x(), visibleArea.y());
         show();
 
         // TODO: Track wID changes
-        KWindowSystem::setType(effectiveWinId(), NET::WindowType::Desktop);
+        KWindowSystem::setType(winId(), NET::WindowType::Desktop);
     }
 }

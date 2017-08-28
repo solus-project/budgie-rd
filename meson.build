@@ -31,5 +31,6 @@ compiler = meson.get_compiler('cpp')
 qt5 = import('qt5')
 qt_min_version = '>= 5.9.1'
 dep_qtwidgets = dependency('Qt5Widgets', version: qt_min_version)
+dep_qml = dependency('Qt5Quick', version: qt_min_version)
 
 subdir('src')

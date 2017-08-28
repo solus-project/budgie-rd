@@ -11,12 +11,11 @@
 
 #pragma once
 
-#include <QScreen>
-#include <QWidget>
+#include <QQuickView>
 
 namespace Desktop
 {
-    class RootWindow : public QWidget
+    class RootWindow : public QQuickView
     {
         Q_OBJECT
 

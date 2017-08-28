@@ -39,6 +39,7 @@ shell = executable(
     dependencies: [
         dep_qtwidgets,
         dep_kf5,
+        dep_qml,
         link_panel,
         link_raven,
     ],
