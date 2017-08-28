@@ -11,6 +11,7 @@
 
 #include "raven.h"
 
+#include <KWindowEffects>
 #include <QBoxLayout>
 #include <QDebug>
 
@@ -48,5 +49,8 @@ namespace Raven
 
         setFixedSize(finalPosition.width(), finalPosition.height());
         move(finalPosition.x(), finalPosition.y());
+
+        // Be a tart, show off blurs
+        KWindowEffects::enableBlurBehind(effectiveWinId());
     }
 }

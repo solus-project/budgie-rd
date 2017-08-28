@@ -10,6 +10,7 @@
  */
 
 #include "window.h"
+#include <KWindowEffects>
 #include <KWindowSystem>
 #include <QBoxLayout>
 #include <QDebug>
@@ -81,5 +82,7 @@ namespace Budgie::Panel
         setFixedSize(finalPosition.width(), finalPosition.height());
         move(finalPosition.x(), finalPosition.y());
         qDebug() << "Update geom plox: " << finalPosition << " @ " << p;
+        // Be a tart, show off blurs
+        KWindowEffects::enableBlurBehind(effectiveWinId());
     }
 }
