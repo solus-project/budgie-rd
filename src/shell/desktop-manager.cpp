@@ -62,12 +62,20 @@ namespace Desktop
     void Manager::screenCountChanged(int newCount)
     {
         qDebug() << "Screen count: " << newCount;
+
+        if (newCount < numScreens) {
+            for (int i = numScreens - 1; i > newCount - 1; i--) {
+                qDebug() << "Removed screen: " << i;
+                rootWindows.remove(i);
+            }
+        }
+
         numScreens = newCount;
 
-        // TODO: Be nicer about this nuke approach and update existing
-        rootWindows.clear();
         for (int i = 0; i < numScreens; i++) {
-            rootWindows.insert(i, QSharedPointer<RootWindow>(new RootWindow(i)));
+            if (!rootWindows.contains(i)) {
+                rootWindows.insert(i, QSharedPointer<RootWindow>(new RootWindow(i)));
+            }
             rootWindows[i]->updateGeometry();
         }
     }
