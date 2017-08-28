@@ -84,5 +84,6 @@ namespace Panel
         qDebug() << "Update geom plox: " << finalPosition << " @ " << p;
         // Be a tart, show off blurs
         KWindowEffects::enableBlurBehind(effectiveWinId());
+        KWindowEffects::slideWindow(this, KWindowEffects::SlideFromLocation::BottomEdge);
     }
 }
