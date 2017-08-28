@@ -60,5 +60,6 @@ namespace Raven
 
         // Be a tart, show off blurs
         KWindowEffects::enableBlurBehind(effectiveWinId());
+        KWindowEffects::slideWindow(this, KWindowEffects::SlideFromLocation::RightEdge);
     }
 }
