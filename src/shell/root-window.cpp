@@ -23,6 +23,8 @@ namespace Desktop
         setWindowFlags(Qt::FramelessWindowHint);
         setFocusPolicy(Qt::NoFocus);
         setFixedSize(0, 0);
+
+        setStyleSheet("background-color: rgb(0, 191, 255);");
     }
 
     void RootWindow::updateGeometry()
