@@ -13,7 +13,7 @@
 
 #include <QWidget>
 
-namespace Budgie::Panel
+namespace Panel
 {
     class Window : public QWidget
     {

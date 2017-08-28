@@ -16,7 +16,7 @@
 #include <QDebug>
 #include <QPushButton>
 
-namespace Budgie::Panel
+namespace Panel
 {
     Window::Window() : intendedSize(42)
     {

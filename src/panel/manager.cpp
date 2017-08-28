@@ -13,7 +13,7 @@
 #include <QDebug>
 #include <QDesktopWidget>
 
-namespace Budgie::Panel
+namespace Panel
 {
     Manager::Manager() : demoWindow(new Window())
     {

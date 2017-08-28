@@ -9,23 +9,13 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include "../panel/manager.h"
-#include "../raven/raven.h"
+#include "desktop-manager.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    Budgie::Panel::Manager manager;
-    Raven::Window raven;
-    manager.loadPanels();
-
-    // TODO: Add DesktopManager for panels + raven alike within shell component
-    QRect r = QApplication::desktop()->screenGeometry();
-    raven.show();
-    raven.updateGeometry(r);
-
+    Desktop::Manager manager;
     return app.exec();
 }

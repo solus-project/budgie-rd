@@ -11,6 +11,9 @@
 
 #pragma once
 
+#include "../panel/manager.h"
+#include "../raven/raven.h"
+
 #include <QObject>
 
 namespace Desktop
@@ -21,5 +24,10 @@ namespace Desktop
 
     public:
         explicit Manager();
+        void updateGeometry();
+
+    private:
+        Panel::Manager panelManager;
+        Raven::Window raven;
     };
 }

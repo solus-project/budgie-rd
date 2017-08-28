@@ -11,9 +11,20 @@
 
 #include "desktop-manager.h"
 
+#include <QDesktopWidget>
+
 namespace Desktop
 {
     Manager::Manager()
     {
+        updateGeometry();
+    }
+
+    void Manager::updateGeometry()
+    {
+        QRect r = QApplication::desktop()->screenGeometry();
+        raven.show();
+        raven.updateGeometry(r);
+        panelManager.loadPanels();
     }
 }

@@ -14,7 +14,7 @@
 #include "window.h"
 #include <QApplication>
 
-namespace Budgie::Panel
+namespace Panel
 {
     class Manager : public QObject
     {
