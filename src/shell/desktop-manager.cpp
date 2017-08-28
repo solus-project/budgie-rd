@@ -16,14 +16,21 @@
 
 namespace Desktop
 {
-    Manager::Manager() : numScreens(0)
+    Manager::Manager() : numScreens(0), primaryScreen(0)
     {
-        QGuiApplication *app = qobject_cast<QGuiApplication *>(QCoreApplication::instance());
+        auto desktop = QApplication::desktop();
 
         // Hook up signals we care about
-        connect(app, &QGuiApplication::primaryScreenChanged, this, &Manager::primaryScreenChanged);
-        connect(app, &QGuiApplication::screenAdded, this, &Manager::screenAdded);
-        connect(app, &QGuiApplication::screenRemoved, this, &Manager::screenRemoved);
+        connect(desktop,
+                &QDesktopWidget::primaryScreenChanged,
+                this,
+                &Manager::primaryScreenChanged);
+        connect(desktop, &QDesktopWidget::screenCountChanged, this, &Manager::screenCountChanged);
+        connect(desktop, &QDesktopWidget::resized, this, &Manager::resized);
+
+        // Forcibly invoke the signal handlers
+        primaryScreenChanged();
+        screenCountChanged(desktop->screenCount());
 
         updateGeometry();
     }
@@ -37,39 +44,41 @@ namespace Desktop
         raven.show();
         raven.updateGeometry(r);
         panelManager.loadPanels();
-        updateRootWindows();
-    }
-
-    void Manager::updateRootWindows()
-    {
-        // TODO: Stop this leaking.
-        for (int i = 0; i < numScreens; i++) {
-            auto rootWindow = new RootWindow(i);
-            rootWindow->updateGeometry();
-        }
     }
 
     /**
      * Primary monitor has changed so re-evaluate placement of panel & raven
      */
-    void Manager::primaryScreenChanged(QScreen *screen)
+    void Manager::primaryScreenChanged()
     {
-        Q_UNUSED(screen);
+        auto desktop = qobject_cast<QDesktopWidget *>(sender());
+        primaryScreen = desktop->primaryScreen();
+        qDebug() << "New primary: " << primaryScreen;
     }
 
     /**
-     * A new screen was made available
+     * The number of available screens has changed
      */
-    void Manager::screenAdded(QScreen *screen)
+    void Manager::screenCountChanged(int newCount)
     {
-        Q_UNUSED(screen);
+        qDebug() << "Screen count: " << newCount;
+        numScreens = newCount;
+
+        // TODO: Be nicer about this nuke approach and update existing
+        rootWindows.clear();
+        for (int i = 0; i < numScreens; i++) {
+            rootWindows.insert(i, QSharedPointer<RootWindow>(new RootWindow(i)));
+            rootWindows[i]->updateGeometry();
+        }
     }
 
-    /**
-     * An existing screen has been removed
-     */
-    void Manager::screenRemoved(QScreen *screen)
+    void Manager::resized(int screen)
     {
-        Q_UNUSED(screen);
+        qDebug() << "Resized screen: " << screen;
+        if (!rootWindows.contains(screen)) {
+            qDebug() << "Unknown screen index: " << screen;
+            return;
+        }
+        rootWindows[screen]->updateGeometry();
     }
 }

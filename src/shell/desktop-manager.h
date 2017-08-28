@@ -16,7 +16,6 @@
 #include "root-window.h"
 
 #include <QObject>
-#include <QScreen>
 
 namespace Desktop
 {
@@ -29,15 +28,15 @@ namespace Desktop
         void updateGeometry();
 
     private:
-        void updateRootWindows();
-
         Panel::Manager panelManager;
         Raven::Window raven;
         int numScreens;
+        int primaryScreen;
+        QHash<int, QSharedPointer<RootWindow>> rootWindows;
 
     public slots:
-        void primaryScreenChanged(QScreen *screen);
-        void screenAdded(QScreen *screen);
-        void screenRemoved(QScreen *screen);
+        void primaryScreenChanged();
+        void screenCountChanged(int newCount);
+        void resized(int screen);
     };
 }
