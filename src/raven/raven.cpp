@@ -24,7 +24,7 @@ namespace Raven
         setAttribute(Qt::WA_TranslucentBackground);
         setAttribute(Qt::WA_X11NetWmWindowTypeDock);
         setAttribute(Qt::WA_ShowWithoutActivating);
-        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
         setFocusPolicy(Qt::NoFocus);
         setFixedSize(0, 0);
 
