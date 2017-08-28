@@ -11,8 +11,8 @@
 
 #include "desktop-manager.h"
 
-#include <QDesktopWidget>
 #include <QDebug>
+#include <QDesktopWidget>
 
 namespace Desktop
 {
