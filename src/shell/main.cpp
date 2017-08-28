@@ -16,5 +16,6 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     Budgie::Panel::Manager manager;
+    manager.loadPanels();
     return app.exec();
 }
