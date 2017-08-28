@@ -11,10 +11,28 @@
 
 #include "root-window.h"
 
+#include <KWindowSystem>
+#include <QApplication>
+#include <QDesktopWidget>
+
 namespace Desktop
 {
     RootWindow::RootWindow(int screenNumber) : screenNumber(screenNumber)
     {
-        updateGeometry();
+        setFixedSize(0, 0);
+    }
+
+    void RootWindow::updateGeometry()
+    {
+        hide();
+        auto desktop = QApplication::desktop();
+        // Copy our geom from the target geom
+        this->visibleArea = desktop->screenGeometry(this->screenNumber);
+        move(visibleArea.x(), visibleArea.y());
+        setFixedSize(visibleArea.width(), visibleArea.height());
+        show();
+
+        // TODO: Track wID changes
+        KWindowSystem::setType(effectiveWinId(), NET::WindowType::Desktop);
     }
 }

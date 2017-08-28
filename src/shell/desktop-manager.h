@@ -13,6 +13,7 @@
 
 #include "../panel/manager.h"
 #include "../raven/raven.h"
+#include "root-window.h"
 
 #include <QObject>
 #include <QScreen>
@@ -28,6 +29,8 @@ namespace Desktop
         void updateGeometry();
 
     private:
+        void updateRootWindows();
+
         Panel::Manager panelManager;
         Raven::Window raven;
         int numScreens;

@@ -37,6 +37,16 @@ namespace Desktop
         raven.show();
         raven.updateGeometry(r);
         panelManager.loadPanels();
+        updateRootWindows();
+    }
+
+    void Manager::updateRootWindows()
+    {
+        // TODO: Stop this leaking.
+        for (int i = 0; i < numScreens; i++) {
+            auto rootWindow = new RootWindow(i);
+            rootWindow->updateGeometry();
+        }
     }
 
     /**

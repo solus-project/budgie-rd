@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <QScreen>
 #include <QWidget>
 
 namespace Desktop
@@ -21,8 +22,10 @@ namespace Desktop
 
     public:
         explicit RootWindow(int screenNumber);
+        void updateGeometry();
 
     private:
         int screenNumber;
+        QRect visibleArea;
     };
 }
