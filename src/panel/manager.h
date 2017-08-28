@@ -16,12 +16,12 @@
 
 namespace Budgie::Panel
 {
-    class Manager : public QApplication
+    class Manager : public QObject
     {
         Q_OBJECT
 
     public:
-        explicit Manager(int &argc, char **argv);
+        explicit Manager();
         void loadPanels();
 
     private:

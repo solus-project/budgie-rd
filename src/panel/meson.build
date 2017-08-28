@@ -25,12 +25,11 @@ panel_mocs = qt5.preprocess(
 )
 
 panel_sources = [
-    'main.cpp',
     'manager.cpp',
     'window.cpp',
 ]
 
-panel = library(
+panel = static_library(
     'panel',
     sources: [
         panel_sources,

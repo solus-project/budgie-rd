@@ -15,7 +15,7 @@
 
 namespace Budgie::Panel
 {
-    Manager::Manager(int &argc, char **argv) : QApplication(argc, argv), demoWindow(new Window())
+    Manager::Manager() : demoWindow(new Window())
     {
         qDebug() << "I r have a manager";
     }
