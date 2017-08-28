@@ -34,13 +34,13 @@ namespace Raven
         layout()->addWidget(packArea);
 
         packArea->setObjectName("packArea");
-        packArea->setStyleSheet("#packArea { background-color: rgba(0, 0, 0, 75%); }");
+        packArea->setStyleSheet("#packArea { background-color: rgba(255, 255, 255, 85%); }");
         packArea->setLayout(new QVBoxLayout());
         packArea->layout()->setMargin(0);
 
         auto layout = qobject_cast<QVBoxLayout *>(packArea->layout());
         auto labelr = new QLabel("I could be your next Raven ... ");
-        labelr->setStyleSheet("color: white;");
+        labelr->setStyleSheet("color: black;");
         layout->addWidget(labelr, 0, Qt::AlignHCenter | Qt::AlignVCenter);
     }
 
@@ -52,7 +52,7 @@ namespace Raven
         int width = (int)(rect.width() * 0.15);
         finalPosition.setX((rect.x() + rect.width()) - width);
         finalPosition.setY(rect.y());
-        finalPosition.setHeight(rect.height() - 42);
+        finalPosition.setHeight(rect.height() - 37);
         finalPosition.setWidth(width);
 
         setFixedSize(finalPosition.width(), finalPosition.height());

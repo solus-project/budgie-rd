@@ -18,7 +18,7 @@
 
 namespace Panel
 {
-    Window::Window() : intendedSize(42)
+    Window::Window() : intendedSize(37)
     {
         qDebug() << "I r have a panel";
 
@@ -37,7 +37,7 @@ namespace Panel
         layout()->addWidget(packArea);
 
         packArea->setObjectName("packArea");
-        packArea->setStyleSheet("#packArea { background-color: rgba(0, 0, 0, 75%); }");
+        packArea->setStyleSheet("#packArea { background-color: rgba(0, 0, 0, 92%); }");
 
         packArea->setLayout(new QHBoxLayout());
         packArea->layout()->setMargin(0);
