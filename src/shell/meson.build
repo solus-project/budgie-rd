@@ -1,12 +1,14 @@
 shell_mocs = qt5.preprocess(
     moc_headers: [
         'desktop-manager.h',
+        'root-window.h',
     ],
 )
 
 shell_sources = [
     'desktop-manager.cpp',
     'main.cpp',
+    'root-window.cpp',
 ]
 
 shell = executable(
