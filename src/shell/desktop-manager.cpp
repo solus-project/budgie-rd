@@ -38,7 +38,6 @@ namespace Desktop
     void Manager::updateGeometry()
     {
         auto desktop = QApplication::desktop();
-        numScreens = desktop->screenCount();
         qDebug() << "numScreens: " << numScreens;
         QRect r = desktop->screenGeometry();
         raven.show();
