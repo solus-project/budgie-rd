@@ -19,6 +19,9 @@ namespace Desktop
 {
     RootWindow::RootWindow(int screenNumber) : screenNumber(screenNumber)
     {
+        setAttribute(Qt::WA_ShowWithoutActivating);
+        setWindowFlags(Qt::FramelessWindowHint);
+        setFocusPolicy(Qt::NoFocus);
         setFixedSize(0, 0);
     }
 
