@@ -11,8 +11,12 @@
 
 #pragma once
 
+#include "window.h"
+
 #include <KWindowSystem>
+#include <QHash>
 #include <QObject>
+#include <QSharedPointer>
 
 namespace Task
 {
@@ -25,12 +29,15 @@ namespace Task
 
     signals:
         // TODO: Add new Window type
-        void windowOpened();
-        void windowClosed();
+        void windowOpened(Window *window);
+        void windowClosed(Window *window);
 
     private slots:
         void kwinWindowAdded(WId id);
         void kwinWindowChanged(WId id, NET::Properties props, NET::Properties2 props2);
         void kwinWindowRemoved(WId id);
+
+    private:
+        QHash<WId, QSharedPointer<Window>> windows;
     };
 }

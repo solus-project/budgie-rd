@@ -20,6 +20,8 @@ namespace Task
     {
         Q_OBJECT
 
+        friend class Monitor;
+
     protected:
         explicit Window(WId id);
 

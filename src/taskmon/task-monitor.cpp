@@ -12,6 +12,7 @@
 #include "task-monitor.h"
 
 #include <KWindowSystem>
+#include <QDebug>
 
 namespace Task
 {
@@ -33,7 +34,12 @@ namespace Task
      */
     void Monitor::kwinWindowAdded(WId id)
     {
-        Q_UNUSED(id);
+        if (windows.contains(id)) {
+            qDebug() << "KWindowSystem reported window multiple times..";
+            return;
+        }
+        windows.insert(id, QSharedPointer<Window>(new Window(id)));
+        emit windowOpened(windows[id].data());
     }
 
     /**
@@ -51,6 +57,11 @@ namespace Task
      */
     void Monitor::kwinWindowRemoved(WId id)
     {
-        Q_UNUSED(id);
+        if (!windows.contains(id)) {
+            qDebug() << "KWindowSystem reported invalid window close...";
+            return;
+        }
+        emit windowClosed(windows[id].data());
+        windows.remove(id);
     }
 }
