@@ -23,9 +23,14 @@ namespace Task
     public:
         explicit Monitor();
 
+    signals:
+        // TODO: Add new Window type
+        void windowOpened();
+        void windowClosed();
+
     private slots:
-        void windowAdded(WId id);
-        void windowChanged(WId id, NET::Properties props, NET::Properties2 props2);
-        void windowRemoved(WId id);
+        void kwinWindowAdded(WId id);
+        void kwinWindowChanged(WId id, NET::Properties props, NET::Properties2 props2);
+        void kwinWindowRemoved(WId id);
     };
 }
