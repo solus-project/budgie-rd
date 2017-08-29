@@ -21,15 +21,21 @@ namespace Task
         // Only query 1 props, not 2props
         // static unsigned int initialQuery = NET::WMName | NET::WMWindowType | NET::WMIcon |
         // NET::WMIconName
-        static auto initialQuery = NET::WMName;
+        static auto initialQuery = NET::WMName | NET::WMIconName;
         KWindowInfo info(id, initialQuery, static_cast<NET::Property2>(0));
 
         // Consider support for visibleName() the KWin <2> suffix style
-        this->winTitle = info.name();
+        winTitle = info.name();
+        winIcon = info.iconName();
     }
 
     const QString Window::title()
     {
         return this->winTitle;
+    }
+
+    const QString Window::iconName()
+    {
+        return this->winIcon;
     }
 }

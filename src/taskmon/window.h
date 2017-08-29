@@ -30,9 +30,15 @@ namespace Task
          */
         const QString title();
 
+        /**
+         * Icon name as set by the client.
+         */
+        const QString iconName();
+
     signals:
 
         void titleChanged(const QString &title);
+        void iconNameChanged(const QString &title);
 
     protected:
         /**
@@ -44,5 +50,6 @@ namespace Task
     private:
         WId id;
         QString winTitle;
+        QString winIcon;
     };
 }
