@@ -12,10 +12,22 @@
 #include "desktop-manager.h"
 
 #include <QApplication>
+#include <QCommandLineParser>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    // TODO: Take from a config.h
+    QCoreApplication::setApplicationName("budgie-shell");
+    QCoreApplication::setApplicationVersion("0.0.0");
+
+    QCommandLineParser p;
+    p.addHelpOption();
+    p.addVersionOption();
+    p.setApplicationDescription("Budgie Desktop R&D Shell");
+    p.process(app);
+
     Desktop::Manager manager;
     return app.exec();
 }
