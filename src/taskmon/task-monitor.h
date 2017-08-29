@@ -25,11 +25,21 @@ namespace Task
         Q_OBJECT
 
     public:
+        /**
+         * Create a new monitor to track windows on the display
+         */
         explicit Monitor();
 
     signals:
-        // TODO: Add new Window type
+
+        /**
+         * A window has been opened on screen
+         */
         void windowOpened(Window *window);
+
+        /**
+         * A previously known window has been closed
+         */
         void windowClosed(Window *window);
 
     private slots:

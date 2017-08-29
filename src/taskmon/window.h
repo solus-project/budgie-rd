@@ -25,12 +25,20 @@ namespace Task
         Q_PROPERTY(QString title READ title NOTIFY titleChanged)
 
     public:
+        /**
+         * Return the title for this window
+         */
         const QString title();
 
     signals:
+
         void titleChanged(const QString &title);
 
     protected:
+        /**
+         * Windows must be instantiated by a Task::Monitor, and are initially
+         * owned only by the monitor. Connect to signals to recieve events
+         */
         explicit Window(WId id);
 
     private:
