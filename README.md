@@ -1,7 +1,7 @@
 budgie-rd
 ---------
 
-[![License](https://img.shields.io/badge/license-GNULGPLGv2.1-blue.svg)](https://opensource.org/licenses/LGPL-2.1)
+[![License](https://img.shields.io/badge/license-GNULGPLv2.1-blue.svg)](https://opensource.org/licenses/LGPL-2.1)
 
 Simple R&D test repo for some Budgie 11 stuff ...
 
