@@ -54,6 +54,18 @@ Rectangle {
 
                 ColumnLayout {
                     anchors.fill: parent
+                    spacing: 12
+
+
+                    Switch {
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignRight
+                        background: Rectangle {
+                            color: Qt.rgba(0, 0, 0, 0.05)
+                        }
+                        text: "Do not disturb"
+                    }
+
 
                     Label {
                         text: "No new notifications"
