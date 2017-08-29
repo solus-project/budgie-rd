@@ -46,6 +46,7 @@ namespace Panel
         monitor.reset(new Task::Monitor());
         connect(monitor.data(), &Task::Monitor::windowOpened, this, &Window::windowOpened);
         connect(monitor.data(), &Task::Monitor::windowClosed, this, &Window::windowClosed);
+        monitor->notifyAll();
 
         this->demoCode();
     }

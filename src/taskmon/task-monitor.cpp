@@ -30,13 +30,21 @@ namespace Task
 
         // Prior to gaining any new signal subscribers we should ensure our
         // own internal state is up to date
-        notifyAll();
+        for (auto wid : KWindowSystem::windows()) {
+            this->kwinWindowAdded(wid);
+        }
     }
 
     void Monitor::notifyAll()
     {
+        // If we don't know about the window yet, track it, otherwise just send
+        // out the signal for interested clients
         for (auto wid : KWindowSystem::windows()) {
-            this->kwinWindowAdded(wid);
+            if (!windows.contains(wid)) {
+                this->kwinWindowAdded(wid);
+            } else {
+                emit windowOpened(windows[wid].data());
+            }
         }
     }
 
