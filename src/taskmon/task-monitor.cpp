@@ -54,7 +54,13 @@ namespace Task
         }
 
         Window *window = windows[id].data();
-        KWindowInfo info(id, props, props2);
+        NET::Properties inProps = props;
+        // KWindowSystem bitches loudly when fetching the icon name without the
+        // name flag set. Even if the name doesn't change ...
+        if (!(inProps & NET::WMName)) {
+            inProps |= NET::WMName;
+        }
+        KWindowInfo info(id, inProps, props2);
 
         if (!info.valid()) {
             return;
