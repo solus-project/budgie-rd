@@ -9,9 +9,9 @@ Rectangle {
 
 
     ColumnLayout {
-        width: parent.width
-        height: parent.height
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
 
         TabBar {
             id: navBar
@@ -27,7 +27,7 @@ Rectangle {
             }
         }
 
-        StackLayout {
+        SwipeView {
             width: parent.width
             currentIndex: navBar.currentIndex
 
