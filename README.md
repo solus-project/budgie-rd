@@ -5,6 +5,11 @@ budgie-rd
 
 Simple R&D test repo for some Budgie 11 stuff ...
 
+![logo](https://solus-project.com/imgs/budgie-small.png)
+
+IRC: #budgie-desktop-dev on irc.freenode.net
+
+
 Building
 --------
 
