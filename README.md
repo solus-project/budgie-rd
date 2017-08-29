@@ -3,7 +3,33 @@ budgie-rd
 
 [![License](https://img.shields.io/badge/license-GNULGPLv2.1-blue.svg)](https://opensource.org/licenses/LGPL-2.1)
 
-Simple R&D test repo for some Budgie 11 stuff ...
+Research & Development repository for Budgie 11. Budgie 11 will be [based on Qt](https://budgie-desktop.org/2017/01/25/kicking-off-budgie-11/) and this
+repository will help us to flesh out some concepts and architectural requirements for the
+upcoming desktop work.
+
+Note that this repository **in no way** should be considered representative of the
+final work, nor does inclusion of a feature or technology in this repository mean
+that it will be present in the final Budgie 11 tree.
+
+Initial concerns:
+
+ - Handle the root window display via our own `Desktop::RootWindow` class to
+   take care of wallpaper settings, and in future, desktop icons.
+ - Investigate the viability of KWin (or others)
+ - Provide a new Raven (plugin based `Raven::Window`)
+ - Port (conceptually) the PanelManager and Panel(Window) instance management,
+   also plugin based.
+ - Investigate the viability of Qt Quick (QML) to determine if the overhead continues
+   to grow and whether it is justified.
+ - Favour C++ native-code where possible
+ - Keep tree modular with various libraries linked into a final shell process
+ - Ensure compositor is separate to the shell!
+ - Begin establishing a stable ABI pattern (`dptr` based headers, etc.)
+
+Long story short we're looking to get to the "cheapest" MVP 0.0.1 in the shortest
+amount of time, so that we can determine what a full (not complete..) session looks like.
+This is an action-driven approach to solving some of the more tertiary issues early
+on before committing to the "big works".
 
 ![logo](https://solus-project.com/imgs/budgie-small.png)
 
