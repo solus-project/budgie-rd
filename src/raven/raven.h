@@ -11,19 +11,16 @@
 
 #pragma once
 
-#include <QWidget>
+#include <QQuickView>
 
 namespace Raven
 {
-    class Window : public QWidget
+    class Window : public QQuickView
     {
         Q_OBJECT
 
     public:
         explicit Window();
         void updateGeometry(QRect &rect);
-
-    private:
-        QWidget *packArea;
     };
 }

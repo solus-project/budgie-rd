@@ -13,9 +13,13 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QQuickWindow>
 
 int main(int argc, char *argv[])
 {
+    // RGBA windows pls
+    QQuickWindow::setDefaultAlphaBuffer(true);
+
     QApplication app(argc, argv);
 
     // TODO: Take from a config.h

@@ -20,28 +20,17 @@ namespace Raven
 {
     Window::Window()
     {
-        // Push dock-type bits bits
-        setAttribute(Qt::WA_TranslucentBackground);
-        setAttribute(Qt::WA_X11NetWmWindowTypeDock);
-        setAttribute(Qt::WA_ShowWithoutActivating);
-        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
-        setFocusPolicy(Qt::NoFocus);
-        setFixedSize(0, 0);
-
-        packArea = new QWidget(this);
-        setLayout(new QHBoxLayout());
-        layout()->setMargin(0);
-        layout()->addWidget(packArea);
-
-        packArea->setObjectName("packArea");
-        packArea->setStyleSheet("#packArea { background-color: rgba(255, 255, 255, 85%); }");
-        packArea->setLayout(new QVBoxLayout());
-        packArea->layout()->setMargin(0);
-
-        auto layout = qobject_cast<QVBoxLayout *>(packArea->layout());
-        auto labelr = new QLabel("I could be your next Raven ... ");
-        labelr->setStyleSheet("color: black;");
-        layout->addWidget(labelr, 0, Qt::AlignHCenter | Qt::AlignVCenter);
+        // https://bugreports.qt.io/browse/QTBUG-54886
+        //         setAttribute(Qt::WA_ShowWithoutActivating);
+        setProperty("_q_showWithoutActivating", QVariant(true));
+        setFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool |
+                 Qt::BypassWindowManagerHint);
+        // Parent size dictates QML size
+        resize(0, 0);
+        setResizeMode(QQuickView::SizeRootObjectToView);
+        setClearBeforeRendering(true);
+        setColor(QColor(Qt::transparent));
+        setSource(QUrl::fromLocalFile("src/raven/qml/raven.qml"));
     }
 
     void Window::updateGeometry(QRect &rect)
@@ -52,14 +41,16 @@ namespace Raven
         int width = (int)(rect.width() * 0.15);
         finalPosition.setX((rect.x() + rect.width()) - width);
         finalPosition.setY(rect.y());
-        finalPosition.setHeight(rect.height() - 37);
+        finalPosition.setHeight(rect.height());
         finalPosition.setWidth(width);
 
-        setFixedSize(finalPosition.width(), finalPosition.height());
-        move(finalPosition.x(), finalPosition.y());
+        setMaximumWidth(finalPosition.width());
+        setMaximumHeight(finalPosition.height() - 37);
+        setWidth(finalPosition.width());
+        setHeight(finalPosition.height() - 37);
+        setPosition(finalPosition.x(), finalPosition.y());
 
         // Be a tart, show off blurs
-        KWindowEffects::enableBlurBehind(effectiveWinId());
-        KWindowEffects::slideWindow(this, KWindowEffects::SlideFromLocation::RightEdge);
+        KWindowEffects::enableBlurBehind(winId());
     }
 }
