@@ -35,7 +35,6 @@ namespace Task
     void Monitor::kwinWindowAdded(WId id)
     {
         if (windows.contains(id)) {
-            qDebug() << "KWindowSystem reported window multiple times..";
             return;
         }
         windows.insert(id, QSharedPointer<Window>(new Window(id)));
