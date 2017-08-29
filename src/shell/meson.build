@@ -28,6 +28,7 @@ shell = executable(
         dep_qtwidgets,
         kf5_deps,
         dep_qml,
+        dep_qml_controls,
         link_panel,
         link_raven,
     ],

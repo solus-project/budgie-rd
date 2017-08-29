@@ -32,6 +32,7 @@ qt5 = import('qt5')
 qt_min_version = '>= 5.9.1'
 dep_qtwidgets = dependency('Qt5Widgets', version: qt_min_version)
 dep_qml = dependency('Qt5Quick', version: qt_min_version)
+dep_qml_controls = dependency('Qt5QuickControls2', version: qt_min_version)
 
 kf5_components_needed = [
     'WindowSystem',

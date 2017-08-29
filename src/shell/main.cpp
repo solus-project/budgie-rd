@@ -13,12 +13,14 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QQuickStyle>
 #include <QQuickWindow>
 
 int main(int argc, char *argv[])
 {
     // RGBA windows pls
     QQuickWindow::setDefaultAlphaBuffer(true);
+    QQuickStyle::setStyle("Material");
 
     QApplication app(argc, argv);
 
