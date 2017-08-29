@@ -30,7 +30,7 @@ namespace Raven
         setResizeMode(QQuickView::SizeRootObjectToView);
         setClearBeforeRendering(true);
         setColor(QColor(Qt::transparent));
-        setSource(QUrl::fromLocalFile("src/raven/qml/raven.qml"));
+        setSource(QUrl("qrc:/qml/raven.qml"));
     }
 
     void Window::updateGeometry(QRect &rect)
