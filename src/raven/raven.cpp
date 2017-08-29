@@ -37,6 +37,8 @@ namespace Raven
     {
         QRect finalPosition;
 
+        KWindowEffects::slideWindow(winId(), KWindowEffects::SlideFromLocation::RightEdge, 0);
+
         // We're always on the RHS for now with a size equalling 15% of width
         int width = (int)(rect.width() * 0.15);
         finalPosition.setX((rect.x() + rect.width()) - width);
