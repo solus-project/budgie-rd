@@ -33,4 +33,23 @@ qt_min_version = '>= 5.9.1'
 dep_qtwidgets = dependency('Qt5Widgets', version: qt_min_version)
 dep_qml = dependency('Qt5Quick', version: qt_min_version)
 
+kf5_components_needed = [
+    'WindowSystem',
+]
+
+kf5_deps = []
+
+foreach kde_component: kf5_components_needed
+    dep_tmp_lib = compiler.find_library('KF5' + kde_component)
+    dep_tmp_kf5 = declare_dependency(
+        dependencies: [
+            dep_tmp_lib,
+        ],
+        include_directories: [
+            include_directories('/usr/include/KF5/K' + kde_component),
+        ],
+    )
+    kf5_deps += dep_tmp_kf5
+endforeach
+
 subdir('src')
