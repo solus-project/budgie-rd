@@ -37,11 +37,12 @@ namespace Task
     protected:
         /**
          * Windows must be instantiated by a Task::Monitor, and are initially
-         * owned only by the monitor. Connect to signals to recieve events
+         * owned only by the monitor. Connect to signals to receive events
          */
         explicit Window(WId id);
 
     private:
         WId id;
+        QString winTitle;
     };
 }
