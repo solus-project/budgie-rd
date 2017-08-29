@@ -1,11 +1,13 @@
 taskmon_mocs = qt5.preprocess(
     moc_headers: [
         'task-monitor.h',
+        'window.h',
     ],
 )
 
 taskmon_sources = [
     'task-monitor.cpp',
+    'window.cpp',
 ]
 
 taskmon = static_library(
