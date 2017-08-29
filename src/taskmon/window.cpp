@@ -29,6 +29,7 @@ namespace Task
         winIcon = info.iconName();
     }
 
+    /* Getters */
     const QString Window::title()
     {
         return this->winTitle;
@@ -37,5 +38,25 @@ namespace Task
     const QString Window::iconName()
     {
         return this->winIcon;
+    }
+
+    /* Setters - these will ensure we minimise signal noise by checking
+     * that the new properties really changed */
+    void Window::setTitle(const QString &title)
+    {
+        if (title == this->winTitle) {
+            return;
+        }
+        this->winTitle = title;
+        emit titleChanged(this->winTitle);
+    }
+
+    void Window::setIconName(const QString &iconName)
+    {
+        if (iconName == this->winIcon) {
+            return;
+        }
+        this->winIcon = iconName;
+        emit iconNameChanged(this->winIcon);
     }
 }

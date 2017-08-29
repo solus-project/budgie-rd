@@ -47,6 +47,12 @@ namespace Task
          */
         explicit Window(WId id);
 
+        /*
+         * Friend accessors to set private internal bits
+         */
+        void setTitle(const QString &title);
+        void setIconName(const QString &title);
+
     private:
         WId id;
         QString winTitle;
