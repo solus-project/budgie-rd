@@ -61,12 +61,12 @@ namespace Task
         }
 
         /* icon name change */
-        if ((props & NET::WMIconName) == NET::WMIconName) {
+        if (props & NET::WMIconName) {
             window->setIconName(info.iconName());
         }
 
         /* title change */
-        if ((props & NET::WMName) == NET::WMName) {
+        if (props & NET::WMName) {
             window->setTitle(info.name());
         }
     }
