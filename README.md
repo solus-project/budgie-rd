@@ -7,6 +7,12 @@ Research & Development repository for Budgie 11. Budgie 11 will be [based on Qt]
 repository will help us to flesh out some concepts and architectural requirements for the
 upcoming desktop work.
 
+Here Be Derghuns
+-----------------
+
+![derghuns](https://github.com/budgie-desktop/budgie-rd/raw/master/.github/landing.jpg)
+
+
 Note that this repository **in no way** should be considered representative of the
 final work, nor does inclusion of a feature or technology in this repository mean
 that it will be present in the final Budgie 11 tree.
