@@ -22,6 +22,14 @@ namespace Task
 
         friend class Monitor;
 
+        Q_PROPERTY(QString title READ title NOTIFY titleChanged)
+
+    public:
+        const QString title();
+
+    signals:
+        void titleChanged(const QString &title);
+
     protected:
         explicit Window(WId id);
 

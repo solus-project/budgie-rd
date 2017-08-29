@@ -12,10 +12,17 @@
 #include "window.h"
 
 #include <KWindowSystem>
+#include <QString>
 
 namespace Task
 {
     Window::Window(WId id) : id(id)
     {
+    }
+
+    const QString title()
+    {
+        static const QString empty;
+        return empty;
     }
 }
