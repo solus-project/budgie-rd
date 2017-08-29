@@ -1,7 +1,7 @@
 /*
  * This file is part of budgie-rd
  *
- * Copyright © 2017 Ikey Doherty <ikey@solus-project.com>
+ * Copyright © 2017 Budgie Desktop Developers
  *
  * budgie-rd is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
