@@ -1,12 +1,15 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QtQuick.Controls.Material 2.1
 
 Rectangle {
     visible: true
 
     color: Qt.rgba(1, 1, 1, 0.5)
 
+    Material.theme: Material.Light
+    Material.accent: Material.LightBlue
 
     ColumnLayout {
         anchors.top: parent.top
