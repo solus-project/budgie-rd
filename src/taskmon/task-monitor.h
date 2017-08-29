@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <KWindowSystem>
 #include <QObject>
 
 namespace Task
@@ -21,5 +22,10 @@ namespace Task
 
     public:
         explicit Monitor();
+
+    private slots:
+        void windowAdded(WId id);
+        void windowChanged(WId id, NET::Properties props, NET::Properties2 props2);
+        void windowRemoved(WId id);
     };
 }
