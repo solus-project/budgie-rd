@@ -47,9 +47,29 @@ namespace Task
      */
     void Monitor::kwinWindowChanged(WId id, NET::Properties props, NET::Properties2 props2)
     {
-        Q_UNUSED(id);
-        Q_UNUSED(props);
         Q_UNUSED(props2);
+
+        if (!windows.contains(id)) {
+            qDebug() << "KWindowSystem reports change for invalid window..";
+            return;
+        }
+
+        Window *window = windows[id].data();
+        KWindowInfo info(id, props, props2);
+
+        if (!info.valid()) {
+            return;
+        }
+
+        /* icon name change */
+        if ((props & NET::WMIconName) == NET::WMIconName) {
+            window->setIconName(info.iconName());
+        }
+
+        /* title change */
+        if ((props & NET::WMName) == NET::WMName) {
+            window->setTitle(info.name());
+        }
     }
 
     /**
