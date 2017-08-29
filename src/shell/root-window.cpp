@@ -26,7 +26,7 @@ namespace Desktop
         resize(0, 0);
         // Parent size dictates QML size
         setResizeMode(QQuickView::SizeRootObjectToView);
-        setSource(QUrl::fromLocalFile(":/qml/backdrop.qml"));
+        setSource(QUrl("qrc:/qml/backdrop.qml"));
     }
 
     void RootWindow::updateGeometry()
