@@ -42,6 +42,11 @@ namespace Panel
         packArea->setLayout(new QHBoxLayout());
         packArea->layout()->setMargin(0);
 
+        // Test task monitor
+        monitor.reset(new Task::Monitor());
+        connect(monitor.data(), &Task::Monitor::windowOpened, this, &Window::windowOpened);
+        connect(monitor.data(), &Task::Monitor::windowClosed, this, &Window::windowClosed);
+
         this->demoCode();
     }
 
@@ -85,5 +90,15 @@ namespace Panel
         // Be a tart, show off blurs
         KWindowEffects::enableBlurBehind(effectiveWinId());
         KWindowEffects::slideWindow(this, KWindowEffects::SlideFromLocation::BottomEdge);
+    }
+
+    void Window::windowOpened(Task::Window *window)
+    {
+        qDebug() << "Window opened: " << window->title();
+    }
+
+    void Window::windowClosed(Task::Window *window)
+    {
+        qDebug() << "Window closed: " << window->title();
     }
 }

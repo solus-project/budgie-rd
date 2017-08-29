@@ -11,6 +11,8 @@
 
 #pragma once
 
+#include "../taskmon/task-monitor.h"
+
 #include <QWidget>
 
 namespace Panel
@@ -35,6 +37,11 @@ namespace Panel
     private:
         int intendedSize;
         QWidget *packArea;
+        QScopedPointer<Task::Monitor> monitor;
         void demoCode();
+
+    private slots:
+        void windowOpened(Task::Window *window);
+        void windowClosed(Task::Window *window);
     };
 }

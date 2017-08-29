@@ -18,6 +18,7 @@ panel = static_library(
     ],
     dependencies: [
         dep_qtwidgets,
+        link_taskmon,
         kf5_deps,
     ],
 )
