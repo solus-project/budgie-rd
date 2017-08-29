@@ -27,6 +27,17 @@ namespace Task
                 this,
                 &Monitor::kwinWindowChanged);
         connect(instance, &KWindowSystem::windowRemoved, this, &Monitor::kwinWindowRemoved);
+
+        // Prior to gaining any new signal subscribers we should ensure our
+        // own internal state is up to date
+        notifyAll();
+    }
+
+    void Monitor::notifyAll()
+    {
+        for (auto wid : KWindowSystem::windows()) {
+            this->kwinWindowAdded(wid);
+        }
     }
 
     /**

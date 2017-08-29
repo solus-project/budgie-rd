@@ -30,6 +30,12 @@ namespace Task
          */
         explicit Monitor();
 
+        /**
+         * Emit signals for all existing windows. Clients should ensure that
+         * they reduce duplicates
+         */
+        void notifyAll();
+
     signals:
 
         /**
