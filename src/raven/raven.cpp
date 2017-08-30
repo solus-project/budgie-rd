@@ -15,6 +15,7 @@
 #include <QBoxLayout>
 #include <QDebug>
 #include <QLabel>
+#include <QQuickItem>
 
 namespace Raven
 {
@@ -31,6 +32,17 @@ namespace Raven
         setClearBeforeRendering(true);
         setColor(QColor(Qt::transparent));
         setSource(QUrl("qrc:/qml/raven.qml"));
+
+        // Hook up signals from QML land
+        QQuickItem *rootObj = rootObject();
+        connect(rootObj, SIGNAL(dismiss()), this, SLOT(handleDismiss()));
+    }
+
+    void Window::handleDismiss()
+    {
+        qDebug() << "Raven go bye bye";
+        KWindowEffects::slideWindow(winId(), KWindowEffects::SlideFromLocation::RightEdge, 0);
+        hide();
     }
 
     void Window::updateGeometry(QRect &rect)

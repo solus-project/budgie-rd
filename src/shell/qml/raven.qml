@@ -5,11 +5,14 @@ import QtQuick.Controls.Material 2.1
 
 Rectangle {
     visible: true
+    id: visibleArea
 
     color: Qt.rgba(1, 1, 1, 0.5)
 
     Material.theme: Material.Light
     Material.accent: Material.LightBlue
+
+    signal dismiss()
 
     ColumnLayout {
         anchors.top: parent.top
@@ -57,6 +60,12 @@ Rectangle {
 
                     MenuSeparator {
                         Layout.fillWidth: true
+                    }
+
+                    Button {
+                        text: "Dismiss"
+                        onClicked: visibleArea.dismiss()
+                        Layout.leftMargin: 24
                     }
                 }
             }
