@@ -40,7 +40,7 @@ namespace Raven
         KWindowEffects::slideWindow(winId(), KWindowEffects::SlideFromLocation::RightEdge, 0);
 
         // We're always on the RHS for now with a size equalling 15% of width
-        int width = (int)(rect.width() * 0.20);
+        int width = (int)(rect.width() * 0.18);
         finalPosition.setX((rect.x() + rect.width()) - width);
         finalPosition.setY(rect.y());
         finalPosition.setHeight(rect.height());
