@@ -8,6 +8,22 @@ Rectangle {
 
     color: Qt.rgba(0, 0, 0, 0.5)
 
-    Material.theme: Material.Light
+    Material.theme: Material.Dark
     Material.accent: Material.LightBlue
+
+    Row {
+        anchors.fill: parent
+
+        ToolButton {
+            Layout.fillHeight: true
+            text: "Menu"
+        }
+
+        ToolSeparator {}
+
+        ToolButton {
+            text: "Some Window"
+        }
+    }
+
 }
