@@ -30,6 +30,11 @@ Rectangle {
             }
         }
 
+        // Just separate it visually. TODO: Use our own RavenSeparator
+        MenuSeparator {
+            Layout.fillWidth: true
+        }
+
         SwipeView {
             width: parent.width
             currentIndex: navBar.currentIndex
