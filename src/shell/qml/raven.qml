@@ -1,5 +1,4 @@
 import QtQuick 2.7
-import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.1
@@ -45,15 +44,9 @@ Rectangle {
                     spacing: 12
 
                     Label {
-                        text: "Take that, old Raven!"
+                        text: "Add stuff!"
                         font.pixelSize: 24
                         Layout.alignment: Qt.AlignHCenter
-                    }
-    
-                    Calendar {
-                        Layout.alignment: Qt.AlignHCenter
-
-                        weekNumbersVisible: true
                     }
                 }
             }
