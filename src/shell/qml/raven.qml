@@ -49,9 +49,14 @@ Rectangle {
                     spacing: 12
 
                     Label {
-                        text: "Add stuff!"
-                        font.pixelSize: 24
-                        Layout.alignment: Qt.AlignHCenter
+                        text: "I could be a pretty calendar"
+                        font.weight: Font.Medium
+                        Layout.alignment: Qt.AlignLeft
+                        Layout.leftMargin: 24
+                    }
+
+                    MenuSeparator {
+                        Layout.fillWidth: true
                     }
                 }
             }
@@ -62,7 +67,6 @@ Rectangle {
                 ColumnLayout {
                     anchors.fill: parent
                     spacing: 12
-
 
                     Switch {
                         Layout.fillWidth: true
