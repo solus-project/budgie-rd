@@ -13,11 +13,11 @@
 
 #include "../taskmon/task-monitor.h"
 
-#include <QWidget>
+#include <QQuickView>
 
 namespace Panel
 {
-    class Window : public QWidget
+    class Window : public QQuickView
     {
         Q_OBJECT
         Q_ENUMS(Position)
@@ -36,7 +36,6 @@ namespace Panel
 
     private:
         int intendedSize;
-        QWidget *packArea;
         QScopedPointer<Task::Monitor> monitor;
         void demoCode();
 

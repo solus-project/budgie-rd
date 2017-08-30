@@ -21,51 +21,36 @@ namespace Panel
     Window::Window() : intendedSize(37)
     {
         qDebug() << "I r have a panel";
-
-        // Push dock bits
-        setAttribute(Qt::WA_TranslucentBackground);
-        setAttribute(Qt::WA_X11NetWmWindowTypeDock);
-        setAttribute(Qt::WA_X11DoNotAcceptFocus);
-        setAttribute(Qt::WA_ShowWithoutActivating);
-        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-        setFocusPolicy(Qt::NoFocus);
-        setFixedSize(0, 0);
-
-        packArea = new QWidget(this);
-        setLayout(new QHBoxLayout());
-        layout()->setMargin(0);
-        layout()->addWidget(packArea);
-
-        packArea->setObjectName("packArea");
-        packArea->setStyleSheet("#packArea { background-color: rgba(0, 0, 0, 92%); }");
-
-        packArea->setLayout(new QHBoxLayout());
-        packArea->layout()->setMargin(0);
-
-        // Test task monitor
-        monitor.reset(new Task::Monitor());
-        connect(monitor.data(), &Task::Monitor::windowOpened, this, &Window::windowOpened);
-        connect(monitor.data(), &Task::Monitor::windowClosed, this, &Window::windowClosed);
-        monitor->notifyAll();
+        // https://bugreports.qt.io/browse/QTBUG-54886
+        //         setAttribute(Qt::WA_ShowWithoutActivating);
+        setProperty("_q_showWithoutActivating", QVariant(true));
+        setFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
+        // Parent size dictates QML size
+        resize(0, 0);
+        setResizeMode(QQuickView::SizeRootObjectToView);
+        setClearBeforeRendering(true);
+        setColor(QColor(Qt::transparent));
+        setSource(QUrl("qrc:/qml/panel.qml"));
 
         this->demoCode();
     }
 
     void Window::demoCode()
     {
-        auto widget = new QPushButton("Menu");
-        widget->setIcon(QIcon::fromTheme("open-menu"));
-        widget->setStyleSheet("color: white;");
-        widget->setFlat(true);
-        auto layout = qobject_cast<QHBoxLayout *>(packArea->layout());
-        layout->addWidget(widget, 0, Qt::AlignLeft | Qt::AlignVCenter);
+        // Test task monitor
+        monitor.reset(new Task::Monitor());
+        connect(monitor.data(), &Task::Monitor::windowOpened, this, &Window::windowOpened);
+        connect(monitor.data(), &Task::Monitor::windowClosed, this, &Window::windowClosed);
+        monitor->notifyAll();
     }
 
     void Window::updateGeometry(QRect &rect, Position p)
     {
         QRect finalPosition;
         // TODO: Listen for changes to the window ID to reset all dock + strut bits
-        auto wid = effectiveWinId();
+        auto wid = winId();
+
+        KWindowEffects::slideWindow(wid, KWindowEffects::SlideFromLocation::BottomEdge, 0);
 
         // TODO: Switch to extended struts
         switch (p) {
@@ -85,12 +70,17 @@ namespace Panel
             KWindowSystem::setStrut(wid, 0, 0, 0, intendedSize);
             break;
         }
-        setFixedSize(finalPosition.width(), finalPosition.height());
-        move(finalPosition.x(), finalPosition.y());
+        setMaximumWidth(finalPosition.width());
+        setMaximumHeight(finalPosition.height());
+        setWidth(finalPosition.width());
+        setHeight(finalPosition.height());
+        setPosition(finalPosition.x(), finalPosition.y());
+
         qDebug() << "Update geom plox: " << finalPosition << " @ " << p;
+
         // Be a tart, show off blurs
-        KWindowEffects::enableBlurBehind(effectiveWinId());
-        KWindowEffects::slideWindow(this, KWindowEffects::SlideFromLocation::BottomEdge);
+        KWindowEffects::enableBlurBehind(wid);
+        KWindowSystem::setType(wid, NET::WindowType::Dock);
     }
 
     void Window::windowOpened(Task::Window *window)

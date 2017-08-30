@@ -20,6 +20,7 @@ panel = static_library(
         dep_qtwidgets,
         link_taskmon,
         kf5_deps,
+        dep_qml,
     ],
 )
 
