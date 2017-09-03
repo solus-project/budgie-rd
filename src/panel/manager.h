@@ -25,7 +25,7 @@ namespace Panel
         void loadPanels();
 
     private:
-        QScopedPointer<Window> demoWindow;
         QQmlEngine *engine;
+        QScopedPointer<Window> demoWindow;
     };
 }
