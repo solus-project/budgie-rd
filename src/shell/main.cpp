@@ -10,6 +10,7 @@
  */
 
 #include "desktop-manager.h"
+#include "icon-provider.h"
 
 #include <QApplication>
 #include <QCommandLineParser>
@@ -34,6 +35,9 @@ int main(int argc, char *argv[])
     p.setApplicationDescription("Budgie Desktop R&D Shell");
     p.process(app);
 
-    Desktop::Manager manager;
+    QQmlEngine engine;
+    engine.addImageProvider(QLatin1String("icon-theme"), new Desktop::IconThemeProvider());
+
+    Desktop::Manager manager(&engine);
     return app.exec();
 }

@@ -20,7 +20,7 @@ namespace Desktop
         Q_OBJECT
 
     public:
-        explicit RootWindow(int screenNumber);
+        explicit RootWindow(QQmlEngine *engine, int screenNumber);
         void updateGeometry();
 
     private:

@@ -17,7 +17,8 @@
 
 namespace Desktop
 {
-    RootWindow::RootWindow(int screenNumber) : screenNumber(screenNumber)
+    RootWindow::RootWindow(QQmlEngine *engine, int screenNumber)
+        : QQuickView(engine, nullptr), screenNumber(screenNumber)
     {
         // https://bugreports.qt.io/browse/QTBUG-54886
         //         setAttribute(Qt::WA_ShowWithoutActivating);

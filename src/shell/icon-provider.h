@@ -11,21 +11,17 @@
 
 #pragma once
 
-#include "window.h"
-#include <QApplication>
+#include <QPixmap>
+#include <QQuickImageProvider>
 
-namespace Panel
+namespace Desktop
 {
-    class Manager : public QObject
+    class IconThemeProvider : public QObject, public QQuickImageProvider
     {
         Q_OBJECT
 
     public:
-        explicit Manager(QQmlEngine *engine);
-        void loadPanels();
-
-    private:
-        QScopedPointer<Window> demoWindow;
-        QQmlEngine *engine;
+        explicit IconThemeProvider();
+        QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
     };
 }

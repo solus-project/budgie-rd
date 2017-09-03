@@ -16,7 +16,8 @@
 
 namespace Desktop
 {
-    Manager::Manager() : numScreens(0), primaryScreen(0)
+    Manager::Manager(QQmlEngine *engine)
+        : engine(engine), panelManager(new Panel::Manager(engine)), numScreens(0), primaryScreen(0)
     {
         auto desktop = QApplication::desktop();
 
@@ -42,7 +43,7 @@ namespace Desktop
         QRect r = desktop->screenGeometry();
         raven.show();
         raven.updateGeometry(r);
-        panelManager.loadPanels();
+        panelManager->loadPanels();
     }
 
     /**
@@ -73,7 +74,7 @@ namespace Desktop
 
         for (int i = 0; i < numScreens; i++) {
             if (!rootWindows.contains(i)) {
-                rootWindows.insert(i, QSharedPointer<RootWindow>(new RootWindow(i)));
+                rootWindows.insert(i, QSharedPointer<RootWindow>(new RootWindow(engine, i)));
             }
             rootWindows[i]->updateGeometry();
         }

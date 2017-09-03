@@ -24,11 +24,12 @@ namespace Desktop
         Q_OBJECT
 
     public:
-        explicit Manager();
+        explicit Manager(QQmlEngine *engine);
         void updateGeometry();
 
     private:
-        Panel::Manager panelManager;
+        QQmlEngine *engine;
+        QScopedPointer<Panel::Manager> panelManager;
         Raven::Window raven;
         int numScreens;
         int primaryScreen;

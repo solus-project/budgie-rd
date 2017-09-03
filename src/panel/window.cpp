@@ -18,7 +18,7 @@
 
 namespace Panel
 {
-    Window::Window() : intendedSize(37)
+    Window::Window(QQmlEngine *engine) : QQuickView(engine, nullptr), intendedSize(37)
     {
         qDebug() << "I r have a panel";
         // https://bugreports.qt.io/browse/QTBUG-54886

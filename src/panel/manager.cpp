@@ -15,7 +15,7 @@
 
 namespace Panel
 {
-    Manager::Manager() : demoWindow(new Window())
+    Manager::Manager(QQmlEngine *engine) : engine(engine), demoWindow(new Window(engine))
     {
         qDebug() << "I r have a manager";
     }

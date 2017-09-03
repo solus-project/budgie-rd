@@ -31,7 +31,7 @@ namespace Panel
             Bottom,
         };
 
-        explicit Window();
+        explicit Window(QQmlEngine *engine);
         void updateGeometry(QRect &rect, Position p = Position::Bottom);
 
     private:

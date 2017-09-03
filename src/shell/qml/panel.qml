@@ -14,6 +14,10 @@ Rectangle {
     Row {
         anchors.fill: parent
 
+        Image {
+            source: "image://icon-theme/start-here"
+        }
+
         ToolButton {
             Layout.fillHeight: true
             text: "Menu"

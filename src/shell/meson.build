@@ -1,6 +1,7 @@
 shell_mocs = qt5.preprocess(
     moc_headers: [
         'desktop-manager.h',
+        'icon-provider.h',
         'root-window.h',
     ],
 )
@@ -13,6 +14,7 @@ shell_qrc = qt5.preprocess(
 
 shell_sources = [
     'desktop-manager.cpp',
+    'icon-provider.cpp',
     'main.cpp',
     'root-window.cpp',
 ]
