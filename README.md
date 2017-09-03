@@ -62,7 +62,7 @@ To install these on Solus:
 Now, let's configure the project:
 
     meson build
-    ninja -j$(($(getconf _NPROCESSORS_ONLN)+1)) build
+    ninja -j$(($(getconf _NPROCESSORS_ONLN)+1)) -C build
 
 Testing
 -------
