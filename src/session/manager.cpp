@@ -15,14 +15,36 @@
 #include <QDir>
 #include <QFileInfo>
 
+#include <pwd.h>
+#include <unistd.h>
+
 namespace Session
 {
+    /**
+     * Quick C++ wrapper helper to really determine the home directory.
+     * Typically we're expected to conform with `HOME` environment variable,
+     * however we're the root level session, so we must ensure we're actually
+     * trying to get the pw entry for the user before falling back to `HOME`.
+     */
+    static inline QString homeDirectory()
+    {
+        struct passwd *pw = nullptr;
+
+        pw = getpwuid(getuid());
+        if (!pw) {
+            return QDir::homePath();
+        }
+        if (!pw->pw_dir) {
+            return QDir::homePath();
+        }
+        return QLatin1String(pw->pw_dir);
+    }
+
     Manager::Manager(int &argc, char **argv) : QCoreApplication(argc, argv)
     {
-        // TODO: Replace with non shitty functions
-        auto homedir = QDir::homePath();
+        homeDir = homeDirectory();
 
-        appendAutostartDirectory(homedir + "/.config");
+        appendAutostartDirectory(homeDir + "/.config");
 
         // "Standard" (non-stateless) XDG location
         appendAutostartDirectory("/etc/xdg/autostart");

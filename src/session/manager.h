@@ -22,6 +22,7 @@ namespace Session
 
     private:
         QList<QString> appDirs;
+        QString homeDir;
 
         void appendAutostartDirectory(const QString &directory);
     };
