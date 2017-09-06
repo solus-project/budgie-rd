@@ -19,6 +19,11 @@ namespace Session
 
     public:
         explicit Manager(int &argc, char **argv);
+
+    private:
+        QList<QString> appDirs;
+
+        void appendAutostartDirectory(const QString &directory);
     };
 }
 

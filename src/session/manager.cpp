@@ -11,11 +11,34 @@
 
 #include "manager.h"
 
+#include <QDebug>
+#include <QDir>
+#include <QFileInfo>
+
 namespace Session
 {
     Manager::Manager(int &argc, char **argv) : QCoreApplication(argc, argv)
     {
-        // TODO: Just about anything, really.
+        // TODO: Replace with non shitty functions
+        auto homedir = QDir::homePath();
+
+        appendAutostartDirectory(homedir + "/.config");
+
+        // "Standard" (non-stateless) XDG location
+        appendAutostartDirectory("/etc/xdg/autostart");
+
+        // Currently specific to Solus & Clear Linux
+        appendAutostartDirectory("/usr/share/xdg/autostart");
+    }
+
+    void Manager::appendAutostartDirectory(const QString &directory)
+    {
+        QDir d(directory);
+        if (!d.exists()) {
+            qDebug() << "XDG: Skipping " << directory;
+            return;
+        }
+        appDirs.append(d.absolutePath());
     }
 }
 
