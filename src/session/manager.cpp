@@ -40,7 +40,8 @@ namespace Session
         return QString(pw->pw_dir);
     }
 
-    Manager::Manager(int &argc, char **argv) : QCoreApplication(argc, argv)
+    Manager::Manager(int &argc, char **argv)
+        : QCoreApplication(argc, argv), xdgDesktopName("Budgie")
     {
         homeDir = homeDirectory();
 
@@ -106,9 +107,8 @@ namespace Session
                     continue;
                 }
 
-                // TODO: Properly track the XDG name
                 // Skip any autostart file setting OnlyShowIn to a foreign desktop
-                if (!desktopFile->canShowInDesktop("Budgie")) {
+                if (!desktopFile->canShowInDesktop(xdgDesktopName)) {
                     delete desktopFile;
                     continue;
                 }

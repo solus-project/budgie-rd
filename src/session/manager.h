@@ -28,6 +28,7 @@ namespace Session
     private:
         QList<QDir> appDirs;
         QString homeDir;
+        const QString xdgDesktopName;
         QHash<QString, QSharedPointer<DesktopFile>> xdgAutostarts;
 
         /**
