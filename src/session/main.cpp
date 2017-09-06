@@ -16,6 +16,10 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication::setFallbackSessionManagementEnabled(false);
+
+    QCoreApplication::setApplicationName("budgie-rd-session");
+    QCoreApplication::setApplicationVersion("0.0.0");
+
     Session::Manager manager(argc, argv);
     return manager.exec();
 }
