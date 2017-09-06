@@ -74,6 +74,26 @@ namespace Session
     {
         return this->basename;
     }
+
+    bool DesktopFile::canShowInDesktop(const QString &desktopName)
+    {
+        if (this->desktopOnlyShowIn == "") {
+            return true;
+        }
+        QString compUp = ("" + desktopName).toUpper().replace(";", ":");
+        QString compUs = ("" + desktopOnlyShowIn).toUpper().replace(";", ":");
+
+        auto splitsLeft = compUp.split(":");
+        auto splitsRight = compUs.split(":");
+
+        for (auto &id : splitsLeft) {
+            if (splitsRight.contains(id)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 /*

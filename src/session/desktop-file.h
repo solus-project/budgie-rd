@@ -31,6 +31,12 @@ namespace Session
          */
         const QString &id();
 
+        /**
+         * Determine if the item is allowed to be shown in the current desktop
+         * environment.
+         */
+        bool canShowInDesktop(const QString &desktopName);
+
     private:
         bool valid;
         QString path;

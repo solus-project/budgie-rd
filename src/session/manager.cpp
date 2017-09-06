@@ -106,7 +106,13 @@ namespace Session
                     continue;
                 }
 
-                // TODO: Check if this matches OnlyShowIn settings
+                // TODO: Properly track the XDG name
+                // Skip any autostart file setting OnlyShowIn to a foreign desktop
+                if (!desktopFile->canShowInDesktop("Budgie")) {
+                    delete desktopFile;
+                    continue;
+                }
+
                 xdgAutostarts.insert(base, QSharedPointer<DesktopFile>(desktopFile));
                 qDebug() << "Inserting " << desktopFile->id();
             }
