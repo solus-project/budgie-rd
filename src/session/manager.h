@@ -10,6 +10,7 @@
  */
 
 #include <QCoreApplication>
+#include <QHash>
 
 namespace Session
 {
@@ -23,8 +24,26 @@ namespace Session
     private:
         QList<QString> appDirs;
         QString homeDir;
+        QHash<QString, QString> appIds;
 
+        /**
+         * Quick helper to determine if a given autostart directory actually
+         * does exist or not.
+         */
         void appendAutostartDirectory(const QString &directory);
+
+        /**
+         * Scan the startup directories to find required components and to
+         * build a proper mapping
+         */
+        void scanApps();
+
+        /**
+         * Push an application to the autostart monitor based on its ID.
+         * It is then up to the core handler to determine what to do with
+         * it after.
+         */
+        void pushAutostartAppID(const QString &id);
     };
 }
 

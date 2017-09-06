@@ -51,6 +51,11 @@ namespace Session
 
         // Currently specific to Solus & Clear Linux
         appendAutostartDirectory("/usr/share/xdg/autostart");
+
+        scanApps();
+
+        // Push criticals first
+        pushAutostartAppID("budgie-rd-shell.desktop");
     }
 
     void Manager::appendAutostartDirectory(const QString &directory)
@@ -61,6 +66,16 @@ namespace Session
             return;
         }
         appDirs.append(d.absolutePath());
+    }
+
+    void Manager::scanApps()
+    {
+        qDebug() << "No op";
+    }
+
+    void Manager::pushAutostartAppID(const QString &id)
+    {
+        qDebug() << "Don't know how to handle " << id;
     }
 }
 
