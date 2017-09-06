@@ -35,8 +35,8 @@ namespace Session
 
         beginGroup("Desktop Entry");
         desktopName = value("Name", "").toString().trimmed();
-        desktopExec = value("Exec", "").toString().trimmed();
-        desktopTryExec = value("TryExec", "").toString().trimmed();
+        desktopExec = value("Exec", "").toString().trimmed().split(" ")[0];
+        desktopTryExec = value("TryExec", "").toString().trimmed().split(" ")[0];
         desktopOnlyShowIn = value("OnlyShowIn", "").toString().trimmed();
         endGroup();
 
