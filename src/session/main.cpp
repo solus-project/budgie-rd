@@ -11,8 +11,11 @@
 
 #include "manager.h"
 
+#include <QGuiApplication>
+
 int main(int argc, char *argv[])
 {
+    QGuiApplication::setFallbackSessionManagementEnabled(false);
     Session::Manager manager(argc, argv);
     return manager.exec();
 }

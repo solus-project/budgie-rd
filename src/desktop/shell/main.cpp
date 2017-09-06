@@ -19,6 +19,8 @@
 
 int main(int argc, char *argv[])
 {
+    QGuiApplication::setFallbackSessionManagementEnabled(false);
+
     // RGBA windows pls
     QQuickWindow::setDefaultAlphaBuffer(true);
     QQuickStyle::setStyle("Material");
