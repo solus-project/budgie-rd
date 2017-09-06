@@ -37,7 +37,7 @@ namespace Session
         if (!pw->pw_dir) {
             return QDir::homePath();
         }
-        return QLatin1String(pw->pw_dir);
+        return QString(pw->pw_dir);
     }
 
     Manager::Manager(int &argc, char **argv) : QCoreApplication(argc, argv)
