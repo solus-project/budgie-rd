@@ -91,9 +91,9 @@ namespace Session
                 // TODO: Forcibly disable it
                 if (info.isSymLink() && info.symLinkTarget() == "/dev/null") {
                     xdgAutostarts.insert(base,
-                                         new AutostartApp{
+                                         QSharedPointer<AutostartApp>(new AutostartApp{
                                              iter.filePath(), false,
-                                         });
+                                         }));
                     qDebug() << "need to disable autostart " << base;
                     continue;
                 }
@@ -104,9 +104,9 @@ namespace Session
 
                 // TODO: Now verify its actually usable as an autostart
                 xdgAutostarts.insert(base,
-                                     new AutostartApp{
+                                     QSharedPointer<AutostartApp>(new AutostartApp{
                                          iter.filePath(), true,
-                                     });
+                                     }));
             }
         }
 

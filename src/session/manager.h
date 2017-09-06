@@ -12,6 +12,7 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QHash>
+#include <QSharedPointer>
 
 namespace Session
 {
@@ -34,7 +35,7 @@ namespace Session
     private:
         QList<QDir> appDirs;
         QString homeDir;
-        QHash<QString, AutostartApp *> xdgAutostarts;
+        QHash<QString, QSharedPointer<AutostartApp>> xdgAutostarts;
 
         /**
          * Quick helper to determine if a given autostart directory actually
