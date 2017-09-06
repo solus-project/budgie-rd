@@ -50,6 +50,9 @@ namespace Session
         // "Standard" (non-stateless) XDG location
         appendAutostartDirectory("/etc/xdg/autostart");
 
+        // Locally installed global apps
+        appendAutostartDirectory("/usr/local/share/autostart");
+
         // Currently specific to Solus & Clear Linux
         appendAutostartDirectory("/usr/share/xdg/autostart");
 
