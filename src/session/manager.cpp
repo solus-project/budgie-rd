@@ -44,7 +44,7 @@ namespace Session
     {
         homeDir = homeDirectory();
 
-        appendAutostartDirectory(homeDir + "/.config");
+        appendAutostartDirectory(homeDir + "/.config/autostart");
 
         // "Standard" (non-stateless) XDG location
         appendAutostartDirectory("/etc/xdg/autostart");
