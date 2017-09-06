@@ -14,17 +14,10 @@
 #include <QHash>
 #include <QSharedPointer>
 
+#include "desktop-file.h"
+
 namespace Session
 {
-    /**
-     * AutostartApp allows us to track the XDG autostart components, as well
-     * as whether they're enabled (or forcibly disabled through /dev/null symlink
-     */
-    struct AutostartApp {
-        const QString path; /* Full path to the app */
-        bool enabled;       /* Forcibly disabled by link ? */
-    };
-
     class Manager : public QCoreApplication
     {
         Q_OBJECT
@@ -35,7 +28,7 @@ namespace Session
     private:
         QList<QDir> appDirs;
         QString homeDir;
-        QHash<QString, QSharedPointer<AutostartApp>> xdgAutostarts;
+        QHash<QString, QSharedPointer<DesktopFile>> xdgAutostarts;
 
         /**
          * Quick helper to determine if a given autostart directory actually

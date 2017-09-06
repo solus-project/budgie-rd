@@ -18,6 +18,7 @@ namespace Session
         Q_OBJECT
 
     public:
+        explicit DesktopFile();
         explicit DesktopFile(const QString &path);
 
         /**
@@ -39,6 +40,7 @@ namespace Session
         QString desktopName;
         QString desktopOnlyShowIn;
         QString desktopExecutable;
+        QString basename;
     };
 }
 

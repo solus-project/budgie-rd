@@ -90,10 +90,7 @@ namespace Session
                 const QFileInfo info = iter.fileInfo();
                 // TODO: Forcibly disable it
                 if (info.isSymLink() && info.symLinkTarget() == "/dev/null") {
-                    xdgAutostarts.insert(base,
-                                         QSharedPointer<AutostartApp>(new AutostartApp{
-                                             iter.filePath(), false,
-                                         }));
+                    xdgAutostarts.insert(base, QSharedPointer<DesktopFile>(new DesktopFile()));
                     qDebug() << "need to disable autostart " << base;
                     continue;
                 }
@@ -102,11 +99,16 @@ namespace Session
                     continue;
                 }
 
-                // TODO: Now verify its actually usable as an autostart
-                xdgAutostarts.insert(base,
-                                     QSharedPointer<AutostartApp>(new AutostartApp{
-                                         iter.filePath(), true,
-                                     }));
+                // Determine if the path is really valid ..
+                auto desktopFile = new DesktopFile(iter.filePath());
+                if (!desktopFile->isValid()) {
+                    delete desktopFile;
+                    continue;
+                }
+
+                // TODO: Check if this matches OnlyShowIn settings
+                xdgAutostarts.insert(base, QSharedPointer<DesktopFile>(desktopFile));
+                qDebug() << "Inserting " << desktopFile->id();
             }
         }
 

@@ -15,9 +15,20 @@
 
 namespace Session
 {
+    DesktopFile::DesktopFile() : QSettings(), valid(false)
+    {
+    }
+
     DesktopFile::DesktopFile(const QString &path)
         : QSettings(path, QSettings::IniFormat), valid(false), path(path)
     {
+        QFileInfo inf(path);
+        if (!inf.exists()) {
+            return;
+        }
+
+        basename = inf.fileName();
+
         if (!childGroups().contains("Desktop Entry")) {
             return;
         }
@@ -57,6 +68,11 @@ namespace Session
     bool DesktopFile::isValid()
     {
         return this->valid;
+    }
+
+    const QString &DesktopFile::id()
+    {
+        return this->basename;
     }
 }
 
