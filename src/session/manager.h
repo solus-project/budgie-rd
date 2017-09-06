@@ -10,10 +10,20 @@
  */
 
 #include <QCoreApplication>
+#include <QDir>
 #include <QHash>
 
 namespace Session
 {
+    /**
+     * AutostartApp allows us to track the XDG autostart components, as well
+     * as whether they're enabled (or forcibly disabled through /dev/null symlink
+     */
+    struct AutostartApp {
+        const QString path; /* Full path to the app */
+        bool enabled;       /* Forcibly disabled by link ? */
+    };
+
     class Manager : public QCoreApplication
     {
         Q_OBJECT
@@ -22,9 +32,9 @@ namespace Session
         explicit Manager(int &argc, char **argv);
 
     private:
-        QList<QString> appDirs;
+        QList<QDir> appDirs;
         QString homeDir;
-        QHash<QString, QString> appIds;
+        QHash<QString, AutostartApp *> xdgAutostarts;
 
         /**
          * Quick helper to determine if a given autostart directory actually
@@ -33,17 +43,20 @@ namespace Session
         void appendAutostartDirectory(const QString &directory);
 
         /**
-         * Scan the startup directories to find required components and to
-         * build a proper mapping
+         * Scan the startup directories to find any applications requesting they
+         * be automatically started within this session.
          */
-        void scanApps();
+        void scanAutostartApps();
 
         /**
          * Push an application to the autostart monitor based on its ID.
          * It is then up to the core handler to determine what to do with
          * it after.
+         *
+         * This application must live in a blessed tree, i.e. it must be on
+         * the /usr file system.
          */
-        void pushAutostartAppID(const QString &id);
+        void pushSessionApp(const QString &id);
     };
 }
 

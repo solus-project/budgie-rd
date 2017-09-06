@@ -12,7 +12,7 @@
 #include "manager.h"
 
 #include <QDebug>
-#include <QDir>
+#include <QDirIterator>
 #include <QFileInfo>
 
 #include <pwd.h>
@@ -52,10 +52,10 @@ namespace Session
         // Currently specific to Solus & Clear Linux
         appendAutostartDirectory("/usr/share/xdg/autostart");
 
-        scanApps();
+        scanAutostartApps();
 
         // Push criticals first
-        pushAutostartAppID("budgie-rd-shell.desktop");
+        pushSessionApp("budgie-rd-shell.desktop");
     }
 
     void Manager::appendAutostartDirectory(const QString &directory)
@@ -65,15 +65,55 @@ namespace Session
             qDebug() << "XDG: Skipping " << directory;
             return;
         }
-        appDirs.append(d.absolutePath());
+        appDirs.append(d);
     }
 
-    void Manager::scanApps()
+    void Manager::scanAutostartApps()
     {
+        for (auto &dir : appDirs) {
+            QDirIterator iter(dir);
+            while (iter.hasNext()) {
+                QString item = iter.next();
+                QString base = iter.fileName();
+                if (base == "." || base == "..") {
+                    continue;
+                }
+                // We're only interested in .desktop files here
+                if (!base.endsWith(".desktop")) {
+                    continue;
+                }
+                // We perform a descending insert, so don't allow overriding
+                // an existing entry
+                if (xdgAutostarts.contains(base)) {
+                    continue;
+                }
+                const QFileInfo info = iter.fileInfo();
+                // TODO: Forcibly disable it
+                if (info.isSymLink() && info.symLinkTarget() == "/dev/null") {
+                    xdgAutostarts.insert(base,
+                                         new AutostartApp{
+                                             iter.filePath(), false,
+                                         });
+                    qDebug() << "need to disable autostart " << base;
+                    continue;
+                }
+                if (!info.exists()) {
+                    qDebug() << "Invalid .desktop file: " << item;
+                    continue;
+                }
+
+                // TODO: Now verify its actually usable as an autostart
+                xdgAutostarts.insert(base,
+                                     new AutostartApp{
+                                         iter.filePath(), true,
+                                     });
+            }
+        }
+
         qDebug() << "No op";
     }
 
-    void Manager::pushAutostartAppID(const QString &id)
+    void Manager::pushSessionApp(const QString &id)
     {
         qDebug() << "Don't know how to handle " << id;
     }
