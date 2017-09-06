@@ -102,13 +102,7 @@ namespace Session
 
                 // Determine if the path is really valid ..
                 auto desktopFile = new DesktopFile(iter.filePath());
-                if (!desktopFile->isValid()) {
-                    delete desktopFile;
-                    continue;
-                }
-
-                // Skip any autostart file setting OnlyShowIn to a foreign desktop
-                if (!desktopFile->canShowInDesktop(xdgDesktopName)) {
+                if (!desktopFile->isValid() || !desktopFile->canShowInDesktop(xdgDesktopName)) {
                     delete desktopFile;
                     continue;
                 }
