@@ -40,8 +40,8 @@ namespace Session
         return QString(pw->pw_dir);
     }
 
-    Manager::Manager(int &argc, char **argv)
-        : QCoreApplication(argc, argv), xdgDesktopName("Budgie")
+    Manager::Manager(const QString &xdgDesktopName, int &argc, char **argv)
+        : QCoreApplication(argc, argv), xdgDesktopName(xdgDesktopName)
     {
         homeDir = homeDirectory();
 

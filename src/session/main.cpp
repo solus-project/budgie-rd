@@ -11,16 +11,30 @@
 
 #include "manager.h"
 
+#include <QDebug>
 #include <QGuiApplication>
 
 int main(int argc, char *argv[])
 {
+    QString xdgDesktopName;
+
+    // Before we do anything, ensure XDG_CURRENT_DESKTOP is sane.
+    if (!qEnvironmentVariableIsEmpty("XDG_CURRENT_DESKTOP")) {
+        xdgDesktopName = QString::fromLocal8Bit(qgetenv("XDG_CURRENT_DESKTOP"));
+        if (xdgDesktopName != "Budgie") {
+            qWarning() << "XDG_CURRENT_DESKTOP isn't set to Budgie";
+        }
+    } else {
+        xdgDesktopName = "Budgie";
+        qputenv("XDG_DESKTOP_NAME", xdgDesktopName.toLocal8Bit());
+    }
+
     QGuiApplication::setFallbackSessionManagementEnabled(false);
 
     QCoreApplication::setApplicationName("budgie-rd-session");
     QCoreApplication::setApplicationVersion("0.0.0");
 
-    Session::Manager manager(argc, argv);
+    Session::Manager manager(xdgDesktopName, argc, argv);
     return manager.exec();
 }
 

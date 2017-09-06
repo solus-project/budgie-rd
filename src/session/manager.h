@@ -23,7 +23,7 @@ namespace Session
         Q_OBJECT
 
     public:
-        explicit Manager(int &argc, char **argv);
+        explicit Manager(const QString &xdgDesktopName, int &argc, char **argv);
 
     private:
         QList<QDir> appDirs;
