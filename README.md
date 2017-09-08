@@ -49,6 +49,7 @@ Check the root `meson.build` for build dependencies. The `pkg-config` names are:
 
  - Qt5Widgets
  - Qt5Quick
+ - Qt5QuickControls2
 
 Additionally you will need development headers for `KWindowSystem`, as well as
 the `meson` and `ninja` build tools.
@@ -56,7 +57,7 @@ the `meson` and `ninja` build tools.
 To install these on Solus:
 
     sudo eopkg up
-    sudo eopkg it -c system.devel qt5-base-devel qt5-declarative-devel kwindowsystem-devel
+    sudo eopkg it -c system.devel qt5-base-devel qt5-declarative-devel qt5-quickcontrols2-devel kwindowsystem-devel
 
 
 Now, let's configure the project:
