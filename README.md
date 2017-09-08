@@ -71,7 +71,7 @@ Testing
 For now, just run from git as we're not currently installing. This may change in
 the near future, but we'll update the README to reflect this
 
-    ./build/src/desktop/shell/budgie-shell
+    ./build/src/desktop/shell/budgie-rd-shell
 
 Using KWin
 ----------

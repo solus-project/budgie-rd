@@ -20,7 +20,8 @@ shell_sources = [
 ]
 
 shell = executable(
-    'budgie-shell',
+    'budgie-rd-shell',
+    install: true,
     sources: [
         shell_sources,
         shell_qrc,

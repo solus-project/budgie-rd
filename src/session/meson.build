@@ -13,6 +13,7 @@ session_sources = [
 
 session = executable(
     'budgie-rd-session',
+    install: true,
     sources: [
         session_sources,
         session_mocs,
