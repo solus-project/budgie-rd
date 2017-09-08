@@ -41,10 +41,20 @@ namespace Session
     }
 
     Manager::Manager(const QString &xdgDesktopName, int &argc, char **argv)
-        : QCoreApplication(argc, argv), xdgDesktopName(xdgDesktopName)
+        : QCoreApplication(argc, argv), xdgDesktopName(xdgDesktopName),
+          currentPhase(AutostartPhase::None)
     {
         homeDir = homeDirectory();
 
+        // build our supported tables
+        applications[AutostartPhase::Initialization].reset(
+            new QHash<QString, QSharedPointer<DesktopFile>>());
+        applications[AutostartPhase::WindowManager].reset(
+            new QHash<QString, QSharedPointer<DesktopFile>>());
+        applications[AutostartPhase::Shell].reset(
+            new QHash<QString, QSharedPointer<DesktopFile>>());
+        applications[AutostartPhase::Applications].reset(
+            new QHash<QString, QSharedPointer<DesktopFile>>());
         appendAutostartDirectory(homeDir + "/.config/autostart");
 
         // "Standard" (non-stateless) XDG location
@@ -69,6 +79,15 @@ namespace Session
         // we've applied to it to not break any child processes
         execEnviron = QProcessEnvironment::systemEnvironment();
         execEnviron.remove(QStringLiteral("QT_NO_GLIB"));
+
+        // DUMMY CODE: Doesn't really launch yet. Really we'll actually need
+        // to ensure that all components within an autostart phase actually
+        // succeeded. Once each phase has no children left, it must then move
+        // to the next phase, or bail.
+        launchPhase(AutostartPhase::Initialization);
+        launchPhase(AutostartPhase::WindowManager);
+        launchPhase(AutostartPhase::Shell);
+        launchPhase(AutostartPhase::Applications);
     }
 
     void Manager::appendAutostartDirectory(const QString &directory)
@@ -118,12 +137,10 @@ namespace Session
                     continue;
                 }
 
+                pushAutostart(desktopFile);
                 xdgAutostarts.insert(base, QSharedPointer<DesktopFile>(desktopFile));
-                qDebug() << "Inserting " << desktopFile->id();
             }
         }
-
-        qDebug() << "No op";
     }
 
     void Manager::scanSessionApps(const QString &sessionDir)
@@ -155,8 +172,43 @@ namespace Session
                 continue;
             }
 
-            qDebug() << "TODO: Insert autostart item: " << desktopFile->id() << " @ "
-                     << desktopFile->autostartPhase();
+            pushAutostart(desktopFile);
+        }
+    }
+
+    void Manager::pushAutostart(DesktopFile *file)
+    {
+        if (file->autostartPhase() == AutostartPhase::None) {
+            file->setAutostartPhase(AutostartPhase::Applications);
+        }
+
+        auto blobs = applications[file->autostartPhase()].data();
+        // QSharedPointer will purge the old guy
+        if (blobs->contains(file->id())) {
+            qWarning() << "Replacing duplicated item: " << file->id();
+        }
+
+        // Uniquely map this startup phase & id to the application
+        // As we always scan our own entries last, we ensure we preserve
+        // their uniqueness.
+        blobs->insert(file->id(), QSharedPointer<DesktopFile>(file));
+        qDebug() << "Inserting autostart item: " << file->id() << " @ " << file->autostartPhase();
+    }
+
+    /**
+     * Note that in future we really should only push the phase forward if
+     * the components told those they were successful in "making it"
+     */
+    void Manager::launchPhase(AutostartPhase phase)
+    {
+        this->currentPhase = phase;
+        auto blobs = applications[phase].data();
+
+        qDebug() << "Entering phase: " << phase;
+
+        for (auto iter = blobs->begin(); iter != blobs->end(); ++iter) {
+            qDebug() << "Starting " << iter.key();
+            delete iter.value()->launch();
         }
     }
 }

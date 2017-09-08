@@ -30,8 +30,11 @@ namespace Session
         QList<QDir> appDirs;
         QString homeDir;
         const QString xdgDesktopName;
-        QHash<QString, QSharedPointer<DesktopFile>> xdgAutostarts;
         QProcessEnvironment execEnviron;
+        QHash<QString, QSharedPointer<DesktopFile>> xdgAutostarts;
+        AutostartPhase currentPhase;
+        QHash<AutostartPhase, QSharedPointer<QHash<QString, QSharedPointer<DesktopFile>>>>
+            applications;
 
         /**
          * Quick helper to determine if a given autostart directory actually
@@ -49,6 +52,20 @@ namespace Session
          * Scan specifically for session applications
          */
         void scanSessionApps(const QString &sessionDirectory);
+
+        /**
+         * Push the DesktopFile into the internal storage, and take ownership
+         * of this item.
+         *
+         * Any item with an invalid AutostartPhase will be moved back to the
+         * Applications cycle.
+         */
+        void pushAutostart(DesktopFile *file);
+
+        /**
+         * Attempt to launch the next phase in the start up sequence.
+         */
+        void launchPhase(AutostartPhase phase);
     };
 }
 

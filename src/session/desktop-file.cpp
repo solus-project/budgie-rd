@@ -189,6 +189,7 @@ namespace Session
     QProcess *DesktopFile::launch(const QStringList &args)
     {
         QStringList realArgs;
+
         for (auto &tmp : this->mainArgs) {
             if (tmp.contains("%f")) {
                 tmp.replace("%f", args[0]);
@@ -221,11 +222,12 @@ namespace Session
             realArgs << "--crashes" << QString::number(desktopCrashCount);
         }
 
-        // TODO: Support all fields properly..
-        qDebug() << "Command: " << mainExec << " " << realArgs;
         QProcess *ret = new QProcess(this);
         ret->setProgram(mainExec);
         ret->setArguments(realArgs);
+
+        // TODO: Support all fields properly..
+        qDebug() << "Command: " << mainExec << " " << realArgs;
 
         return ret;
     }
