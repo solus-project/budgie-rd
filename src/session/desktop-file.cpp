@@ -58,8 +58,10 @@ namespace Session
             return;
         }
 
-        if (!resolveExec(desktopExec) && !resolveExec(desktopTryExec)) {
-            return;
+        if (!resolveExec(desktopExec)) {
+            if (!resolveExec(desktopTryExec)) {
+                return;
+            }
         }
 
         valid = true;
