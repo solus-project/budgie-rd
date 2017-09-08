@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
         xdgDesktopName = "Budgie";
         qputenv("XDG_DESKTOP_NAME", xdgDesktopName.toLocal8Bit());
     }
+    qputenv("DESKTOP_SESSION", xdgDesktopName.toLocal8Bit());
 
     QGuiApplication::setFallbackSessionManagementEnabled(false);
 
