@@ -43,23 +43,12 @@ namespace Session
         desktopOnlyShowIn = value("OnlyShowIn", "").toString().trimmed();
 
         // Very much modelled after GNOME session startup pieces
-        QString desktopAutostartPhase = value("X-Budgie-Autostart-Phase", "").toString().trimmed();
-        desktopAutostartDelay = value("X-Budgie-Autostart-Delay", 0).toInt();
+        resolveAutostartConditions();
 
         /* Crash count support, to make kwin happy */;
         this->desktopSupportCrashCount = value("X-Budgie-Support-Crash-Param").toBool();
 
         endGroup();
-
-        if (desktopAutostartPhase == QStringLiteral("Initialization")) {
-            this->desktopAutostartPhase = AutostartPhase::Initialization;
-        } else if (desktopAutostartPhase == QStringLiteral("WindowManager")) {
-            this->desktopAutostartPhase = AutostartPhase::WindowManager;
-        } else if (desktopAutostartPhase == QStringLiteral("Shell")) {
-            this->desktopAutostartPhase = AutostartPhase::Shell;
-        } else {
-            this->desktopAutostartPhase = AutostartPhase::Applications;
-        }
 
         if (status() != QSettings::NoError) {
             return;
@@ -74,6 +63,39 @@ namespace Session
         }
 
         valid = true;
+    }
+
+    /**
+     * Attempt to find the matching autostart conditions. For compatibility with
+     * generic autostart files (such as pulseaudio's start-pulseaudio-x11) we also
+     * resolve the X-GNOME condition, which would only be evaluated if the .desktop
+     * file isValid(), i.e. the OnlyShowIn is correct.
+     */
+    void DesktopFile::resolveAutostartConditions()
+    {
+        QString desktopAutostartPhase = value("X-Budgie-Autostart-Phase", "").toString().trimmed();
+        if (desktopAutostartPhase.isEmpty()) {
+            desktopAutostartPhase = value("X-GNOME-Autostart-Phase", "").toString().trimmed();
+            if (!desktopAutostartPhase.isEmpty()) {
+                desktopAutostartDelay = value("X-GNOME-Autostart-Delay", 0).toInt();
+            }
+        }
+        desktopAutostartDelay = value("X-Budgie-Autostart-Delay", 0).toInt();
+        if (desktopAutostartDelay < 1) {
+            desktopAutostartDelay = value("X-GNOME-Autostart-Delay", 0).toInt();
+        }
+
+        if (desktopAutostartPhase == QStringLiteral("Initialization")) {
+            this->desktopAutostartPhase = AutostartPhase::Initialization;
+        } else if (desktopAutostartPhase == QStringLiteral("WindowManager")) {
+            this->desktopAutostartPhase = AutostartPhase::WindowManager;
+        } else if (desktopAutostartPhase == QStringLiteral("Shell")) {
+            this->desktopAutostartPhase = AutostartPhase::Shell;
+        } else if (desktopAutostartPhase == QStringLiteral("Panel")) {
+            this->desktopAutostartPhase = AutostartPhase::Shell;
+        } else {
+            this->desktopAutostartPhase = AutostartPhase::Applications;
+        }
     }
 
     bool DesktopFile::resolveExec(const QString &exec)

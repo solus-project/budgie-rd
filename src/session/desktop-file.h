@@ -113,6 +113,7 @@ namespace Session
         QStringList mainArgs;
 
         bool resolveExec(const QString &exec);
+        void resolveAutostartConditions();
     };
 }
 
