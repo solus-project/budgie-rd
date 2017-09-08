@@ -13,6 +13,13 @@
 
 namespace Session
 {
+    enum AutostartPhase {
+        Initialization,
+        WindowManager,
+        Panel, /** Shell */
+        Applications,
+    };
+
     class DesktopFile : public QSettings
     {
         Q_OBJECT
@@ -37,6 +44,16 @@ namespace Session
          */
         bool canShowInDesktop(const QString &desktopName);
 
+        /**
+         * Determine the AutostartPhase for the .desktop file.
+         */
+        AutostartPhase autostartPhase();
+
+        /**
+         * Return the delay for starting the given autostart component
+         */
+        int autostartDelay();
+
     private:
         bool valid;
         QString path;
@@ -47,6 +64,8 @@ namespace Session
         QString desktopOnlyShowIn;
         QString desktopExecutable;
         QString basename;
+        AutostartPhase desktopAutostartPhase;
+        int desktopAutostartDelay;
     };
 }
 

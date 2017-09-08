@@ -20,7 +20,7 @@ namespace Session
     }
 
     DesktopFile::DesktopFile(const QString &path)
-        : QSettings(path, QSettings::IniFormat), valid(false), path(path)
+        : QSettings(path, QSettings::IniFormat), valid(false), path(path), desktopAutostartDelay(0)
     {
         QFileInfo inf(path);
         if (!inf.exists()) {
@@ -38,7 +38,21 @@ namespace Session
         desktopExec = value("Exec", "").toString().trimmed().split(" ")[0];
         desktopTryExec = value("TryExec", "").toString().trimmed().split(" ")[0];
         desktopOnlyShowIn = value("OnlyShowIn", "").toString().trimmed();
+
+        // Very much modelled after GNOME session startup pieces
+        QString desktopAutostartPhase = value("X-Budgie-Autostart-Phase", "").toString().trimmed();
+        desktopAutostartDelay = value("X-Budgie-Autostart-Delay", 0).toInt();
         endGroup();
+
+        if (desktopAutostartPhase == QStringLiteral("Initialization")) {
+            this->desktopAutostartPhase = AutostartPhase::Initialization;
+        } else if (desktopAutostartPhase == QStringLiteral("WindowManager")) {
+            this->desktopAutostartPhase = AutostartPhase::WindowManager;
+        } else if (desktopAutostartPhase == QStringLiteral("Panel")) {
+            this->desktopAutostartPhase = AutostartPhase::Panel;
+        } else {
+            this->desktopAutostartPhase = AutostartPhase::Applications;
+        }
 
         if (status() != QSettings::NoError) {
             return;
@@ -93,6 +107,16 @@ namespace Session
         }
 
         return false;
+    }
+
+    AutostartPhase DesktopFile::autostartPhase()
+    {
+        return this->desktopAutostartPhase;
+    }
+
+    int DesktopFile::autostartDelay()
+    {
+        return this->desktopAutostartDelay;
     }
 }
 
