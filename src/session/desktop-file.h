@@ -17,7 +17,7 @@ namespace Session
         None = 0,
         Initialization,
         WindowManager,
-        Panel, /** Shell */
+        Shell, /** Panel */
         Applications,
     };
 

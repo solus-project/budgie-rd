@@ -48,8 +48,8 @@ namespace Session
             this->desktopAutostartPhase = AutostartPhase::Initialization;
         } else if (desktopAutostartPhase == QStringLiteral("WindowManager")) {
             this->desktopAutostartPhase = AutostartPhase::WindowManager;
-        } else if (desktopAutostartPhase == QStringLiteral("Panel")) {
-            this->desktopAutostartPhase = AutostartPhase::Panel;
+        } else if (desktopAutostartPhase == QStringLiteral("Shell")) {
+            this->desktopAutostartPhase = AutostartPhase::Shell;
         } else {
             this->desktopAutostartPhase = AutostartPhase::Applications;
         }
