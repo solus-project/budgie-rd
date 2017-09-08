@@ -90,7 +90,7 @@ If you're using bash, prepend the command with `nohup`, if you're using zsh,
 suffix it with an extra bang (`!`) to ensure that when you close the terminal with CTRL+D
 the `kwin_x11` process isn't aborted.
 
-To restore `budige-wm`, use the above hints but with this command:
+To restore `budgie-wm`, use the above hints but with this command:
 
     budgie-wm --replace &
 
