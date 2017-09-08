@@ -60,6 +60,11 @@ namespace Session
 
         // Push criticals first
         pushSessionApp("budgie-rd-shell.desktop");
+
+        // Fix the global process environment (QProcess) and remove any hacks
+        // we've applied to it to not break any child processes
+        execEnviron = QProcessEnvironment::systemEnvironment();
+        execEnviron.remove(QStringLiteral("QT_NO_GLIB"));
     }
 
     void Manager::appendAutostartDirectory(const QString &directory)

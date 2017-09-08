@@ -12,6 +12,7 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QHash>
+#include <QProcessEnvironment>
 #include <QSharedPointer>
 
 #include "desktop-file.h"
@@ -30,6 +31,7 @@ namespace Session
         QString homeDir;
         const QString xdgDesktopName;
         QHash<QString, QSharedPointer<DesktopFile>> xdgAutostarts;
+        QProcessEnvironment execEnviron;
 
         /**
          * Quick helper to determine if a given autostart directory actually
