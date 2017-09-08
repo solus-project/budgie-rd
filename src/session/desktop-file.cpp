@@ -20,7 +20,8 @@ namespace Session
     }
 
     DesktopFile::DesktopFile(const QString &path)
-        : QSettings(path, QSettings::IniFormat), valid(false), path(path), desktopAutostartDelay(0)
+        : QSettings(path, QSettings::IniFormat), valid(false), path(path), desktopAutostartDelay(0),
+          desktopCrashCount(0), desktopSupportCrashCount(false)
     {
         QFileInfo inf(path);
         if (!inf.exists()) {
@@ -53,6 +54,9 @@ namespace Session
         } else {
             this->desktopAutostartPhase = AutostartPhase::Applications;
         }
+
+        /* Crash count support, to make kwin happy */;
+        this->desktopSupportCrashCount = value("X-Budgie-Support-Crash-Param", false).toBool();
 
         if (status() != QSettings::NoError) {
             return;
@@ -127,6 +131,21 @@ namespace Session
     void DesktopFile::setAutostartDelay(int delay)
     {
         this->desktopAutostartDelay = delay;
+    }
+
+    bool DesktopFile::supportCrashCount()
+    {
+        return this->desktopSupportCrashCount;
+    }
+
+    int DesktopFile::crashCount()
+    {
+        return this->desktopCrashCount;
+    }
+
+    void DesktopFile::setCrashCount(int crashCount)
+    {
+        this->desktopCrashCount = crashCount;
     }
 }
 

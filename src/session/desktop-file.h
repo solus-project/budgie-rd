@@ -66,6 +66,22 @@ namespace Session
          */
         void setAutostartDelay(int delay);
 
+        /**
+         * The .desktop file supports having its application invoked with `--crashes <N>`
+         * parameter, i.e. like kwin_x11
+         */
+        bool supportCrashCount();
+
+        /**
+         * Set the crash count to be passed to the application
+         */
+        void setCrashCount(int crashCount);
+
+        /**
+         * Return the current crash count for this .desktop file
+         */
+        int crashCount();
+
     private:
         bool valid;
         QString path;
@@ -78,6 +94,8 @@ namespace Session
         QString basename;
         AutostartPhase desktopAutostartPhase;
         int desktopAutostartDelay;
+        int desktopCrashCount;
+        bool desktopSupportCrashCount;
     };
 }
 
