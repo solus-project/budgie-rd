@@ -9,6 +9,7 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QProcess>
 #include <QSettings>
 
 namespace Session
@@ -82,6 +83,13 @@ namespace Session
          */
         int crashCount();
 
+        /**
+         * Attempt to launch the process with the given arguments. Internally
+         * we will substitute any relevant arguments before passing them to
+         * the application to be launched.
+         */
+        QProcess *launch(const QStringList &args = QStringList());
+
     private:
         bool valid;
         QString path;
@@ -91,11 +99,16 @@ namespace Session
         QString desktopName;
         QString desktopOnlyShowIn;
         QString desktopExecutable;
+        QString desktopFullCommand;
         QString basename;
         AutostartPhase desktopAutostartPhase;
         int desktopAutostartDelay;
         int desktopCrashCount;
         bool desktopSupportCrashCount;
+        QString mainExec;
+        QStringList mainArgs;
+
+        bool resolveExec(const QString &exec);
     };
 }
 
