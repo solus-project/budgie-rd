@@ -58,6 +58,13 @@ namespace Session
 
         scanAutostartApps();
 
+        // Less .desktop files to scan if we have them in a dedicated directory,
+        // unlike how gnome-session handled it. Additionally, we could support
+        // multiple autostart profiles here.
+        //
+        // TODO: Pull our SHAREDIR from a global config.h
+        scanSessionApps("/usr/share/budgie-session/desktop");
+
         // Push criticals first
         pushSessionApp("budgie-rd-shell.desktop");
 
@@ -71,7 +78,7 @@ namespace Session
     {
         QDir d(directory);
         if (!d.exists()) {
-            qDebug() << "XDG: Skipping " << directory;
+            qDebug() << "XDG: Skipping non-existent directory " << directory;
             return;
         }
         appDirs.append(d);
@@ -120,6 +127,38 @@ namespace Session
         }
 
         qDebug() << "No op";
+    }
+
+    void Manager::scanSessionApps(const QString& sessionDir)
+    {
+        QDir directory(sessionDir);
+        QDirIterator iter(directory);
+
+        while (iter.hasNext()) {
+            QString item = iter.next();
+            QString base = iter.fileName();
+            if (base == "." || base == "..") {
+                continue;
+            }
+            // We're only interested in .desktop files here
+            if (!base.endsWith(".desktop")) {
+                continue;
+            }
+
+            if (!iter.fileInfo().exists()) {
+                qWarning() << "Skipping invalid .desktop file: " << iter.filePath();
+                continue;
+            }
+
+            auto desktopFile = new DesktopFile(iter.filePath());
+            if (!desktopFile->isValid() || !desktopFile->canShowInDesktop(xdgDesktopName)) {
+                qWarning() << "Found .desktop file in session directory that isn't valid: " << iter.filePath();
+                delete desktopFile;
+                continue;
+            }
+
+            qDebug() << "TODO: Insert autostart item: " << desktopFile->id() << " @ " << desktopFile->autostartPhase();
+        }
     }
 
     void Manager::pushSessionApp(const QString &id)

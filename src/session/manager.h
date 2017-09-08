@@ -46,6 +46,11 @@ namespace Session
         void scanAutostartApps();
 
         /**
+         * Scan specifically for session applications
+         */
+        void scanSessionApps(const QString& sessionDirectory);
+
+        /**
          * Push an application to the autostart monitor based on its ID.
          * It is then up to the core handler to determine what to do with
          * it after.
