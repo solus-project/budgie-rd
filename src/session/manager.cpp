@@ -97,10 +97,9 @@ namespace Session
                     continue;
                 }
                 const QFileInfo info = iter.fileInfo();
-                // TODO: Forcibly disable it
+                // Forcibly disable it
                 if (info.isSymLink() && info.symLinkTarget() == "/dev/null") {
                     xdgAutostarts.insert(base, QSharedPointer<DesktopFile>(new DesktopFile()));
-                    qDebug() << "need to disable autostart " << base;
                     continue;
                 }
                 if (!info.exists()) {
