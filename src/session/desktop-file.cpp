@@ -165,7 +165,6 @@ namespace Session
     QProcess *DesktopFile::launch(const QStringList &args)
     {
         QStringList realArgs;
-        // TODO: Actually use the binary + args split
         for (auto &tmp : this->mainArgs) {
             if (tmp.contains("%f")) {
                 tmp.replace("%f", args[0]);
