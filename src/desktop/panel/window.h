@@ -17,20 +17,23 @@
 
 namespace Panel
 {
+    Q_NAMESPACE
+
+    enum Position {
+        Undetermined,
+        Top,
+        Left,
+        Right,
+        Bottom,
+    };
+
+    Q_ENUM_NS(Position)
+
     class Window : public QQuickView
     {
         Q_OBJECT
-        Q_ENUMS(Position)
 
     public:
-        enum Position {
-            Undetermined,
-            Top,
-            Left,
-            Right,
-            Bottom,
-        };
-
         explicit Window(QQmlEngine *engine);
         void updateGeometry(QRect &rect, Position p = Position::Bottom);
 
