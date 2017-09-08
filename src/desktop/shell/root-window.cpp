@@ -23,7 +23,7 @@ namespace Desktop
         // https://bugreports.qt.io/browse/QTBUG-54886
         //         setAttribute(Qt::WA_ShowWithoutActivating);
         setProperty("_q_showWithoutActivating", QVariant(true));
-        setFlags(Qt::FramelessWindowHint | Qt::Tool);
+        setFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Tool);
         resize(0, 0);
         // Parent size dictates QML size
         setResizeMode(QQuickView::SizeRootObjectToView);
