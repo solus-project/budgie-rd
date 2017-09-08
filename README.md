@@ -60,9 +60,9 @@ To install these on Solus:
     sudo eopkg it -c system.devel qt5-base-devel qt5-declarative-devel qt5-quickcontrols2-devel kwindowsystem-devel
 
 
-Now, let's configure the project:
+Now, let's configure the project (set libdir to appropriate libdir for your distro):
 
-    meson build
+    meson build --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib64
     ninja -j$(($(getconf _NPROCESSORS_ONLN)+1)) -C build
 
 Testing
