@@ -114,9 +114,19 @@ namespace Session
         return this->desktopAutostartPhase;
     }
 
+    void DesktopFile::setAutostartPhase(AutostartPhase phase)
+    {
+        this->desktopAutostartPhase = phase;
+    }
+
     int DesktopFile::autostartDelay()
     {
         return this->desktopAutostartDelay;
+    }
+
+    void DesktopFile::setAutostartDelay(int delay)
+    {
+        this->desktopAutostartDelay = delay;
     }
 }
 

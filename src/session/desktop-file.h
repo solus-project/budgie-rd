@@ -14,6 +14,7 @@
 namespace Session
 {
     enum AutostartPhase {
+        None = 0,
         Initialization,
         WindowManager,
         Panel, /** Shell */
@@ -50,9 +51,20 @@ namespace Session
         AutostartPhase autostartPhase();
 
         /**
+         * Override the internal autostart phase to prevent "special" autostart
+         * directories doing what they shouldn't.
+         */
+        void setAutostartPhase(AutostartPhase phase);
+
+        /**
          * Return the delay for starting the given autostart component
          */
         int autostartDelay();
+
+        /**
+         * Override (or set) the internal autostart delay
+         */
+        void setAutostartDelay(int delay);
 
     private:
         bool valid;
