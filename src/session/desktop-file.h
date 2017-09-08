@@ -87,6 +87,10 @@ namespace Session
          * Attempt to launch the process with the given arguments. Internally
          * we will substitute any relevant arguments before passing them to
          * the application to be launched.
+         *
+         * This process will not initially be started, and will be parented
+         * to this DesktopFile instance. It is up to the caller to override
+         * the execution environment before starting the process.
          */
         QProcess *launch(const QStringList &args = QStringList());
 

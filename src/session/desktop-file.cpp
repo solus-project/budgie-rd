@@ -196,10 +196,14 @@ namespace Session
         if (desktopSupportCrashCount && desktopCrashCount > 0) {
             realArgs << "--crashes" << QString::number(desktopCrashCount);
         }
-    done:
+
         // TODO: Support all fields properly..
         qDebug() << "Command: " << mainExec << " " << realArgs;
-        return nullptr;
+        QProcess *ret = new QProcess(this);
+        ret->setProgram(mainExec);
+        ret->setArguments(realArgs);
+
+        return ret;
     }
 }
 
