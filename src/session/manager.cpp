@@ -65,9 +65,6 @@ namespace Session
         // TODO: Pull our SHAREDIR from a global config.h
         scanSessionApps("/usr/share/budgie-session/desktop");
 
-        // Push criticals first
-        pushSessionApp("budgie-rd-shell.desktop");
-
         // Fix the global process environment (QProcess) and remove any hacks
         // we've applied to it to not break any child processes
         execEnviron = QProcessEnvironment::systemEnvironment();
@@ -161,11 +158,6 @@ namespace Session
             qDebug() << "TODO: Insert autostart item: " << desktopFile->id() << " @ "
                      << desktopFile->autostartPhase();
         }
-    }
-
-    void Manager::pushSessionApp(const QString &id)
-    {
-        qDebug() << "Don't know how to handle " << id;
     }
 }
 
