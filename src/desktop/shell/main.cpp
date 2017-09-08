@@ -19,6 +19,10 @@
 
 int main(int argc, char *argv[])
 {
+    // We must disable Qt's glib integration as we have no use for it, which
+    // would leave to excessive wake ups
+    qputenv("QT_NO_GLIB", "1");
+
     QGuiApplication::setFallbackSessionManagementEnabled(false);
 
     // RGBA windows pls
