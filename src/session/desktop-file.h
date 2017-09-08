@@ -14,6 +14,8 @@
 
 namespace Session
 {
+    Q_NAMESPACE
+
     enum AutostartPhase {
         None = 0,
         Initialization,
@@ -21,6 +23,8 @@ namespace Session
         Shell, /** Panel */
         Applications,
     };
+
+    Q_ENUM_NS(AutostartPhase)
 
     class DesktopFile : public QSettings
     {
