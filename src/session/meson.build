@@ -21,3 +21,9 @@ session = executable(
         dep_qtwidgets,
     ],
 )
+
+# X11 window manager
+install_data(
+    'wm.desktop',
+    install_dir: sessiondir_desktop,
+)

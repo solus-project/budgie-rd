@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Budgie Window Management (KWin)
+Exec=kwin_x11 --no-kactivities
+NoDisplay=true
+X-Budgie-Autostart-Phase=WindowManager
+X-Budgie-Support-Crash-Param=true
+OnlyShowIn=Budgie;

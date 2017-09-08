@@ -25,6 +25,12 @@ am_cppflags = [
     '-W',
 ]
 
+# Global dirs
+prefix = get_option('prefix')
+datadir = join_paths(prefix, get_option('datadir'))
+sessiondir = join_paths(datadir, 'budgie-session')
+sessiondir_desktop = join_paths(sessiondir, 'desktop')
+
 add_global_arguments(am_cppflags, language: 'cpp')
 compiler = meson.get_compiler('cpp')
 
