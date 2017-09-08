@@ -129,7 +129,7 @@ namespace Session
         qDebug() << "No op";
     }
 
-    void Manager::scanSessionApps(const QString& sessionDir)
+    void Manager::scanSessionApps(const QString &sessionDir)
     {
         QDir directory(sessionDir);
         QDirIterator iter(directory);
@@ -152,12 +152,14 @@ namespace Session
 
             auto desktopFile = new DesktopFile(iter.filePath());
             if (!desktopFile->isValid() || !desktopFile->canShowInDesktop(xdgDesktopName)) {
-                qWarning() << "Found .desktop file in session directory that isn't valid: " << iter.filePath();
+                qWarning() << "Found .desktop file in session directory that isn't valid: "
+                           << iter.filePath();
                 delete desktopFile;
                 continue;
             }
 
-            qDebug() << "TODO: Insert autostart item: " << desktopFile->id() << " @ " << desktopFile->autostartPhase();
+            qDebug() << "TODO: Insert autostart item: " << desktopFile->id() << " @ "
+                     << desktopFile->autostartPhase();
         }
     }
 

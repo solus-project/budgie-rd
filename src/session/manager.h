@@ -48,7 +48,7 @@ namespace Session
         /**
          * Scan specifically for session applications
          */
-        void scanSessionApps(const QString& sessionDirectory);
+        void scanSessionApps(const QString &sessionDirectory);
 
         /**
          * Push an application to the autostart monitor based on its ID.
