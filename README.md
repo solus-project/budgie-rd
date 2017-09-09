@@ -25,6 +25,9 @@ Plan (rough)
  - Factor reusable bits into libs (xdg, session comms, etc.)
  - Flesh out RD Shell with primitives (plugin building) and open the floor to
    rapid expansion. :P
+ - Add our QPA plugins to provide consistent experience across the shell and
+   all Qt applications.
+ - Extend GTK to use our own stylised dialogs to match those of our QPA dialogs.
 
 
 Core notions:
