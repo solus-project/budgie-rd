@@ -7,6 +7,8 @@ Research & Development repository for Budgie 11. Budgie 11 will be [based on Qt]
 repository will help us to flesh out some concepts and architectural requirements for the
 upcoming desktop work.
 
+But yeah this will basically evolve into Budgie 11. Jump in. :P
+
 Here Be Derghuns
 -----------------
 
