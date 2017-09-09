@@ -15,29 +15,30 @@ Here Be Derghuns
 ![derghuns](https://github.com/budgie-desktop/budgie-rd/raw/master/.github/landing.jpg)
 
 
-Note that this repository **in no way** should be considered representative of the
-final work, nor does inclusion of a feature or technology in this repository mean
-that it will be present in the final Budgie 11 tree.
+Plan (rough)
 
-Initial concerns:
+ - Create `budgie-rd-session` component. This will load XDG autostart entries and
+   any `desktop` session components from `/usr/share/budgie-session/desktop/*.desktop`
+   We'll scope to allow multiple session _types_.
+ - Have the session launch `kwin_x11` and `budgie-rd-shell`
+ - Make `budgie-rd-shell` capable of launching a terminal and exiting the session
+ - Factor reusable bits into libs (xdg, session comms, etc.)
+ - Flesh out RD Shell with primitives (plugin building) and open the floor to
+   rapid expansion. :P
 
- - Handle the root window display via our own `Desktop::RootWindow` class to
-   take care of wallpaper settings, and in future, desktop icons.
- - Investigate the viability of KWin (or others)
- - Provide a new Raven (plugin based `Raven::Window`)
- - Port (conceptually) the PanelManager and Panel(Window) instance management,
-   also plugin based.
- - Investigate the viability of Qt Quick (QML) to determine if the overhead continues
-   to grow and whether it is justified.
- - Favour C++ native-code where possible
- - Keep tree modular with various libraries linked into a final shell process
- - Ensure compositor is separate to the shell!
- - Begin establishing a stable ABI pattern (`dptr` based headers, etc.)
 
-Long story short we're looking to get to the "cheapest" MVP 0.0.1 in the shortest
-amount of time, so that we can determine what a full (not complete..) session looks like.
-This is an action-driven approach to solving some of the more tertiary issues early
-on before committing to the "big works".
+Core notions:
+
+ - While Budgie Desktop is.. well, a desktop, it shouldn't scope limit itself to
+   executing a pure-breed desktop session. The Budgie Shell should provide a
+   data and service driven execution environment, exposing data and objects to
+   any shell UX implementation.
+ - In effect, this will allow us to support multiple Budgie modes, such as for
+   OEM installers, first run, tutorial, "big screen", etc.
+ - Basic widget providers (such as OSD and notification windows) should be reusable
+   to help build these extra session types.
+ 
+
 
 ![logo](https://solus-project.com/imgs/budgie-small.png)
 
