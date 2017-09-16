@@ -13,6 +13,7 @@
 
 #include "../lib/manager.h"
 #include "../taskmon/task-monitor.h"
+#include "applet.h"
 
 #include <QWidget>
 
@@ -43,7 +44,11 @@ namespace Panel
         Desktop::ManagerInterface *desktopIface;
         QWidget *rootWidget;
         void demoCode();
-        void insertApplet(QWidget *applet);
+        void insertApplet(Applet *applet);
+        Qt::Orientation orient;
+
+        // In future use UUID -> Applet QHash
+        QList<Applet *> applets;
 
     private slots:
         void handleRavenToggle();

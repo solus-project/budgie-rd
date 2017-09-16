@@ -19,7 +19,7 @@ namespace Panel
     {
         Q_OBJECT
 
-        friend class Panel;
+        friend class Window;
 
         Q_PROPERTY(Qt::Orientation orientation READ orientation NOTIFY orientationChanged)
 

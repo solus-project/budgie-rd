@@ -21,7 +21,7 @@
 namespace Panel
 {
     Window::Window(Desktop::ManagerInterface *desktopIface)
-        : intendedSize(37), desktopIface(desktopIface)
+        : intendedSize(37), desktopIface(desktopIface), orient(Qt::Horizontal)
     {
         qDebug() << "I r have a panel";
         setAttribute(Qt::WA_TranslucentBackground);
@@ -57,14 +57,16 @@ namespace Panel
         insertApplet(new ClockApplet());
     }
 
-    void Window::insertApplet(QWidget *applet)
+    void Window::insertApplet(Applet *applet)
     {
         static auto appletAlign = Qt::AlignLeft | Qt::AlignTop;
 
         auto layout = qobject_cast<QBoxLayout *>(this->rootWidget->layout());
         applet->setParent(rootWidget);
         layout->addWidget(applet, 0, appletAlign);
+        applet->setOrientation(this->orient);
         applet->show();
+        applets.append(applet);
     }
 
     void Window::updateGeometry(QRect &rect, Position p)
@@ -73,6 +75,7 @@ namespace Panel
         // TODO: Listen for changes to the window ID to reset all dock + strut bits
         auto wid = winId();
         QBoxLayout::Direction dir = QBoxLayout::LeftToRight;
+        Qt::Orientation orient = Qt::Horizontal;
 
         KWindowEffects::slideWindow(wid, KWindowEffects::SlideFromLocation::BottomEdge, 0);
 
@@ -92,6 +95,7 @@ namespace Panel
             finalPosition.setHeight(rect.height());
             KWindowSystem::setStrut(wid, intendedSize, 0, 0, 0);
             dir = QBoxLayout::TopToBottom;
+            orient = Qt::Vertical;
             break;
         case Position::Right:
             finalPosition.setX((rect.x() + rect.width()) - intendedSize);
@@ -100,6 +104,7 @@ namespace Panel
             finalPosition.setHeight(rect.height());
             KWindowSystem::setStrut(wid, 0, intendedSize, 0, 0);
             dir = QBoxLayout::TopToBottom;
+            orient = Qt::Vertical;
             break;
         case Position::Bottom:
         default:
@@ -114,6 +119,14 @@ namespace Panel
         auto layout = qobject_cast<QBoxLayout *>(rootWidget->layout());
         if (dir != layout->direction()) {
             layout->setDirection(dir);
+        }
+
+        // TODO: Make a proper notify list
+        if (this->orient != orient) {
+            this->orient = orient;
+            for (const auto &applet : applets) {
+                applet->setOrientation(this->orient);
+            }
         }
 
         setFixedSize(finalPosition.width(), finalPosition.height());
