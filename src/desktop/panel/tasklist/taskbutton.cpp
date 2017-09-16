@@ -11,11 +11,29 @@
 
 #include "taskbutton.h"
 
+#include <QDebug>
+
 namespace Panel
 {
     TasklistButton::TasklistButton(Task::Window *window, QWidget *parent)
         : QPushButton(parent), window(window)
     {
-        setText(window->title());
+        connect(window, &Task::Window::iconNameChanged, this, &TasklistButton::iconNameChanged);
+        connect(window, &Task::Window::titleChanged, this, &TasklistButton::titleChanged);
+
+        titleChanged(window->title());
+
+        // TODO: Make sure we have fallback icons in taskmon
+        iconNameChanged(window->iconName());
+    }
+
+    void TasklistButton::titleChanged(const QString &title)
+    {
+        setText(title);
+    }
+
+    void TasklistButton::iconNameChanged(const QString &iconName)
+    {
+        qDebug() << "Aaah an icon " << iconName;
     }
 }

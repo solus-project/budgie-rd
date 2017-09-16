@@ -27,6 +27,10 @@ namespace Panel
 
     private:
         Task::Window *window;
+
+    private slots:
+        void iconNameChanged(const QString &iconName);
+        void titleChanged(const QString &title);
     };
 }
 
