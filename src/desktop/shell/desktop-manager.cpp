@@ -17,7 +17,7 @@
 namespace Desktop
 {
     Manager::Manager(QQmlEngine *engine)
-        : engine(engine), panelManager(new Panel::Manager(engine)), numScreens(0), primaryScreen(0)
+        : engine(engine), panelManager(new Panel::Manager(engine)), numScreens(0), primaryScreen(0), manageDesktop(false)
     {
         auto desktop = QApplication::desktop();
 
@@ -63,6 +63,10 @@ namespace Desktop
     {
         qDebug() << "Screen count: " << newCount;
 
+        if (!manageDesktop) {
+            return;
+        }
+
         if (newCount < numScreens) {
             for (int i = numScreens - 1; i > newCount - 1; i--) {
                 qDebug() << "Removed screen: " << i;
@@ -84,7 +88,9 @@ namespace Desktop
     {
         qDebug() << "Resized screen: " << screen;
         if (!rootWindows.contains(screen)) {
-            qDebug() << "Unknown screen index: " << screen;
+            if (manageDesktop) {
+                qDebug() << "Unknown screen index: " << screen;
+            }
             return;
         }
         rootWindows[screen]->updateGeometry();

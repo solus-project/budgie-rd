@@ -34,6 +34,7 @@ namespace Desktop
         int numScreens;
         int primaryScreen;
         QHash<int, QSharedPointer<RootWindow>> rootWindows;
+        bool manageDesktop;
 
     public slots:
         void primaryScreenChanged();
