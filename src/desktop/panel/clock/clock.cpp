@@ -19,10 +19,11 @@ namespace Panel
     ClockApplet::ClockApplet(QWidget *parent) : QWidget(parent)
     {
         auto layout = new QHBoxLayout();
+        layout->setMargin(0);
         setLayout(layout);
         QLabel *lab = new QLabel("I r a clock", this);
         lab->show();
-        layout->addWidget(lab);
+        layout->addWidget(lab, 0, Qt::AlignLeft | Qt::AlignVCenter);
 
         setObjectName("budgie-clock-applet");
         // TODO: Not be a jackass.
