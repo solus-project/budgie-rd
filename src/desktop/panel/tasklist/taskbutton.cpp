@@ -13,8 +13,9 @@
 
 namespace Panel
 {
-    TasklistButton::TasklistButton(QWidget *parent) : QPushButton(parent)
+    TasklistButton::TasklistButton(Task::Window *window, QWidget *parent)
+        : QPushButton(parent), window(window)
     {
-        setText("Lazy programmer doesn't use properties");
+        setText(window->title());
     }
 }

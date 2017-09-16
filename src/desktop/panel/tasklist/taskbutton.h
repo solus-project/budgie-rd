@@ -23,7 +23,10 @@ namespace Panel
         Q_OBJECT
 
     public:
-        explicit TasklistButton(QWidget *parent = nullptr);
+        explicit TasklistButton(Task::Window *window, QWidget *parent = nullptr);
+
+    private:
+        Task::Window *window;
     };
 }
 
