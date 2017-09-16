@@ -27,6 +27,11 @@ namespace Panel
 
         // HACK!
         move(0, 0);
+
+        // TODO: Lazy initialise!
+        // TODO: Also look at ~/.local/share/applications - make xdg lib expose this shit
+        this->scanDirectory(QStringLiteral("/usr/share/applications"));
+        this->scanDirectory(QStringLiteral("/usr/local/share/applications"));
     }
 
     void MenuWindow::toggleVisibility()
@@ -36,6 +41,11 @@ namespace Panel
         } else {
             show();
         }
+    }
+
+    void MenuWindow::scanDirectory(const QString &location)
+    {
+        Q_UNUSED(location)
     }
 }
 

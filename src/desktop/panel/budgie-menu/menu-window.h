@@ -11,6 +11,10 @@
 
 #pragma once
 
+// Fuckin seriously? Sort out cflags and expose xdg as a .so
+#include "../../../xdg/desktop-file.h"
+
+#include <QHash>
 #include <QWidget>
 
 namespace Panel
@@ -22,6 +26,13 @@ namespace Panel
     public:
         explicit MenuWindow();
         void toggleVisibility();
+
+    private:
+        // TODO: Create MenuButton -> desktopFile association
+        QHash<QString, Desktop::DesktopFile *> menuEntries;
+
+        // TODO: Do this based on a list of XDG dirs
+        void scanDirectory(const QString &location);
     };
 }
 
