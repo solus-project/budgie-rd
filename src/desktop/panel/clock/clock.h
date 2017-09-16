@@ -11,11 +11,13 @@
 
 #pragma once
 
+#include "applet.h"
+
 #include <QWidget>
 
 namespace Panel
 {
-    class ClockApplet : public QWidget
+    class ClockApplet : public Applet
     {
         Q_OBJECT
 

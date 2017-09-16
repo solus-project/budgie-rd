@@ -12,15 +12,15 @@
 #pragma once
 
 #include "../taskmon/task-monitor.h"
+#include "applet.h"
 #include "taskbutton.h"
 
 #include <QHBoxLayout>
 #include <QHash>
-#include <QWidget>
 
 namespace Panel
 {
-    class TasklistApplet : public QWidget
+    class TasklistApplet : public Applet
     {
         Q_OBJECT
 

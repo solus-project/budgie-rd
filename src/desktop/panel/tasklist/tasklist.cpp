@@ -15,7 +15,7 @@
 
 namespace Panel
 {
-    TasklistApplet::TasklistApplet() : QWidget(nullptr), monitor(new Task::Monitor)
+    TasklistApplet::TasklistApplet() : Applet(nullptr), monitor(new Task::Monitor)
     {
         setLayout(new QHBoxLayout);
         layout()->setMargin(0);

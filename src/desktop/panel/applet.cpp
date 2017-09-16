@@ -13,7 +13,7 @@
 
 namespace Panel
 {
-    Applet::Applet() : appletOrientation(Qt::Horizontal)
+    Applet::Applet(QWidget *parent) : QWidget(parent), appletOrientation(Qt::Horizontal)
     {
     }
 

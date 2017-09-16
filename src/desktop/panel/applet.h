@@ -24,6 +24,8 @@ namespace Panel
         Q_PROPERTY(Qt::Orientation orientation READ orientation NOTIFY orientationChanged)
 
     public:
+        explicit Applet(QWidget *parent = nullptr);
+
         Qt::Orientation orientation();
 
     protected:
@@ -32,10 +34,7 @@ namespace Panel
     signals:
         void orientationChanged(Qt::Orientation orient);
 
-        // Ensure we can't be constructed.
     private:
-        explicit Applet();
-
         Qt::Orientation appletOrientation;
     };
 }

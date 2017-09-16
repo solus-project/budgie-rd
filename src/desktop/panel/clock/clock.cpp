@@ -16,7 +16,7 @@
 
 namespace Panel
 {
-    ClockApplet::ClockApplet(QWidget *parent) : QWidget(parent)
+    ClockApplet::ClockApplet(QWidget *parent) : Applet(parent)
     {
         auto layout = new QHBoxLayout();
         layout->setMargin(0);
