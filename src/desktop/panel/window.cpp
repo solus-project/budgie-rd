@@ -45,11 +45,7 @@ namespace Panel
 
     void Window::demoCode()
     {
-        // Test task monitor
-        monitor.reset(new Task::Monitor());
-        connect(monitor.data(), &Task::Monitor::windowOpened, this, &Window::windowOpened);
-        connect(monitor.data(), &Task::Monitor::windowClosed, this, &Window::windowClosed);
-        monitor->notifyAll();
+        qDebug() << "TODO: Add fake-applet TasklistApplet to UI";
     }
 
     void Window::updateGeometry(QRect &rect, Position p)
@@ -100,16 +96,6 @@ namespace Panel
         // Be a tart, show off blurs
         KWindowEffects::enableBlurBehind(wid);
         KWindowSystem::setType(wid, NET::WindowType::Dock);
-    }
-
-    void Window::windowOpened(Task::Window *window)
-    {
-        qDebug() << "Window opened: " << window->title();
-    }
-
-    void Window::windowClosed(Task::Window *window)
-    {
-        qDebug() << "Window closed: " << window->title();
     }
 
     /**

@@ -11,41 +11,25 @@
 
 #pragma once
 
-#include "../lib/manager.h"
 #include "../taskmon/task-monitor.h"
 
 #include <QWidget>
 
 namespace Panel
 {
-    Q_NAMESPACE
-
-    enum Position {
-        Undetermined,
-        Top,
-        Left,
-        Right,
-        Bottom,
-    };
-
-    Q_ENUM_NS(Position)
-
-    class Window : public QWidget
+    class TasklistApplet : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit Window(Desktop::ManagerInterface *desktopIface);
-        void updateGeometry(QRect &rect, Position p = Position::Bottom);
+        explicit TasklistApplet();
 
     private:
-        int intendedSize;
-        Desktop::ManagerInterface *desktopIface;
-        QWidget *rootWidget;
-        void demoCode();
+        QScopedPointer<Task::Monitor> monitor;
 
     private slots:
-        void handleRavenToggle();
+        void windowOpened(Task::Window *window);
+        void windowClosed(Task::Window *window);
     };
 }
 
