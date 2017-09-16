@@ -10,6 +10,7 @@
  */
 
 #include "window.h"
+#include "clock/clock.h"
 #include "tasklist/tasklist.h"
 
 #include <KWindowEffects>
@@ -51,9 +52,19 @@ namespace Panel
     void Window::demoCode()
     {
         qDebug() << "Spawning a tasklist applet";
-        auto applet = new TasklistApplet();
+        insertApplet(new TasklistApplet());
+
+        qDebug() << "Spawning a clock applet";
+        insertApplet(new ClockApplet());
+    }
+
+    void Window::insertApplet(QWidget *applet)
+    {
+        static auto appletAlign = Qt::AlignLeft | Qt::AlignTop;
+
+        auto layout = qobject_cast<QHBoxLayout *>(this->rootWidget->layout());
         applet->setParent(rootWidget);
-        rootWidget->layout()->addWidget(applet);
+        layout->addWidget(applet, 0, appletAlign);
         applet->show();
     }
 
