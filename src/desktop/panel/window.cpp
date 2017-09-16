@@ -42,7 +42,8 @@ namespace Panel
 
         rootWidget->setObjectName("budgie-panel");
         rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(0, 0, 0, 0.8); }");
-        rootWidget->setLayout(new QHBoxLayout());
+        rootWidget->setLayout(new QBoxLayout(QBoxLayout::LeftToRight));
+        rootWidget->layout()->setMargin(0);
 
         this->demoCode();
     }
@@ -71,7 +72,7 @@ namespace Panel
         QRect finalPosition;
         // TODO: Listen for changes to the window ID to reset all dock + strut bits
         auto wid = winId();
-        Qt::Orientation newOrient = Qt::Horizontal;
+        QBoxLayout::Direction dir = QBoxLayout::LeftToRight;
 
         KWindowEffects::slideWindow(wid, KWindowEffects::SlideFromLocation::BottomEdge, 0);
 
@@ -90,7 +91,7 @@ namespace Panel
             finalPosition.setWidth(intendedSize);
             finalPosition.setHeight(rect.height());
             KWindowSystem::setStrut(wid, intendedSize, 0, 0, 0);
-            newOrient = Qt::Vertical;
+            dir = QBoxLayout::TopToBottom;
             break;
         case Position::Right:
             finalPosition.setX((rect.x() + rect.width()) - intendedSize);
@@ -98,6 +99,7 @@ namespace Panel
             finalPosition.setWidth(intendedSize);
             finalPosition.setHeight(rect.height());
             KWindowSystem::setStrut(wid, 0, intendedSize, 0, 0);
+            dir = QBoxLayout::TopToBottom;
             break;
         case Position::Bottom:
         default:
@@ -109,13 +111,10 @@ namespace Panel
             break;
         }
 
-        if (newOrient == Qt::Vertical) {
-            rootWidget->setLayout(new QVBoxLayout());
-        } else {
-            rootWidget->setLayout(new QHBoxLayout());
+        auto layout = qobject_cast<QBoxLayout *>(rootWidget->layout());
+        if (dir != layout->direction()) {
+            layout->setDirection(dir);
         }
-
-        rootWidget->layout()->setMargin(0);
 
         setFixedSize(finalPosition.width(), finalPosition.height());
         move(finalPosition.x(), finalPosition.y());
