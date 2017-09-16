@@ -12,32 +12,24 @@
 #include "window.h"
 #include <KWindowEffects>
 #include <KWindowSystem>
-#include <QBoxLayout>
 #include <QDebug>
-#include <QPushButton>
 #include <QQuickItem>
 
 namespace Panel
 {
-    Window::Window(Desktop::ManagerInterface *desktopIface, QQmlEngine *engine)
-        : QQuickView(engine, nullptr), intendedSize(37), desktopIface(desktopIface)
+    Window::Window(Desktop::ManagerInterface *desktopIface)
+        : intendedSize(37), desktopIface(desktopIface)
     {
         qDebug() << "I r have a panel";
-        // https://bugreports.qt.io/browse/QTBUG-54886
-        //         setAttribute(Qt::WA_ShowWithoutActivating);
-        setProperty("_q_showWithoutActivating", QVariant(true));
-        setFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
+        setAttribute(Qt::WA_TranslucentBackground);
+        setAttribute(Qt::WA_X11NetWmWindowTypeDock);
+        setAttribute(Qt::WA_X11DoNotAcceptFocus);
+        setAttribute(Qt::WA_ShowWithoutActivating);
+        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+        setFocusPolicy(Qt::NoFocus);
+        setFixedSize(0, 0);
         // Parent size dictates QML size
         resize(0, 0);
-        setResizeMode(QQuickView::SizeRootObjectToView);
-        setClearBeforeRendering(true);
-        setColor(QColor(Qt::transparent));
-        setSource(QUrl("qrc:/qml/panel.qml"));
-
-        // Hook up signals from QML land
-        QQuickItem *rootObj = rootObject();
-        connect(rootObj, SIGNAL(toggleRaven()), this, SLOT(handleRavenToggle()));
-
         this->demoCode();
     }
 
@@ -90,11 +82,8 @@ namespace Panel
             KWindowSystem::setStrut(wid, 0, 0, 0, intendedSize);
             break;
         }
-        setMaximumWidth(finalPosition.width());
-        setMaximumHeight(finalPosition.height());
-        setWidth(finalPosition.width());
-        setHeight(finalPosition.height());
-        setPosition(finalPosition.x(), finalPosition.y());
+        setFixedSize(finalPosition.width(), finalPosition.height());
+        move(finalPosition.x(), finalPosition.y());
 
         qDebug() << "Update geom plox: " << finalPosition << " @ " << p;
 

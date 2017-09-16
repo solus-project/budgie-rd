@@ -15,10 +15,9 @@
 
 namespace Panel
 {
-    Manager::Manager(Desktop::ManagerInterface *desktopIface, QQmlEngine *engine)
-        : engine(engine), desktopIface(desktopIface)
+    Manager::Manager(Desktop::ManagerInterface *desktopIface) : desktopIface(desktopIface)
     {
-        demoWindow.reset(new Window(desktopIface, engine));
+        demoWindow.reset(new Window(desktopIface));
         qDebug() << "I r have a manager";
     }
 

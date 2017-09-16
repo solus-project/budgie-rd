@@ -22,11 +22,10 @@ namespace Panel
         Q_OBJECT
 
     public:
-        explicit Manager(Desktop::ManagerInterface *desktopIface, QQmlEngine *engine);
+        explicit Manager(Desktop::ManagerInterface *desktopIface);
         void loadPanels();
 
     private:
-        QQmlEngine *engine;
         Desktop::ManagerInterface *desktopIface;
         QScopedPointer<Window> demoWindow;
     };

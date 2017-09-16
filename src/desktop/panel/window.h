@@ -14,7 +14,7 @@
 #include "../lib/manager.h"
 #include "../taskmon/task-monitor.h"
 
-#include <QQuickView>
+#include <QWidget>
 
 namespace Panel
 {
@@ -30,12 +30,12 @@ namespace Panel
 
     Q_ENUM_NS(Position)
 
-    class Window : public QQuickView
+    class Window : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit Window(Desktop::ManagerInterface *desktopIface, QQmlEngine *engine);
+        explicit Window(Desktop::ManagerInterface *desktopIface);
         void updateGeometry(QRect &rect, Position p = Position::Bottom);
 
     private:
