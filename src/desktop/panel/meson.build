@@ -2,13 +2,15 @@ panel_mocs = qt5.preprocess(
     moc_headers: [
         'manager.h',
         'window.h',
-        'tasklist/tasklist.h'
+        'tasklist/taskbutton.h',
+        'tasklist/tasklist.h',
     ],
 )
 
 panel_sources = [
     'manager.cpp',
     'window.cpp',
+    'tasklist/taskbutton.cpp',
     'tasklist/tasklist.cpp',
 ]
 
