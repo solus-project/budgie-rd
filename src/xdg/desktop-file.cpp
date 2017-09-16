@@ -15,7 +15,7 @@
 #include <QFileInfo>
 #include <QStandardPaths>
 
-namespace Session
+namespace Desktop
 {
     DesktopFile::DesktopFile() : QSettings(), valid(false)
     {

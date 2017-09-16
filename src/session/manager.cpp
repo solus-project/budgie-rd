@@ -18,6 +18,8 @@
 #include <pwd.h>
 #include <unistd.h>
 
+using namespace Desktop;
+
 namespace Session
 {
     /**

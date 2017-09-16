@@ -31,9 +31,10 @@ namespace Session
         QString homeDir;
         const QString xdgDesktopName;
         QProcessEnvironment execEnviron;
-        QHash<QString, QSharedPointer<DesktopFile>> xdgAutostarts;
-        AutostartPhase currentPhase;
-        QHash<AutostartPhase, QSharedPointer<QHash<QString, QSharedPointer<DesktopFile>>>>
+        QHash<QString, QSharedPointer<Desktop::DesktopFile>> xdgAutostarts;
+        Desktop::AutostartPhase currentPhase;
+        QHash<Desktop::AutostartPhase,
+              QSharedPointer<QHash<QString, QSharedPointer<Desktop::DesktopFile>>>>
             applications;
 
         /**
@@ -60,12 +61,12 @@ namespace Session
          * Any item with an invalid AutostartPhase will be moved back to the
          * Applications cycle.
          */
-        void pushAutostart(DesktopFile *file);
+        void pushAutostart(Desktop::DesktopFile *file);
 
         /**
          * Attempt to launch the next phase in the start up sequence.
          */
-        void launchPhase(AutostartPhase phase);
+        void launchPhase(Desktop::AutostartPhase phase);
     };
 }
 

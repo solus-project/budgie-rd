@@ -12,7 +12,7 @@
 #include <QProcess>
 #include <QSettings>
 
-namespace Session
+namespace Desktop
 {
     Q_NAMESPACE
 
