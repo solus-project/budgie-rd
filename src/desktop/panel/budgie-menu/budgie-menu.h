@@ -27,6 +27,9 @@ namespace Panel
 
     private:
         QPushButton *mainButton;
+
+    private slots:
+        void buttonClicked();
     };
 }
 

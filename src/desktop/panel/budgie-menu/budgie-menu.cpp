@@ -11,7 +11,6 @@
 
 #include "budgie-menu.h"
 
-#include <QDateTime>
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QObject>
@@ -32,7 +31,15 @@ namespace Panel
         mainButton->show();
         layout->addWidget(mainButton, 1);
 
+        // Hook up for clicks
+        connect(mainButton, &QPushButton::clicked, this, &MenuApplet::buttonClicked);
+
         setObjectName("budgie-menu-applet");
+    }
+
+    void MenuApplet::buttonClicked()
+    {
+        qDebug() << "ERMAGAHD";
     }
 }
 
