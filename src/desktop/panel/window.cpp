@@ -10,6 +10,7 @@
  */
 
 #include "window.h"
+#include "budgie-menu/budgie-menu.h"
 #include "clock/clock.h"
 #include "tasklist/tasklist.h"
 
@@ -50,6 +51,9 @@ namespace Panel
 
     void Window::demoCode()
     {
+        qDebug() << "Spawning a menu applet";
+        insertApplet(new MenuApplet());
+
         qDebug() << "Spawning a tasklist applet";
         insertApplet(new TasklistApplet());
 
