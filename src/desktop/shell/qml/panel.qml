@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 Rectangle {
     visible: true
 
-    color: "#FFB6C1"
+    color: Qt.rgba(0.15, 0.17, 0.21, 0.9)
 
     Row {
         anchors.fill: parent
