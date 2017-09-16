@@ -10,6 +10,8 @@
  */
 
 #include "window.h"
+#include "tasklist/tasklist.h"
+
 #include <KWindowEffects>
 #include <KWindowSystem>
 #include <QDebug>
@@ -40,12 +42,18 @@ namespace Panel
         rootWidget->setObjectName("budgie-panel");
         rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(0, 0, 0, 0.8); }");
 
+        rootWidget->setLayout(new QHBoxLayout);
+
         this->demoCode();
     }
 
     void Window::demoCode()
     {
-        qDebug() << "TODO: Add fake-applet TasklistApplet to UI";
+        qDebug() << "Spawning a tasklist applet";
+        auto applet = new TasklistApplet();
+        applet->setParent(rootWidget);
+        rootWidget->layout()->addWidget(applet);
+        applet->show();
     }
 
     void Window::updateGeometry(QRect &rect, Position p)
