@@ -19,7 +19,7 @@
 
 namespace Raven
 {
-    Window::Window() : position(Position::Left)
+    Window::Window() : position(Position::Right)
     {
         // https://bugreports.qt.io/browse/QTBUG-54886
         //         setAttribute(Qt::WA_ShowWithoutActivating);
