@@ -13,6 +13,7 @@
 #include <KWindowEffects>
 #include <KWindowSystem>
 #include <QDebug>
+#include <QHBoxLayout>
 
 namespace Panel
 {
@@ -29,6 +30,16 @@ namespace Panel
         setFixedSize(0, 0);
         // Parent size dictates QML size
         resize(0, 0);
+
+        rootWidget = new QWidget(this);
+        auto layout = new QHBoxLayout;
+        this->setLayout(layout);
+        layout->addWidget(rootWidget);
+        layout->setMargin(0);
+
+        rootWidget->setObjectName("budgie-panel");
+        rootWidget->setStyleSheet("#budgie-panel { background-color: black; }");
+
         this->demoCode();
     }
 

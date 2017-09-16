@@ -42,6 +42,8 @@ namespace Panel
         int intendedSize;
         Desktop::ManagerInterface *desktopIface;
         QScopedPointer<Task::Monitor> monitor;
+        QWidget *rootWidget;
+
         void demoCode();
 
     private slots:
