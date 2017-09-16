@@ -36,7 +36,7 @@ namespace Panel
         static auto buttonAlign = Qt::AlignLeft | Qt::AlignTop;
 
         auto button = new TasklistButton(window, this);
-        auto layout = dynamic_cast<QHBoxLayout *>(this->layout());
+        auto layout = qobject_cast<QBoxLayout *>(this->layout());
         layout->addWidget(button, 0, buttonAlign);
         buttons[window] = button;
         button->show();

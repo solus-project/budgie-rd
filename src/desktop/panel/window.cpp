@@ -42,9 +42,7 @@ namespace Panel
 
         rootWidget->setObjectName("budgie-panel");
         rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(0, 0, 0, 0.8); }");
-
-        rootWidget->setLayout(new QHBoxLayout);
-        rootWidget->layout()->setMargin(0);
+        rootWidget->setLayout(new QHBoxLayout());
 
         this->demoCode();
     }
@@ -62,7 +60,7 @@ namespace Panel
     {
         static auto appletAlign = Qt::AlignLeft | Qt::AlignTop;
 
-        auto layout = qobject_cast<QHBoxLayout *>(this->rootWidget->layout());
+        auto layout = qobject_cast<QBoxLayout *>(this->rootWidget->layout());
         applet->setParent(rootWidget);
         layout->addWidget(applet, 0, appletAlign);
         applet->show();
@@ -73,6 +71,7 @@ namespace Panel
         QRect finalPosition;
         // TODO: Listen for changes to the window ID to reset all dock + strut bits
         auto wid = winId();
+        Qt::Orientation newOrient = Qt::Horizontal;
 
         KWindowEffects::slideWindow(wid, KWindowEffects::SlideFromLocation::BottomEdge, 0);
 
@@ -91,6 +90,7 @@ namespace Panel
             finalPosition.setWidth(intendedSize);
             finalPosition.setHeight(rect.height());
             KWindowSystem::setStrut(wid, intendedSize, 0, 0, 0);
+            newOrient = Qt::Vertical;
             break;
         case Position::Right:
             finalPosition.setX((rect.x() + rect.width()) - intendedSize);
@@ -108,6 +108,15 @@ namespace Panel
             KWindowSystem::setStrut(wid, 0, 0, 0, intendedSize);
             break;
         }
+
+        if (newOrient == Qt::Vertical) {
+            rootWidget->setLayout(new QVBoxLayout());
+        } else {
+            rootWidget->setLayout(new QHBoxLayout());
+        }
+
+        rootWidget->layout()->setMargin(0);
+
         setFixedSize(finalPosition.width(), finalPosition.height());
         move(finalPosition.x(), finalPosition.y());
 
