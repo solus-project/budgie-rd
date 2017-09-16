@@ -61,6 +61,20 @@ namespace Panel
             finalPosition.setHeight(intendedSize);
             KWindowSystem::setStrut(wid, 0, 0, intendedSize, 0);
             break;
+        case Position::Left:
+            finalPosition.setX(rect.x());
+            finalPosition.setY(rect.y());
+            finalPosition.setWidth(intendedSize);
+            finalPosition.setHeight(rect.height());
+            KWindowSystem::setStrut(wid, intendedSize, 0, 0, 0);
+            break;
+        case Position::Right:
+            finalPosition.setX((rect.x() + rect.width()) - intendedSize);
+            finalPosition.setY(rect.y());
+            finalPosition.setWidth(intendedSize);
+            finalPosition.setHeight(rect.height());
+            KWindowSystem::setStrut(wid, 0, intendedSize, 0, 0);
+            break;
         case Position::Bottom:
         default:
             finalPosition.setX(rect.x());
