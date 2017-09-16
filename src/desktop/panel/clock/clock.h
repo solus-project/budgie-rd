@@ -13,6 +13,9 @@
 
 #include "applet.h"
 
+#include <QLabel>
+#include <QSharedPointer>
+#include <QTimer>
 #include <QWidget>
 
 namespace Panel
@@ -23,6 +26,13 @@ namespace Panel
 
     public:
         explicit ClockApplet(QWidget *parent = nullptr);
+
+    private:
+        QSharedPointer<QTimer> timer;
+        QLabel *lab;
+
+    private slots:
+        void onTimer();
     };
 }
 

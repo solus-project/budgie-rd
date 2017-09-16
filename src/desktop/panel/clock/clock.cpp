@@ -11,8 +11,10 @@
 
 #include "clock.h"
 
+#include <QDateTime>
+#include <QDebug>
 #include <QHBoxLayout>
-#include <QLabel>
+#include <QObject>
 
 namespace Panel
 {
@@ -21,13 +23,32 @@ namespace Panel
         auto layout = new QHBoxLayout();
         layout->setMargin(0);
         setLayout(layout);
-        QLabel *lab = new QLabel("I r a clock", this);
+        lab = new QLabel(this);
         lab->show();
         layout->addWidget(lab, 0, Qt::AlignLeft | Qt::AlignVCenter);
+
+        timer.reset(new QTimer());
+
+        // TODO: In future just predict the next timeout instesd of fixing
+        // the timer.
+        connect(timer.data(), &QTimer::timeout, this, &ClockApplet::onTimer);
+        timer->setInterval(1000);
+        timer->start();
 
         setObjectName("budgie-clock-applet");
         // TODO: Not be a jackass.
         setStyleSheet("#budgie-clock-applet QLabel { color: white; }");
+
+        this->onTimer();
+    }
+
+    void ClockApplet::onTimer()
+    {
+        QDateTime now = QDateTime::currentDateTime();
+        QString prt = now.toString(QStringLiteral("hh:mm:ss"));
+
+        // TODO: only update the label if it actually changes ..
+        lab->setText(prt);
     }
 }
 
