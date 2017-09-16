@@ -23,6 +23,7 @@ namespace Task
         friend class Monitor;
 
         Q_PROPERTY(QString title READ title NOTIFY titleChanged)
+        Q_PROPERTY(QString icon READ title NOTIFY iconNameChanged)
 
     public:
         /**
