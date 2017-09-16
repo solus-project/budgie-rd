@@ -32,6 +32,7 @@ namespace Raven
     public:
         explicit Window();
         void updateGeometry(QRect &rect);
+        void toggleVisibility();
 
     private:
         Position position;

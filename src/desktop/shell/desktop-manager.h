@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include "../lib/manager.h"
 #include "../panel/manager.h"
 #include "../raven/raven.h"
 #include "root-window.h"
@@ -19,13 +20,14 @@
 
 namespace Desktop
 {
-    class Manager : public QObject
+    class Manager : public QObject, public ManagerInterface
     {
         Q_OBJECT
 
     public:
         explicit Manager(QQmlEngine *engine);
         void updateGeometry();
+        void toggleRaven();
 
     private:
         QQmlEngine *engine;

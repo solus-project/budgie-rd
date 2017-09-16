@@ -19,7 +19,8 @@
 
 namespace Panel
 {
-    Window::Window(QQmlEngine *engine) : QQuickView(engine, nullptr), intendedSize(37)
+    Window::Window(Desktop::ManagerInterface *desktopIface, QQmlEngine *engine)
+        : QQuickView(engine, nullptr), intendedSize(37), desktopIface(desktopIface)
     {
         qDebug() << "I r have a panel";
         // https://bugreports.qt.io/browse/QTBUG-54886
@@ -112,12 +113,12 @@ namespace Panel
         qDebug() << "Window closed: " << window->title();
     }
 
+    /**
+     * Just pass it back off to the DesktopManager implementation
+     */
     void Window::handleRavenToggle()
     {
-        // Shitty - need desktop manager API for this, but just shit out a signal
-        // for now
-        qDebug() << "Toggle le raven!";
-        emit toggleRaven();
+        desktopIface->toggleRaven();
     }
 }
 

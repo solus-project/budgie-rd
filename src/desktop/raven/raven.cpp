@@ -71,6 +71,20 @@ namespace Raven
         // Be a tart, show off blurs
         KWindowEffects::enableBlurBehind(winId());
     }
+
+    /**
+     * For now we'll simply hide/show the window (relying on KWindowEffects to
+     * slide) - however in future we'll need to handle Notifications vs Applets
+     * view for primary view activation
+     */
+    void Window::toggleVisibility()
+    {
+        if (isVisible()) {
+            hide();
+        } else {
+            show();
+        }
+    }
 }
 
 /*

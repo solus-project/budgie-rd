@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include "../lib/manager.h"
 #include "../taskmon/task-monitor.h"
 
 #include <QQuickView>
@@ -34,11 +35,12 @@ namespace Panel
         Q_OBJECT
 
     public:
-        explicit Window(QQmlEngine *engine);
+        explicit Window(Desktop::ManagerInterface *desktopIface, QQmlEngine *engine);
         void updateGeometry(QRect &rect, Position p = Position::Bottom);
 
     private:
         int intendedSize;
+        Desktop::ManagerInterface *desktopIface;
         QScopedPointer<Task::Monitor> monitor;
         void demoCode();
 
@@ -46,10 +48,6 @@ namespace Panel
         void windowOpened(Task::Window *window);
         void windowClosed(Task::Window *window);
         void handleRavenToggle();
-
-    signals:
-        // Pure gank - revisit
-        void toggleRaven();
     };
 }
 

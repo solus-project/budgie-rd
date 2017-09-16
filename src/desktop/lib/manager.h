@@ -11,24 +11,13 @@
 
 #pragma once
 
-#include "../lib/manager.h"
-#include "window.h"
-#include <QApplication>
-
-namespace Panel
+namespace Desktop
 {
-    class Manager : public QObject
+    class ManagerInterface
     {
-        Q_OBJECT
-
     public:
-        explicit Manager(Desktop::ManagerInterface *desktopIface, QQmlEngine *engine);
-        void loadPanels();
-
-    private:
-        QQmlEngine *engine;
-        Desktop::ManagerInterface *desktopIface;
-        QScopedPointer<Window> demoWindow;
+        virtual void toggleRaven() = 0;
+        virtual ~ManagerInterface(){};
     };
 }
 

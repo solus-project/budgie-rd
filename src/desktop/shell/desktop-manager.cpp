@@ -17,8 +17,8 @@
 namespace Desktop
 {
     Manager::Manager(QQmlEngine *engine)
-        : engine(engine), panelManager(new Panel::Manager(engine)), numScreens(0), primaryScreen(0),
-          manageDesktop(false)
+        : engine(engine), panelManager(new Panel::Manager(this, engine)), numScreens(0),
+          primaryScreen(0), manageDesktop(false)
     {
         auto desktop = QApplication::desktop();
 
@@ -35,6 +35,11 @@ namespace Desktop
         screenCountChanged(desktop->screenCount());
 
         updateGeometry();
+    }
+
+    void Manager::toggleRaven()
+    {
+        raven.toggleVisibility();
     }
 
     void Manager::updateGeometry()
