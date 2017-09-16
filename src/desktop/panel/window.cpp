@@ -43,6 +43,7 @@ namespace Panel
         rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(0, 0, 0, 0.8); }");
 
         rootWidget->setLayout(new QHBoxLayout);
+        rootWidget->layout()->setMargin(0);
 
         this->demoCode();
     }
