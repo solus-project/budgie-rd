@@ -38,7 +38,7 @@ namespace Panel
         layout->setMargin(0);
 
         rootWidget->setObjectName("budgie-panel");
-        rootWidget->setStyleSheet("#budgie-panel { background-color: black; }");
+        rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(0, 0, 0, 0.8); }");
 
         this->demoCode();
     }
