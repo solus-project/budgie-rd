@@ -15,6 +15,7 @@
 #include "../../../xdg/desktop-file.h"
 
 #include <QHash>
+#include <QSharedPointer>
 #include <QWidget>
 
 namespace Panel
@@ -29,7 +30,7 @@ namespace Panel
 
     private:
         // TODO: Create MenuButton -> desktopFile association
-        QHash<QString, Desktop::DesktopFile *> menuEntries;
+        QHash<QString, QSharedPointer<Desktop::DesktopFile>> menuEntries;
 
         // TODO: Do this based on a list of XDG dirs
         void scanDirectory(const QString &location);
