@@ -1,5 +1,6 @@
 panel_mocs = qt5.preprocess(
     moc_headers: [
+        'applet.h',
         'manager.h',
         'window.h',
         'clock/clock.h',
@@ -9,6 +10,7 @@ panel_mocs = qt5.preprocess(
 )
 
 panel_sources = [
+    'applet.cpp',
     'manager.cpp',
     'window.cpp',
     'clock/clock.cpp',
