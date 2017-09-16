@@ -19,7 +19,7 @@
 
 namespace Raven
 {
-    Window::Window()
+    Window::Window() : position(Position::Left)
     {
         // https://bugreports.qt.io/browse/QTBUG-54886
         //         setAttribute(Qt::WA_ShowWithoutActivating);
@@ -53,7 +53,11 @@ namespace Raven
 
         // We're always on the RHS for now with a size equalling 15% of width
         int width = (int)(rect.width() * 0.18);
-        finalPosition.setX((rect.x() + rect.width()) - width);
+        if (position == Position::Right) {
+            finalPosition.setX((rect.x() + rect.width()) - width);
+        } else {
+            finalPosition.setX(rect.x());
+        }
         finalPosition.setY(rect.y());
         finalPosition.setHeight(rect.height());
         finalPosition.setWidth(width);

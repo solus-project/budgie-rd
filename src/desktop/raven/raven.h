@@ -15,6 +15,16 @@
 
 namespace Raven
 {
+    Q_NAMESPACE
+
+    enum Position {
+        Undetermined,
+        Left,
+        Right,
+    };
+
+    Q_ENUM_NS(Position)
+
     class Window : public QQuickView
     {
         Q_OBJECT
@@ -22,6 +32,9 @@ namespace Raven
     public:
         explicit Window();
         void updateGeometry(QRect &rect);
+
+    private:
+        Position position;
 
     private slots:
         void handleDismiss();
