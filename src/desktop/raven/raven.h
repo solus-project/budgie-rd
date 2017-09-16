@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include <QQuickView>
+#include <QWidget>
 
 namespace Raven
 {
@@ -25,7 +25,7 @@ namespace Raven
 
     Q_ENUM_NS(Position)
 
-    class Window : public QQuickView
+    class Window : public QWidget
     {
         Q_OBJECT
 

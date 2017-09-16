@@ -13,7 +13,6 @@
 #include <KWindowEffects>
 #include <KWindowSystem>
 #include <QDebug>
-#include <QQuickItem>
 
 namespace Panel
 {

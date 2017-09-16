@@ -16,7 +16,6 @@ raven = static_library(
     ],
     dependencies: [
         dep_qtwidgets,
-        dep_qml,
         kf5_deps,
     ],
 )

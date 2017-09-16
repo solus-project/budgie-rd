@@ -14,28 +14,18 @@
 #include <KWindowEffects>
 #include <QBoxLayout>
 #include <QDebug>
-#include <QLabel>
-#include <QQuickItem>
 
 namespace Raven
 {
     Window::Window() : position(Position::Right)
     {
-        // https://bugreports.qt.io/browse/QTBUG-54886
-        //         setAttribute(Qt::WA_ShowWithoutActivating);
-        setProperty("_q_showWithoutActivating", QVariant(true));
-        setFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool |
-                 Qt::BypassWindowManagerHint);
-        // Parent size dictates QML size
-        resize(0, 0);
-        setResizeMode(QQuickView::SizeRootObjectToView);
-        setClearBeforeRendering(true);
-        setColor(QColor(Qt::transparent));
-        setSource(QUrl("qrc:/qml/raven.qml"));
-
-        // Hook up signals from QML land
-        QQuickItem *rootObj = rootObject();
-        connect(rootObj, SIGNAL(dismiss()), this, SLOT(handleDismiss()));
+        // Push dock-type bits bits
+        setAttribute(Qt::WA_TranslucentBackground);
+        setAttribute(Qt::WA_X11NetWmWindowTypeDock);
+        setAttribute(Qt::WA_ShowWithoutActivating);
+        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
+        setFocusPolicy(Qt::NoFocus);
+        setFixedSize(0, 0);
     }
 
     void Window::handleDismiss()
@@ -62,11 +52,8 @@ namespace Raven
         finalPosition.setHeight(rect.height());
         finalPosition.setWidth(width);
 
-        setMaximumWidth(finalPosition.width());
-        setMaximumHeight(finalPosition.height());
-        setWidth(finalPosition.width());
-        setHeight(finalPosition.height());
-        setPosition(finalPosition.x(), finalPosition.y());
+        setFixedSize(finalPosition.width(), finalPosition.height());
+        move(finalPosition.x(), finalPosition.y());
 
         // Be a tart, show off blurs
         KWindowEffects::enableBlurBehind(winId());
