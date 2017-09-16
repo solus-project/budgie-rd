@@ -12,7 +12,10 @@
 #pragma once
 
 #include "../taskmon/task-monitor.h"
+#include "taskbutton.h"
 
+#include <QHBoxLayout>
+#include <QHash>
 #include <QWidget>
 
 namespace Panel
@@ -26,6 +29,7 @@ namespace Panel
 
     private:
         QScopedPointer<Task::Monitor> monitor;
+        QHash<Task::Window *, TasklistButton *> buttons;
 
     private slots:
         void windowOpened(Task::Window *window);

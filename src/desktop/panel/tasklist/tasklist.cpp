@@ -17,6 +17,9 @@ namespace Panel
 {
     TasklistApplet::TasklistApplet() : QWidget(nullptr), monitor(new Task::Monitor)
     {
+        setLayout(new QHBoxLayout);
+        layout()->setMargin(0);
+
         connect(monitor.data(), &Task::Monitor::windowOpened, this, &TasklistApplet::windowOpened);
         connect(monitor.data(), &Task::Monitor::windowClosed, this, &TasklistApplet::windowClosed);
         monitor->notifyAll();
@@ -24,11 +27,27 @@ namespace Panel
 
     void TasklistApplet::windowOpened(Task::Window *window)
     {
+        if (buttons.contains(window)) {
+            return;
+        }
+
         qDebug() << "New window: " << window->title();
+
+        static auto buttonAlign = Qt::AlignLeft | Qt::AlignTop;
+
+        auto button = new TasklistButton(this);
+        auto layout = dynamic_cast<QHBoxLayout *>(this->layout());
+        layout->addWidget(button, 0, buttonAlign);
+        buttons[window] = button;
+        button->show();
     }
 
     void TasklistApplet::windowClosed(Task::Window *window)
     {
+        if (!buttons.contains(window)) {
+            return;
+        }
+        delete buttons.take(window);
         qDebug() << "Bye window: " << window->title();
     }
 }
