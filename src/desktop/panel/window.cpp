@@ -15,6 +15,7 @@
 #include <QBoxLayout>
 #include <QDebug>
 #include <QPushButton>
+#include <QQuickItem>
 
 namespace Panel
 {
@@ -31,6 +32,10 @@ namespace Panel
         setClearBeforeRendering(true);
         setColor(QColor(Qt::transparent));
         setSource(QUrl("qrc:/qml/panel.qml"));
+
+        // Hook up signals from QML land
+        QQuickItem *rootObj = rootObject();
+        connect(rootObj, SIGNAL(toggleRaven()), this, SLOT(handleRavenToggle()));
 
         this->demoCode();
     }
@@ -105,6 +110,14 @@ namespace Panel
     void Window::windowClosed(Task::Window *window)
     {
         qDebug() << "Window closed: " << window->title();
+    }
+
+    void Window::handleRavenToggle()
+    {
+        // Shitty - need desktop manager API for this, but just shit out a signal
+        // for now
+        qDebug() << "Toggle le raven!";
+        emit toggleRaven();
     }
 }
 

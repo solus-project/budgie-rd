@@ -45,6 +45,11 @@ namespace Panel
     private slots:
         void windowOpened(Task::Window *window);
         void windowClosed(Task::Window *window);
+        void handleRavenToggle();
+
+    signals:
+        // Pure gank - revisit
+        void toggleRaven();
     };
 }
 

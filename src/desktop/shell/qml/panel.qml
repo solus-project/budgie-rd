@@ -4,8 +4,11 @@ import QtQuick.Layouts 1.3
 
 Rectangle {
     visible: true
+    id: panelMain
 
     color: Qt.rgba(0.15, 0.17, 0.21, 0.9)
+
+    signal toggleRaven()
 
     Row {
         anchors.fill: parent
@@ -23,6 +26,11 @@ Rectangle {
 
         ToolButton {
             text: "Some Window"
+        }
+
+        ToolButton {
+            text: "Ermagahd a Ravehn"
+            onClicked: panelMain.toggleRaven()
         }
     }
 
