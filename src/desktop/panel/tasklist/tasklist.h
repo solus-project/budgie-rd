@@ -15,7 +15,7 @@
 #include "applet.h"
 #include "taskbutton.h"
 
-#include <QHBoxLayout>
+#include <QBoxLayout>
 #include <QHash>
 
 namespace Panel
@@ -34,6 +34,7 @@ namespace Panel
     private slots:
         void windowOpened(Task::Window *window);
         void windowClosed(Task::Window *window);
+        void orientationChanged(Qt::Orientation orientation);
     };
 }
 

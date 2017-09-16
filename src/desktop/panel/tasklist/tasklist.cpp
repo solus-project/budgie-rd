@@ -17,12 +17,25 @@ namespace Panel
 {
     TasklistApplet::TasklistApplet() : Applet(nullptr), monitor(new Task::Monitor)
     {
-        setLayout(new QHBoxLayout);
+        setLayout(new QBoxLayout(QBoxLayout::LeftToRight, this));
         layout()->setMargin(0);
+
+        // Update box layout in response to panel placement
+        connect(this, &Applet::orientationChanged, this, &TasklistApplet::orientationChanged);
 
         connect(monitor.data(), &Task::Monitor::windowOpened, this, &TasklistApplet::windowOpened);
         connect(monitor.data(), &Task::Monitor::windowClosed, this, &TasklistApplet::windowClosed);
         monitor->notifyAll();
+    }
+
+    void TasklistApplet::orientationChanged(Qt::Orientation orientation)
+    {
+        auto layout = qobject_cast<QBoxLayout *>(this->layout());
+        if (orientation == Qt::Horizontal) {
+            layout->setDirection(QBoxLayout::LeftToRight);
+        } else {
+            layout->setDirection(QBoxLayout::TopToBottom);
+        }
     }
 
     void TasklistApplet::windowOpened(Task::Window *window)
