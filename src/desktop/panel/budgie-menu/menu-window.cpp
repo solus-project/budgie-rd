@@ -9,31 +9,34 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#pragma once
-
-#include "applet.h"
 #include "menu-window.h"
-
-#include <QPushButton>
-#include <QSharedPointer>
-#include <QWidget>
 
 namespace Panel
 {
-    class MenuApplet : public Applet
+    MenuWindow::MenuWindow() : QWidget(nullptr)
     {
-        Q_OBJECT
+        // Won't need this till styling or popovers.
+        // setAttribute(Qt::WA_TranslucentBackground);
+        setAttribute(Qt::WA_X11DoNotAcceptFocus);
+        setAttribute(Qt::WA_ShowWithoutActivating);
+        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+        setFocusPolicy(Qt::NoFocus);
 
-    public:
-        explicit MenuApplet(QWidget *parent = nullptr);
+        // TODO: Allow resizable window, store that size.
+        setFixedSize(420, 570);
 
-    private:
-        QPushButton *mainButton;
-        QSharedPointer<MenuWindow> menuWindow;
+        // HACK!
+        move(0, 0);
+    }
 
-    private slots:
-        void buttonClicked();
-    };
+    void MenuWindow::toggleVisibility()
+    {
+        if (isVisible()) {
+            hide();
+        } else {
+            show();
+        }
+    }
 }
 
 /*

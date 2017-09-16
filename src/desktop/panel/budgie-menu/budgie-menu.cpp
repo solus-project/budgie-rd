@@ -23,6 +23,8 @@ namespace Panel
         layout->setMargin(0);
         setLayout(layout);
 
+        menuWindow.reset(new MenuWindow());
+
         auto icon = QIcon::fromTheme("start-here");
 
         mainButton = new QPushButton(QStringLiteral("Menu"), this);
@@ -39,7 +41,7 @@ namespace Panel
 
     void MenuApplet::buttonClicked()
     {
-        qDebug() << "ERMAGAHD";
+        menuWindow->toggleVisibility();
     }
 }
 

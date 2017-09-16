@@ -11,28 +11,17 @@
 
 #pragma once
 
-#include "applet.h"
-#include "menu-window.h"
-
-#include <QPushButton>
-#include <QSharedPointer>
 #include <QWidget>
 
 namespace Panel
 {
-    class MenuApplet : public Applet
+    class MenuWindow : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit MenuApplet(QWidget *parent = nullptr);
-
-    private:
-        QPushButton *mainButton;
-        QSharedPointer<MenuWindow> menuWindow;
-
-    private slots:
-        void buttonClicked();
+        explicit MenuWindow();
+        void toggleVisibility();
     };
 }
 
