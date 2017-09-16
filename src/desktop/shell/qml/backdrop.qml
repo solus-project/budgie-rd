@@ -8,7 +8,7 @@ Rectangle {
         id: backDrop
 
         // TODO: Expose this as property so we can change wallpapers
-        source: "file:///usr/share/backgrounds/solus/Excl_Autumn_Retreat.jpg"
+        source: "file:///usr/share/backgrounds/solus/Crags.png"
         smooth: true
 
         width: parent.width
