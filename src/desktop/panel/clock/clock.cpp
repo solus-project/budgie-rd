@@ -47,7 +47,10 @@ namespace Panel
         QDateTime now = QDateTime::currentDateTime();
         QString prt = now.toString(QStringLiteral("hh:mm:ss"));
 
-        // TODO: only update the label if it actually changes ..
+        // Nonly update the label if it actually changes ..
+        if (prt == lab->text()) {
+            return;
+        }
         lab->setText(prt);
     }
 }
