@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QDirIterator>
+#include <QVBoxLayout>
 
 namespace Panel
 {
@@ -26,8 +27,13 @@ namespace Panel
         setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
         setFocusPolicy(Qt::NoFocus);
 
+        auto layout = new QVBoxLayout();
+        layout->setMargin(0);
+        setLayout(layout);
+
         // TODO: Allow resizable window, store that size.
-        setFixedSize(420, 570);
+        // WTF QT.
+        // setFixedSize(420, 570);
 
         // HACK!
         move(0, 0);
@@ -76,7 +82,8 @@ namespace Panel
             }
 
             // TODO: Set XDG properly from XDG_CURRENT_DESKTOP
-            if (!desktopFile->canShowInDesktop(QStringLiteral("Budgie:GNOME"))) {
+            if (!desktopFile->visible() ||
+                !desktopFile->canShowInDesktop(QStringLiteral("Budgie:GNOME"))) {
                 delete desktopFile;
                 continue;
             }
@@ -86,7 +93,11 @@ namespace Panel
 
             // Stuff it in.
             qDebug() << "Inserted desktop file: " << iter.filePath();
-            this->menuEntries[base] = QSharedPointer<MenuButton>(button);
+            menuEntries.insert(base, QSharedPointer<MenuButton>(button));
+
+            auto layout = qobject_cast<QVBoxLayout *>(this->layout());
+            layout->addWidget(button, 0, Qt::AlignLeft | Qt::AlignTop);
+            button->show();
         }
     }
 }

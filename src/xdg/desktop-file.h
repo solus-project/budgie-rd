@@ -117,6 +117,11 @@ namespace Desktop
          */
         QIcon icon();
 
+        /**
+         * Determine whether this .desktop file is meant to be displayed graphically
+         */
+        bool visible();
+
     private:
         bool valid;
         QString path;
@@ -133,6 +138,7 @@ namespace Desktop
         int desktopAutostartDelay;
         int desktopCrashCount;
         bool desktopSupportCrashCount;
+        bool desktopNoDisplay;
         QString mainExec;
         QStringList mainArgs;
 

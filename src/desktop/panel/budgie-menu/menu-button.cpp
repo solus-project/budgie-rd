@@ -18,6 +18,8 @@ namespace Panel
     {
         // TODO: Ensure XDG supports locales (dynamically!)
         setText(file->name());
+        setIcon(file->icon());
+        show();
     }
 }
 

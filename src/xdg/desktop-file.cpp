@@ -42,6 +42,7 @@ namespace Desktop
         desktopExec = value("Exec", "").toString().trimmed();
         desktopTryExec = value("TryExec", "").toString().trimmed();
         desktopOnlyShowIn = value("OnlyShowIn", "").toString().trimmed();
+        desktopNoDisplay = value("NoDisplay", false).toBool();
 
         // Very much modelled after GNOME session startup pieces
         resolveAutostartConditions();
@@ -250,6 +251,11 @@ namespace Desktop
             return QIcon::fromTheme("image-missing");
         }
         return QIcon::fromTheme(this->desktopIcon, QIcon::fromTheme("image-missing"));
+    }
+
+    bool DesktopFile::visible()
+    {
+        return !this->desktopNoDisplay;
     }
 }
 
