@@ -231,6 +231,11 @@ namespace Desktop
 
         return ret;
     }
+
+    const QString &DesktopFile::name()
+    {
+        return this->desktopName;
+    }
 }
 
 /*

@@ -98,6 +98,11 @@ namespace Desktop
          */
         QProcess *launch(const QStringList &args = QStringList());
 
+        /**
+         * Return the name in the .desktop file
+         */
+        const QString &name();
+
     private:
         bool valid;
         QString path;
