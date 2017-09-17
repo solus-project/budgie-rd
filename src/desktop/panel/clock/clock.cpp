@@ -45,7 +45,8 @@ namespace Panel
     void ClockApplet::onTimer()
     {
         QDateTime now = QDateTime::currentDateTime();
-        QString prt = now.toString(QStringLiteral("hh:mm:ss"));
+        // Anti-cybre feature. no seconds.
+        QString prt = now.toString(QStringLiteral("hh:mm"));
 
         // Nonly update the label if it actually changes ..
         if (prt == lab->text()) {
