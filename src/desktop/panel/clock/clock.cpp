@@ -29,30 +29,30 @@ namespace Panel
 
         timer.reset(new QTimer());
 
-        // TODO: In future just predict the next timeout instesd of fixing
-        // the timer.
         connect(timer.data(), &QTimer::timeout, this, &ClockApplet::onTimer);
-        timer->setInterval(1000);
+        
+        //Prediction of the first time where the time changed
+        //59 - QDateTime::currentDateTime().time().second() + 2
+        timer->setInterval((61 - QDateTime::currentDateTime().time().second()) * 1000);
         timer->start();
 
         setObjectName("budgie-clock-applet");
         // TODO: Not be a jackass.
         setStyleSheet("#budgie-clock-applet QLabel { color: white; }");
 
-        this->onTimer();
+        lab->setText(QDateTime::currentDateTime().toString(QStringLiteral("hh:mm")));
     }
 
     void ClockApplet::onTimer()
     {
-        QDateTime now = QDateTime::currentDateTime();
-        // Anti-cybre feature. no seconds.
-        QString prt = now.toString(QStringLiteral("hh:mm"));
+        //Set to 60s instead of the first Interval
+        timer.setInterval(60000);
+        QString now = QDateTime::currentDateTime().toString(QStringLiteral("hh:mm"));
 
         // Nonly update the label if it actually changes ..
-        if (prt == lab->text()) {
-            return;
+        if (now != lab->text()) {
+            lab->setText(now);
         }
-        lab->setText(prt);
     }
 }
 
