@@ -15,6 +15,7 @@
 #include "../../../xdg/desktop-file.h"
 
 #include <QPushButton>
+#include <QSharedPointer>
 
 namespace Panel
 {
@@ -26,7 +27,7 @@ namespace Panel
         explicit MenuButton(Desktop::DesktopFile *file, QWidget *parent = nullptr);
 
     private:
-        Desktop::DesktopFile *desktopFile;
+        QSharedPointer<Desktop::DesktopFile> desktopFile;
     };
 }
 

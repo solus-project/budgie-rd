@@ -81,9 +81,12 @@ namespace Panel
                 continue;
             }
 
+            // TODO: Stick it in the UI with proper layout ...
+            auto button = new MenuButton(desktopFile, this);
+
             // Stuff it in.
             qDebug() << "Inserted desktop file: " << iter.filePath();
-            this->menuEntries[base] = QSharedPointer<Desktop::DesktopFile>(desktopFile);
+            this->menuEntries[base] = QSharedPointer<MenuButton>(button);
         }
     }
 }
