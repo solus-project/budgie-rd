@@ -26,6 +26,17 @@ namespace Raven
         setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
         setFocusPolicy(Qt::NoFocus);
         setFixedSize(0, 0);
+
+        rootWidget = new QWidget(this);
+        auto layout = new QHBoxLayout;
+        this->setLayout(layout);
+        layout->addWidget(rootWidget);
+        layout->setMargin(0);
+
+        rootWidget->setObjectName("raven-window");
+        rootWidget->setStyleSheet("#raven-window { background-color: rgba(0, 0, 0, 0.8); }");
+        rootWidget->setLayout(new QBoxLayout(QBoxLayout::LeftToRight));
+        rootWidget->layout()->setMargin(0);
     }
 
     void Window::handleDismiss()

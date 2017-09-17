@@ -36,6 +36,7 @@ namespace Raven
 
     private:
         Position position;
+        QWidget *rootWidget;
 
     private slots:
         void handleDismiss();
