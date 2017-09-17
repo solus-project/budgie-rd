@@ -38,6 +38,7 @@ namespace Desktop
 
         beginGroup("Desktop Entry");
         desktopName = value("Name", "").toString().trimmed();
+        desktopIcon = value("Icon", "").toString().trimmed();
         desktopExec = value("Exec", "").toString().trimmed();
         desktopTryExec = value("TryExec", "").toString().trimmed();
         desktopOnlyShowIn = value("OnlyShowIn", "").toString().trimmed();
@@ -235,6 +236,20 @@ namespace Desktop
     const QString &DesktopFile::name()
     {
         return this->desktopName;
+    }
+
+    const QString &DesktopFile::iconName()
+    {
+        return this->desktopIcon;
+    }
+
+    QIcon DesktopFile::icon()
+    {
+        // TODO: Check if we actually have some kind of QPixmap ..
+        if (this->desktopIcon.isEmpty()) {
+            return QIcon::fromTheme("image-missing");
+        }
+        return QIcon::fromTheme(this->desktopIcon, QIcon::fromTheme("image-missing"));
     }
 }
 

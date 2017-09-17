@@ -9,6 +9,7 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QIcon>
 #include <QProcess>
 #include <QSettings>
 
@@ -103,6 +104,17 @@ namespace Desktop
          */
         const QString &name();
 
+        /**
+         * Return the icon field of the .desktop file.
+         */
+        const QString &iconName();
+
+        /**
+         * Return a QIcon resource for the .desktop file, using fallbacks
+         * where appropriate.
+         */
+        QIcon icon();
+
     private:
         bool valid;
         QString path;
@@ -110,6 +122,7 @@ namespace Desktop
         QString desktopExec;
         QString desktopTryExec;
         QString desktopName;
+        QString desktopIcon;
         QString desktopOnlyShowIn;
         QString desktopExecutable;
         QString desktopFullCommand;
