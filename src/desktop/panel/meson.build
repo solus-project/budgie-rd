@@ -4,7 +4,6 @@ panel_mocs = qt5.preprocess(
         'manager.h',
         'window.h',
         'budgie-menu/budgie-menu.h',
-        'budgie-menu/menu-button.h',
         'budgie-menu/menu-window.h',
         'clock/clock.h',
         'tasklist/taskbutton.h',
