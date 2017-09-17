@@ -12,6 +12,7 @@
 #include "window.h"
 #include "budgie-menu/budgie-menu.h"
 #include "clock/clock.h"
+#include "raven-trigger/raven-trigger.h"
 #include "tasklist/tasklist.h"
 
 #include <KWindowEffects>
@@ -59,6 +60,9 @@ namespace Panel
 
         qDebug() << "Spawning a clock applet";
         insertApplet(new ClockApplet());
+
+        qDebug() << "Spawning a Raven trigger applet";
+        insertApplet(new RavenTriggerApplet());
     }
 
     void Window::insertApplet(Applet *applet)

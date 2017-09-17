@@ -9,37 +9,28 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#pragma once
+
 #include "applet.h"
+
+#include <QPushButton>
+#include <QWidget>
 
 namespace Panel
 {
-    Applet::Applet(QWidget *parent) : QWidget(parent), appletOrientation(Qt::Horizontal)
+    class RavenTriggerApplet : public Applet
     {
-    }
+        Q_OBJECT
 
-    Qt::Orientation Applet::orientation()
-    {
-        return this->appletOrientation;
-    }
+    public:
+        explicit RavenTriggerApplet(QWidget *parent = nullptr);
 
-    void Applet::setOrientation(Qt::Orientation orient)
-    {
-        if (orient == this->appletOrientation) {
-            return;
-        }
-        this->appletOrientation = orient;
-        emit orientationChanged(this->appletOrientation);
-    }
+    private:
+        QPushButton *triggerButton;
 
-    void Applet::setDesktopInterface(Desktop::ManagerInterface *iface)
-    {
-        this->desktopIface = iface;
-    }
-
-    Desktop::ManagerInterface *Applet::desktop()
-    {
-        return this->desktopIface;
-    }
+    private slots:
+        void onButtonClicked();
+    };
 }
 
 /*

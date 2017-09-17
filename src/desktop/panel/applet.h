@@ -37,7 +37,7 @@ namespace Panel
          * that we pass the applets on initialisation as the relationship is
          * quite warped.
          */
-        const Desktop::ManagerInterface *desktop();
+        Desktop::ManagerInterface *desktop();
 
     protected:
         void setOrientation(Qt::Orientation orient);

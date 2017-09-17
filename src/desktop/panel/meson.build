@@ -8,6 +8,7 @@ panel_mocs = qt5.preprocess(
         'clock/clock.h',
         'tasklist/taskbutton.h',
         'tasklist/tasklist.h',
+        'raven-trigger/raven-trigger.h',
     ],
 )
 
@@ -21,6 +22,7 @@ panel_sources = [
     'clock/clock.cpp',
     'tasklist/taskbutton.cpp',
     'tasklist/tasklist.cpp',
+    'raven-trigger/raven-trigger.cpp',
 ]
 
 panel = static_library(
