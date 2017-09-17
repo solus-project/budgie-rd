@@ -28,6 +28,7 @@ namespace Panel
         auto icon = QIcon::fromTheme("start-here");
 
         mainButton = new QPushButton(QStringLiteral("Menu"), this);
+        mainButton->setFlat(true);
         mainButton->setIcon(icon);
         mainButton->setObjectName("budgie-menu-button");
         mainButton->show();

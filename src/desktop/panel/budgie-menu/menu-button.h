@@ -14,17 +14,16 @@
 // Fuckin seriously? Sort out cflags and expose xdg as a .so
 #include "../../../xdg/desktop-file.h"
 
-#include <QPushButton>
+#include <QListWidgetItem>
+#include <QObject>
 #include <QSharedPointer>
 
 namespace Panel
 {
-    class MenuButton : public QPushButton
+    class MenuButton : public QListWidgetItem
     {
-        Q_OBJECT
-
     public:
-        explicit MenuButton(Desktop::DesktopFile *file, QWidget *parent = nullptr);
+        explicit MenuButton(Desktop::DesktopFile *file, QListWidget *parent = nullptr);
 
     private:
         QSharedPointer<Desktop::DesktopFile> desktopFile;

@@ -31,9 +31,11 @@ namespace Panel
         layout->setMargin(0);
         setLayout(layout);
 
+        rootList = new QListWidget(this);
+        layout->addWidget(rootList);
+
         // TODO: Allow resizable window, store that size.
-        // WTF QT.
-        // setFixedSize(420, 570);
+        setFixedSize(420, 570);
 
         // HACK!
         move(0, 0);
@@ -89,15 +91,11 @@ namespace Panel
             }
 
             // TODO: Stick it in the UI with proper layout ...
-            auto button = new MenuButton(desktopFile, this);
+            auto button = new MenuButton(desktopFile, this->rootList);
 
             // Stuff it in.
             qDebug() << "Inserted desktop file: " << iter.filePath();
             menuEntries.insert(base, QSharedPointer<MenuButton>(button));
-
-            auto layout = qobject_cast<QVBoxLayout *>(this->layout());
-            layout->addWidget(button, 0, Qt::AlignLeft | Qt::AlignTop);
-            button->show();
         }
     }
 }

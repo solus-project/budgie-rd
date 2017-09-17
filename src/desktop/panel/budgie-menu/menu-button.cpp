@@ -13,13 +13,12 @@
 
 namespace Panel
 {
-    MenuButton::MenuButton(Desktop::DesktopFile *file, QWidget *parent)
-        : QPushButton(parent), desktopFile(file)
+    MenuButton::MenuButton(Desktop::DesktopFile *file, QListWidget *parent)
+        : QListWidgetItem(parent), desktopFile(file)
     {
         // TODO: Ensure XDG supports locales (dynamically!)
         setText(file->name());
         setIcon(file->icon());
-        show();
     }
 }
 

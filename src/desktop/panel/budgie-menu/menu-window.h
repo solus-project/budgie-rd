@@ -16,6 +16,7 @@
 #include "menu-button.h"
 
 #include <QHash>
+#include <QListWidget>
 #include <QSharedPointer>
 #include <QWidget>
 
@@ -34,6 +35,8 @@ namespace Panel
 
         // TODO: Do this based on a list of XDG dirs
         void scanDirectory(const QString &location);
+
+        QListWidget *rootList;
     };
 }
 
