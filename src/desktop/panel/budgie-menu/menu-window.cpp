@@ -11,6 +11,10 @@
 
 #include "menu-window.h"
 
+#include <QDebug>
+#include <QDir>
+#include <QDirIterator>
+
 namespace Panel
 {
     MenuWindow::MenuWindow() : QWidget(nullptr)
@@ -45,7 +49,42 @@ namespace Panel
 
     void MenuWindow::scanDirectory(const QString &location)
     {
-        Q_UNUSED(location)
+        QDir dir(location);
+        if (!dir.exists()) {
+            qDebug() << "Skipping non-existent directory: " << location;
+            return;
+        }
+
+        QDirIterator iter(dir);
+        while (iter.hasNext()) {
+            QString item = iter.next();
+            QString base = iter.fileName();
+            if (base == "." || base == "..") {
+                continue;
+            }
+
+            // Only want .desktop. :)
+            if (!base.endsWith(".desktop")) {
+                continue;
+            }
+
+            auto desktopFile = new Desktop::DesktopFile(iter.filePath());
+            if (!desktopFile->isValid()) {
+                qDebug() << "Skipping invalid desktop file: " << iter.filePath();
+                delete desktopFile;
+                continue;
+            }
+
+            // TODO: Set XDG properly from XDG_CURRENT_DESKTOP
+            if (!desktopFile->canShowInDesktop(QStringLiteral("Budgie:GNOME"))) {
+                delete desktopFile;
+                continue;
+            }
+
+            // Stuff it in.
+            qDebug() << "Inserted desktop file: " << iter.filePath();
+            this->menuEntries[base] = QSharedPointer<Desktop::DesktopFile>(desktopFile);
+        }
     }
 }
 

@@ -29,6 +29,7 @@ panel = static_library(
         panel_mocs,
     ],
     dependencies: [
+        link_xdg,
         dep_qtwidgets,
         link_taskmon,
         kf5_deps,
