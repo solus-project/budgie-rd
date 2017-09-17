@@ -30,6 +30,16 @@ namespace Panel
         this->appletOrientation = orient;
         emit orientationChanged(this->appletOrientation);
     }
+
+    void Applet::setDesktopInterface(Desktop::ManagerInterface *iface)
+    {
+        this->desktopIface = iface;
+    }
+
+    const Desktop::ManagerInterface *Applet::desktop()
+    {
+        return this->desktopIface;
+    }
 }
 
 /*

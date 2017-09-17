@@ -69,6 +69,7 @@ namespace Panel
         applet->setParent(rootWidget);
         layout->addWidget(applet, 0, appletAlign);
         applet->setOrientation(this->orient);
+        applet->setDesktopInterface(this->desktopIface);
         applet->show();
         applets.append(applet);
     }

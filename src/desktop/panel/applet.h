@@ -11,6 +11,8 @@
 
 #pragma once
 
+#include "../lib/manager.h"
+
 #include <QWidget>
 
 namespace Panel
@@ -28,14 +30,25 @@ namespace Panel
 
         Qt::Orientation orientation();
 
+        /**
+         * Allow applets to access the desktop management
+         *
+         * TODO: Hide all of these Things as methods of a single opaque object
+         * that we pass the applets on initialisation as the relationship is
+         * quite warped.
+         */
+        const Desktop::ManagerInterface *desktop();
+
     protected:
         void setOrientation(Qt::Orientation orient);
+        void setDesktopInterface(Desktop::ManagerInterface *iface);
 
     signals:
         void orientationChanged(Qt::Orientation orient);
 
     private:
         Qt::Orientation appletOrientation;
+        Desktop::ManagerInterface *desktopIface;
     };
 }
 
