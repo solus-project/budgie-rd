@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QDirIterator>
+#include <QPushButton>
 #include <QVBoxLayout>
 
 namespace Panel
@@ -33,6 +34,10 @@ namespace Panel
 
         rootList = new QListWidget(this);
         layout->addWidget(rootList);
+
+        auto button = new QPushButton(QStringLiteral("Log out kthxbai"), this);
+        button->setIcon(QIcon::fromTheme("system-log-out"));
+        layout->addWidget(button);
 
         // TODO: Allow resizable window, store that size.
         setFixedSize(420, 570);
