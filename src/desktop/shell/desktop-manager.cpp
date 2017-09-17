@@ -18,7 +18,7 @@ namespace Desktop
 {
     Manager::Manager(QQmlEngine *engine)
         : engine(engine), panelManager(new Panel::Manager(this)), numScreens(0), primaryScreen(0),
-          manageDesktop(false)
+          manageDesktop(true)
     {
         auto desktop = QApplication::desktop();
 
