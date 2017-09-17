@@ -51,13 +51,24 @@ namespace Panel
         this->scanDirectory(QStringLiteral("/usr/local/share/applications"));
     }
 
-    void MenuWindow::toggleVisibility()
+    void MenuWindow::toggleVisibility(QWidget *parentWidget)
     {
         if (isVisible()) {
             hide();
-        } else {
-            show();
+            return;
         }
+        if (!parentWidget) {
+            show();
+            return;
+        }
+        auto rect = parentWidget->geometry();
+        QPoint abs = parentWidget->mapToGlobal(QPoint(rect.x(), rect.y()));
+
+        // Hack, we'll just show above the widget for now.
+        auto x = abs.x();
+        auto y = abs.y() - height();
+        move(x, y);
+        show();
     }
 
     void MenuWindow::scanDirectory(const QString &location)

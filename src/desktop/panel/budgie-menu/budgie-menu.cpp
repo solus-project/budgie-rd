@@ -42,7 +42,7 @@ namespace Panel
 
     void MenuApplet::buttonClicked()
     {
-        menuWindow->toggleVisibility();
+        menuWindow->toggleVisibility(this->mainButton);
     }
 }
 

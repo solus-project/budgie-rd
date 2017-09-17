@@ -28,7 +28,12 @@ namespace Panel
 
     public:
         explicit MenuWindow();
-        void toggleVisibility();
+
+        /**
+         * Parent widget here refers to the button used to invoke
+         * the action
+         */
+        void toggleVisibility(QWidget *parentWidget = nullptr);
 
     private:
         QHash<QString, QSharedPointer<MenuButton>> menuEntries;
