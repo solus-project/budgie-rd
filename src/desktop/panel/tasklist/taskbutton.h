@@ -13,6 +13,8 @@
 
 #include "../taskmon/task-monitor.h"
 
+#include <QAction>
+#include <QContextMenuEvent>
 #include <QPushButton>
 #include <QWidget>
 
@@ -25,12 +27,21 @@ namespace Panel
     public:
         explicit TasklistButton(Task::Window *window, QWidget *parent = nullptr);
 
+    protected:
+        void contextMenuEvent(QContextMenuEvent *event) override;
+
     private:
         Task::Window *window;
+
+        QAction *minimizeAct;
+        QAction *unminimizeAct;
+
+        void createActions();
 
     private slots:
         void iconNameChanged(const QString &iconName);
         void titleChanged(const QString &title);
+        void handleRelease();
     };
 }
 
