@@ -1,11 +1,13 @@
 xdg_mocs = qt5.preprocess(
     moc_headers: [
         'desktop-file.h',
+        'ini-parser.h',
     ],
 )
 
 xdg_sources = [
     'desktop-file.cpp',
+    'ini-parser.cpp',
 ]
 
 xdg = static_library(
