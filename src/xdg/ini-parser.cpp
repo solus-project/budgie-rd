@@ -121,6 +121,11 @@ namespace Desktop
         }
         return false;
     }
+
+    bool IniFile::hasSection(const QString &sectionID)
+    {
+        return mapping.contains(sectionID);
+    }
 }
 
 /*

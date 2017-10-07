@@ -48,6 +48,11 @@ namespace Desktop
          */
         bool getBool(const QString &sectionID, const QString &key, bool fallback = false);
 
+        /**
+         * Simple validation - figure out if the section actually exists or not.
+         */
+        bool hasSection(const QString &sectionID);
+
     private:
         QHash<QString, QSharedPointer<QHash<QString, QString>>> mapping;
         const QString path;
