@@ -25,7 +25,6 @@ namespace Panel
     Window::Window(Desktop::ManagerInterface *desktopIface)
         : intendedSize(37), desktopIface(desktopIface), orient(Qt::Horizontal)
     {
-        qDebug() << "I r have a panel";
         setAttribute(Qt::WA_TranslucentBackground);
         setAttribute(Qt::WA_X11NetWmWindowTypeDock);
         setAttribute(Qt::WA_X11DoNotAcceptFocus);
@@ -52,16 +51,9 @@ namespace Panel
 
     void Window::demoCode()
     {
-        qDebug() << "Spawning a menu applet";
         insertApplet(new MenuApplet());
-
-        qDebug() << "Spawning a tasklist applet";
         insertApplet(new TasklistApplet());
-
-        qDebug() << "Spawning a clock applet";
         insertApplet(new ClockApplet());
-
-        qDebug() << "Spawning a Raven trigger applet";
         insertApplet(new RavenTriggerApplet());
     }
 
@@ -140,8 +132,6 @@ namespace Panel
 
         setFixedSize(finalPosition.width(), finalPosition.height());
         move(finalPosition.x(), finalPosition.y());
-
-        qDebug() << "Update geom plox: " << finalPosition << " @ " << p;
 
         // Be a tart, show off blurs
         KWindowEffects::enableBlurBehind(wid);

@@ -18,7 +18,6 @@ namespace Panel
     Manager::Manager(Desktop::ManagerInterface *desktopIface) : desktopIface(desktopIface)
     {
         demoWindow.reset(new Window(desktopIface));
-        qDebug() << "I r have a manager";
     }
 
     void Manager::loadPanels()
@@ -26,7 +25,6 @@ namespace Panel
         QRect r = QApplication::desktop()->screenGeometry();
         demoWindow->show();
         demoWindow->updateGeometry(r);
-        qDebug() << "I haz panels nao";
     }
 }
 
