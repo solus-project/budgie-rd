@@ -43,7 +43,6 @@ namespace Panel
         int intendedSize;
         Desktop::ManagerInterface *desktopIface;
         QWidget *rootWidget;
-        void demoCode();
         void insertApplet(Applet *applet);
         Qt::Orientation orient;
 

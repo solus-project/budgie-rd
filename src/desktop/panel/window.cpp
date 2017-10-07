@@ -10,9 +10,6 @@
  */
 
 #include "window.h"
-#include "budgie-menu/budgie-menu.h"
-#include "clock/clock.h"
-#include "raven-trigger/raven-trigger.h"
 #include "tasklist/tasklist.h"
 
 #include <KWindowEffects>
@@ -45,16 +42,6 @@ namespace Panel
         rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(0, 0, 0, 0.8); }");
         rootWidget->setLayout(new QBoxLayout(QBoxLayout::LeftToRight));
         rootWidget->layout()->setMargin(0);
-
-        this->demoCode();
-    }
-
-    void Window::demoCode()
-    {
-        insertApplet(new MenuApplet());
-        insertApplet(new TasklistApplet());
-        insertApplet(new ClockApplet());
-        insertApplet(new RavenTriggerApplet());
     }
 
     void Window::insertApplet(Applet *applet)
