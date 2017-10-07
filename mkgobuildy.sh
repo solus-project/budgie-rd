@@ -2,7 +2,7 @@
 
 LIBDIR="/usr/lib"
 MULTIARCH64="/usr/lib/x86_64-linux-gnu"
-MULTIARCH32="/usr/lib/i686-linux-gnu"
+MULTIARCH32="/usr/lib/i386-linux-gnu"
 
 if [[ -e /etc/os-release ]]; then
     source /etc/os-release
