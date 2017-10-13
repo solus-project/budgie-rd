@@ -63,7 +63,7 @@ the `meson` and `ninja` build tools.
 To install these on Solus:
 
     sudo eopkg up
-    sudo eopkg it -c system.devel qt5-base-devel qt5-declarative-devel qt5-quickcontrols2-devel kwindowsystem-devel
+    sudo eopkg it -c system.devel qt5-base-devel qt5-declarative-devel qt5-quickcontrols2-devel kwindowsystem-devel mesalib-devel
 
 
 Now, let's configure the project (set libdir to appropriate libdir for your distro):
