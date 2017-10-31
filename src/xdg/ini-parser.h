@@ -57,6 +57,11 @@ namespace Desktop
         bool getBool(const QString &sectionID, const QString &key, bool fallback = false);
 
         /**
+         * Get an integer value from the Ini File
+         */
+        int getInt(const QString &sectionID, const QString &key, int fallback = 0);
+
+        /**
          * Simple validation - figure out if the section actually exists or not.
          */
         bool hasSection(const QString &sectionID);

@@ -13,7 +13,8 @@
 
 #include <QIcon>
 #include <QProcess>
-#include <QSettings>
+
+#include "ini-parser.h"
 
 namespace Desktop
 {
@@ -29,7 +30,7 @@ namespace Desktop
 
     Q_ENUM_NS(AutostartPhase)
 
-    class DesktopFile : public QSettings
+    class DesktopFile : public IniFile
     {
         Q_OBJECT
 

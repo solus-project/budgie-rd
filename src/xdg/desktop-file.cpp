@@ -14,47 +14,37 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QStandardPaths>
+#include <QString>
 
 namespace Desktop
 {
-    DesktopFile::DesktopFile() : QSettings(), valid(false)
+    DesktopFile::DesktopFile() : IniFile(), valid(false)
     {
     }
 
     DesktopFile::DesktopFile(const QString &path)
-        : QSettings(path, QSettings::IniFormat), valid(false), path(path), desktopAutostartDelay(0),
-          desktopCrashCount(0), desktopSupportCrashCount(false)
+        : IniFile(path), valid(false), path(path), desktopAutostartDelay(0), desktopCrashCount(0),
+          desktopSupportCrashCount(false)
     {
-        QFileInfo inf(path);
-        if (!inf.exists()) {
+        static const QString desktopHeader = QStringLiteral("Desktop Entry");
+
+        if (!hasSection(desktopHeader)) {
             return;
         }
 
-        basename = inf.fileName();
-
-        if (!childGroups().contains("Desktop Entry")) {
-            return;
-        }
-
-        beginGroup("Desktop Entry");
-        desktopName = value("Name", "").toString().trimmed();
-        desktopIcon = value("Icon", "").toString().trimmed();
-        desktopExec = value("Exec", "").toString().trimmed();
-        desktopTryExec = value("TryExec", "").toString().trimmed();
-        desktopOnlyShowIn = value("OnlyShowIn", "").toString().trimmed();
-        desktopNoDisplay = value("NoDisplay", false).toBool();
+        desktopName = getString(desktopHeader, QStringLiteral("Name"));
+        desktopIcon = getString(desktopHeader, QStringLiteral("Icon"));
+        desktopExec = getString(desktopHeader, QStringLiteral("Exec"));
+        desktopTryExec = getString(desktopHeader, QStringLiteral("TryExec"));
+        desktopOnlyShowIn = getString(desktopHeader, QStringLiteral("OnlyShowIn"));
+        desktopNoDisplay = getBool(desktopHeader, QStringLiteral("NoDisplay"), false);
 
         // Very much modelled after GNOME session startup pieces
         resolveAutostartConditions();
 
         /* Crash count support, to make kwin happy */;
-        this->desktopSupportCrashCount = value("X-Budgie-Support-Crash-Param").toBool();
-
-        endGroup();
-
-        if (status() != QSettings::NoError) {
-            return;
-        }
+        this->desktopSupportCrashCount =
+            getBool(desktopHeader, QStringLiteral("X-Budgie-Support-Crash-Param"), false);
 
         if (desktopName == "" || desktopExec == "") {
             return;
@@ -77,16 +67,22 @@ namespace Desktop
      */
     void DesktopFile::resolveAutostartConditions()
     {
-        QString desktopAutostartPhase = value("X-Budgie-Autostart-Phase", "").toString().trimmed();
+        static const QString desktopHeader = QStringLiteral("Desktop Entry");
+
+        QString desktopAutostartPhase =
+            getString(desktopHeader, QStringLiteral("X-Budgie-Autostart-Phase"));
         if (desktopAutostartPhase.isEmpty()) {
-            desktopAutostartPhase = value("X-GNOME-Autostart-Phase", "").toString().trimmed();
+            desktopAutostartPhase =
+                getString(desktopHeader, QStringLiteral("X-GNOME-Autostart-Phase"));
             if (!desktopAutostartPhase.isEmpty()) {
-                desktopAutostartDelay = value("X-GNOME-Autostart-Delay", 0).toInt();
+                desktopAutostartDelay =
+                    getInt(desktopHeader, QStringLiteral("X-GNOME-Autostart-Delay"));
             }
         }
-        desktopAutostartDelay = value("X-Budgie-Autostart-Delay", 0).toInt();
+        desktopAutostartDelay = getInt(desktopHeader, QStringLiteral("X-Budgie-Autostart-Delay"));
         if (desktopAutostartDelay < 1) {
-            desktopAutostartDelay = value("X-GNOME-Autostart-Delay", 0).toInt();
+            desktopAutostartDelay =
+                getInt(desktopHeader, QStringLiteral("X-GNOME-Autostart-Delay"));
         }
 
         if (desktopAutostartPhase == QStringLiteral("Initialization")) {

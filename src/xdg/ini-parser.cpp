@@ -104,7 +104,7 @@ namespace Desktop
         if (!mapping.contains(sectionID)) {
             return fallback;
         }
-        return mapping[sectionID]->value(key, fallback);
+        return mapping[sectionID]->value(key, fallback).trimmed();
     }
 
     const QStringList IniFile::getStringList(const QString &sectionID, const QString &key,
@@ -117,7 +117,7 @@ namespace Desktop
         if (!section->contains(key)) {
             return fallback;
         }
-        return section->value(key).split(";");
+        return section->value(key).trimmed().split(";");
     }
 
     bool IniFile::getBool(const QString &sectionID, const QString &key, bool fallback)
@@ -133,6 +133,18 @@ namespace Desktop
             return true;
         }
         return false;
+    }
+
+    int IniFile::getInt(const QString &sectionID, const QString &key, int fallback)
+    {
+        if (!mapping.contains(sectionID)) {
+            return fallback;
+        }
+        auto section = mapping[sectionID];
+        if (!section->contains(key)) {
+            return fallback;
+        }
+        return section->value(key).trimmed().toInt();
     }
 
     bool IniFile::hasSection(const QString &sectionID)
