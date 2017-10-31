@@ -107,6 +107,19 @@ namespace Desktop
         return mapping[sectionID]->value(key, fallback);
     }
 
+    const QStringList IniFile::getStringList(const QString &sectionID, const QString &key,
+                                             const QStringList &fallback)
+    {
+        if (!mapping.contains(sectionID)) {
+            return fallback;
+        }
+        auto section = mapping[sectionID];
+        if (!section->contains(key)) {
+            return fallback;
+        }
+        return section->value(key).split(";");
+    }
+
     bool IniFile::getBool(const QString &sectionID, const QString &key, bool fallback)
     {
         static const auto sTrue = QStringLiteral("true");

@@ -37,10 +37,18 @@ namespace Desktop
         bool isValid();
 
         /**
-         * Graba string from the map if it exists
+         * Grab a string from the map if it exists
          */
         const QString getString(const QString &sectionID, const QString &key,
                                 const QString &fallback = QStringLiteral(""));
+
+        /**
+         * Return a QStringList for the given key
+         *
+         * This is typically separated by the ; character.
+         */
+        const QStringList getStringList(const QString &sectionID, const QString &key,
+                                        const QStringList &fallback = QStringList());
 
         /**
          * Get a boolean value from the map. This will return false by default if the value
