@@ -19,19 +19,14 @@ int main(int argc, char *argv[])
     // We must disable Qt's glib integration as we have no use for it, which
     // would leave to excessive wake ups
     qputenv("QT_NO_GLIB", "1");
-    QString xdgDesktopName;
+    static const QString xdgDesktopName = QStringLiteral("Budgie");
 
-    // Before we do anything, ensure XDG_CURRENT_DESKTOP is sane.
-    if (!qEnvironmentVariableIsEmpty("XDG_CURRENT_DESKTOP")) {
-        xdgDesktopName = QString::fromLocal8Bit(qgetenv("XDG_CURRENT_DESKTOP"));
-        if (xdgDesktopName != "Budgie") {
-            qWarning() << "XDG_CURRENT_DESKTOP isn't set to Budgie";
-        }
-    } else {
-        xdgDesktopName = "Budgie";
-        qputenv("XDG_DESKTOP_NAME", xdgDesktopName.toLocal8Bit());
-    }
+    // Ensure desktop session is correct
     qputenv("DESKTOP_SESSION", xdgDesktopName.toLocal8Bit());
+
+    // Must ensure XDG_DESKTOP_NAME is correct, display managers may end up
+    // changing this which we very much do not want.
+    qputenv("XDG_DESKTOP_NAME", xdgDesktopName.toLocal8Bit());
 
     QGuiApplication::setFallbackSessionManagementEnabled(false);
 
