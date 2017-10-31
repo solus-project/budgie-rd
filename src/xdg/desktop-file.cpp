@@ -176,7 +176,7 @@ namespace Desktop
         m_autostartDelay = delay;
     }
 
-    bool DesktopFile::supportCrashCount()
+    bool DesktopFile::crashCountSupported()
     {
         return m_crashCountSupported;
     }

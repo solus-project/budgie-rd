@@ -79,7 +79,7 @@ namespace Desktop
          * The .desktop file supports having its application invoked with `--crashes <N>`
          * parameter, i.e. like kwin_x11
          */
-        bool supportCrashCount();
+        bool crashCountSupported();
 
         /**
          * Set the crash count to be passed to the application
