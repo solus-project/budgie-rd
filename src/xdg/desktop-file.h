@@ -113,6 +113,16 @@ namespace Desktop
         QString nameLocal();
 
         /**
+         * Return the comment/description for this .desktop file
+         */
+        const QString &comment();
+
+        /**
+         * Return the localised comment/description
+         */
+        QString commentLocal();
+
+        /**
          * Return the icon field of the .desktop file.
          */
         const QString &iconName();
@@ -132,6 +142,7 @@ namespace Desktop
         bool m_valid;
         QString m_path;
         QString m_id;
+        QString m_comment;
         QString m_exec;
         QString m_tryExec;
         QString m_name;

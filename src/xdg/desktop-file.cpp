@@ -40,6 +40,7 @@ namespace Desktop
         }
 
         m_name = getString(desktopHeader, QStringLiteral("Name"));
+        m_comment = getString(desktopHeader, QStringLiteral("Comment"));
         m_icon = getString(desktopHeader, QStringLiteral("Icon"));
         m_exec = getString(desktopHeader, QStringLiteral("Exec"));
         m_tryExec = getString(desktopHeader, QStringLiteral("TryExec"));
@@ -257,6 +258,28 @@ namespace Desktop
             return lookup;
         }
         return m_name;
+    }
+
+    const QString &DesktopFile::comment()
+    {
+        return m_comment;
+    }
+
+    QString DesktopFile::commentLocal()
+    {
+        static const QString desktopHeader = QStringLiteral("Desktop Entry");
+        static const QString localeName = QLocale::system().name();
+        static const QStringList localeSplit = localeName.split("_");
+
+        auto lookup = getString(desktopHeader, QString("Comment[" + localeName + "]"));
+        if (!lookup.isEmpty()) {
+            return lookup;
+        }
+        lookup = getString(desktopHeader, QString("Comment[" + localeSplit[0] + "]"), "");
+        if (!lookup.isEmpty()) {
+            return lookup;
+        }
+        return m_comment;
     }
 
     const QString &DesktopFile::iconName()
