@@ -16,8 +16,7 @@ namespace Panel
     MenuButton::MenuButton(Desktop::DesktopFile *file, QListWidget *parent)
         : QListWidgetItem(parent), desktopFile(file)
     {
-        // TODO: Ensure XDG supports locales (dynamically!)
-        setText(file->name());
+        setText(file->nameLocal());
         setIcon(file->icon());
     }
 }
