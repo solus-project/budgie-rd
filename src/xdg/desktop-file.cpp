@@ -36,7 +36,7 @@ namespace Desktop
         desktopIcon = getString(desktopHeader, QStringLiteral("Icon"));
         desktopExec = getString(desktopHeader, QStringLiteral("Exec"));
         desktopTryExec = getString(desktopHeader, QStringLiteral("TryExec"));
-        desktopOnlyShowIn = getString(desktopHeader, QStringLiteral("OnlyShowIn"));
+        desktopOnlyShowIn = getStringList(desktopHeader, QStringLiteral("OnlyShowIn"));
         desktopNoDisplay = getBool(desktopHeader, QStringLiteral("NoDisplay"), false);
 
         // Very much modelled after GNOME session startup pieces
@@ -131,17 +131,19 @@ namespace Desktop
 
     bool DesktopFile::canShowInDesktop(const QString &desktopName)
     {
-        if (this->desktopOnlyShowIn == "") {
+        if (this->desktopOnlyShowIn.length() < 1) {
             return true;
         }
+
+        // Split running desktop name on ":", replace ";" with ":" to ensure
+        // we're comparing properly.
         QString compUp = ("" + desktopName).toUpper().replace(";", ":");
-        QString compUs = ("" + desktopOnlyShowIn).toUpper().replace(";", ":");
+        auto runningDesktop = compUp.split(":");
 
-        auto splitsLeft = compUp.split(":");
-        auto splitsRight = compUs.split(":");
-
-        for (auto &id : splitsLeft) {
-            if (splitsRight.contains(id)) {
+        // If one of our OnlyShowIn fields appears the upper-case comparison
+        // we'll immediately return true.
+        for (auto &id : this->desktopOnlyShowIn) {
+            if (runningDesktop.contains(id.toUpper())) {
                 return true;
             }
         }

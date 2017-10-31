@@ -131,7 +131,7 @@ namespace Desktop
         QString desktopTryExec;
         QString desktopName;
         QString desktopIcon;
-        QString desktopOnlyShowIn;
+        QStringList desktopOnlyShowIn;
         QString desktopExecutable;
         QString desktopFullCommand;
         QString basename;
