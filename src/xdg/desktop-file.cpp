@@ -18,13 +18,13 @@
 
 namespace Desktop
 {
-    DesktopFile::DesktopFile() : IniFile(), valid(false)
+    DesktopFile::DesktopFile() : IniFile(), m_valid(false)
     {
     }
 
     DesktopFile::DesktopFile(const QString &path)
-        : IniFile(path), valid(false), path(path), desktopAutostartDelay(0), desktopCrashCount(0),
-          desktopSupportCrashCount(false)
+        : IniFile(path), m_valid(false), m_path(path), m_autostartDelay(0), m_crashCount(0),
+          m_crashCountSupported(false)
     {
         static const QString desktopHeader = QStringLiteral("Desktop Entry");
         QFileInfo inf(path);
@@ -33,37 +33,37 @@ namespace Desktop
             return;
         }
 
-        basename = inf.fileName();
+        m_basename = inf.fileName();
 
         if (!hasSection(desktopHeader)) {
             return;
         }
 
-        desktopName = getString(desktopHeader, QStringLiteral("Name"));
-        desktopIcon = getString(desktopHeader, QStringLiteral("Icon"));
-        desktopExec = getString(desktopHeader, QStringLiteral("Exec"));
-        desktopTryExec = getString(desktopHeader, QStringLiteral("TryExec"));
-        desktopOnlyShowIn = getStringList(desktopHeader, QStringLiteral("OnlyShowIn"));
-        desktopNoDisplay = getBool(desktopHeader, QStringLiteral("NoDisplay"), false);
+        m_name = getString(desktopHeader, QStringLiteral("Name"));
+        m_icon = getString(desktopHeader, QStringLiteral("Icon"));
+        m_exec = getString(desktopHeader, QStringLiteral("Exec"));
+        m_tryExec = getString(desktopHeader, QStringLiteral("TryExec"));
+        m_onlyShowIn = getStringList(desktopHeader, QStringLiteral("OnlyShowIn"));
+        m_noDisplay = getBool(desktopHeader, QStringLiteral("NoDisplay"), false);
 
         // Very much modelled after GNOME session startup pieces
         resolveAutostartConditions();
 
         /* Crash count support, to make kwin happy */;
-        this->desktopSupportCrashCount =
-            getBool(desktopHeader, QStringLiteral("X-Budgie-Support-Crash-Param"), false);
+        m_crashCountSupported =
+            getBool(desktopHeader, QStringLiteral("X-Budgie-Support-Crash-Param"));
 
-        if (desktopName == "" || desktopExec == "") {
+        if (m_name == "" || m_exec == "") {
             return;
         }
 
-        if (!resolveExec(desktopExec)) {
-            if (!resolveExec(desktopTryExec)) {
+        if (!resolveExec(m_exec)) {
+            if (!resolveExec(m_tryExec)) {
                 return;
             }
         }
 
-        valid = true;
+        m_valid = true;
     }
 
     /**
@@ -82,26 +82,24 @@ namespace Desktop
             desktopAutostartPhase =
                 getString(desktopHeader, QStringLiteral("X-GNOME-Autostart-Phase"));
             if (!desktopAutostartPhase.isEmpty()) {
-                desktopAutostartDelay =
-                    getInt(desktopHeader, QStringLiteral("X-GNOME-Autostart-Delay"));
+                m_autostartDelay = getInt(desktopHeader, QStringLiteral("X-GNOME-Autostart-Delay"));
             }
         }
-        desktopAutostartDelay = getInt(desktopHeader, QStringLiteral("X-Budgie-Autostart-Delay"));
-        if (desktopAutostartDelay < 1) {
-            desktopAutostartDelay =
-                getInt(desktopHeader, QStringLiteral("X-GNOME-Autostart-Delay"));
+        m_autostartDelay = getInt(desktopHeader, QStringLiteral("X-Budgie-Autostart-Delay"));
+        if (m_autostartDelay < 1) {
+            m_autostartDelay = getInt(desktopHeader, QStringLiteral("X-GNOME-Autostart-Delay"));
         }
 
         if (desktopAutostartPhase == QStringLiteral("Initialization")) {
-            this->desktopAutostartPhase = AutostartPhase::Initialization;
+            m_autostartPhase = AutostartPhase::Initialization;
         } else if (desktopAutostartPhase == QStringLiteral("WindowManager")) {
-            this->desktopAutostartPhase = AutostartPhase::WindowManager;
+            m_autostartPhase = AutostartPhase::WindowManager;
         } else if (desktopAutostartPhase == QStringLiteral("Shell")) {
-            this->desktopAutostartPhase = AutostartPhase::Shell;
+            m_autostartPhase = AutostartPhase::Shell;
         } else if (desktopAutostartPhase == QStringLiteral("Panel")) {
-            this->desktopAutostartPhase = AutostartPhase::Shell;
+            m_autostartPhase = AutostartPhase::Shell;
         } else {
-            this->desktopAutostartPhase = AutostartPhase::Applications;
+            m_autostartPhase = AutostartPhase::Applications;
         }
     }
 
@@ -119,26 +117,26 @@ namespace Desktop
         if (!e.exists() || !e.isExecutable()) {
             return false;
         }
-        this->mainExec = binary;
-        this->mainArgs = splits;
-        this->mainArgs.removeFirst();
-        this->desktopFullCommand = exec;
+        m_mainExec = binary;
+        m_args = splits;
+        m_args.removeFirst();
+        m_fullCommand = exec;
         return true;
     }
 
     bool DesktopFile::isValid()
     {
-        return this->valid;
+        return this->m_valid;
     }
 
     const QString &DesktopFile::id()
     {
-        return this->basename;
+        return this->m_basename;
     }
 
     bool DesktopFile::canShowInDesktop(const QString &desktopName)
     {
-        if (this->desktopOnlyShowIn.length() < 1) {
+        if (m_onlyShowIn.length() < 1) {
             return true;
         }
 
@@ -149,7 +147,7 @@ namespace Desktop
 
         // If one of our OnlyShowIn fields appears the upper-case comparison
         // we'll immediately return true.
-        for (auto &id : this->desktopOnlyShowIn) {
+        for (auto &id : m_onlyShowIn) {
             if (runningDesktop.contains(id.toUpper())) {
                 return true;
             }
@@ -160,44 +158,44 @@ namespace Desktop
 
     AutostartPhase DesktopFile::autostartPhase()
     {
-        return this->desktopAutostartPhase;
+        return m_autostartPhase;
     }
 
     void DesktopFile::setAutostartPhase(AutostartPhase phase)
     {
-        this->desktopAutostartPhase = phase;
+        m_autostartPhase = phase;
     }
 
     int DesktopFile::autostartDelay()
     {
-        return this->desktopAutostartDelay;
+        return m_autostartDelay;
     }
 
     void DesktopFile::setAutostartDelay(int delay)
     {
-        this->desktopAutostartDelay = delay;
+        m_autostartDelay = delay;
     }
 
     bool DesktopFile::supportCrashCount()
     {
-        return this->desktopSupportCrashCount;
+        return m_crashCountSupported;
     }
 
     int DesktopFile::crashCount()
     {
-        return this->desktopCrashCount;
+        return m_crashCount;
     }
 
     void DesktopFile::setCrashCount(int crashCount)
     {
-        this->desktopCrashCount = crashCount;
+        m_crashCount = crashCount;
     }
 
     QProcess *DesktopFile::launch(const QStringList &args)
     {
         QStringList realArgs;
 
-        for (auto &tmp : this->mainArgs) {
+        for (auto &tmp : m_args) {
             if (tmp.contains("%f")) {
                 tmp.replace("%f", args[0]);
             }
@@ -225,42 +223,42 @@ namespace Desktop
             realArgs << tmp;
         }
 
-        if (desktopSupportCrashCount && desktopCrashCount > 0) {
-            realArgs << "--crashes" << QString::number(desktopCrashCount);
+        if (m_crashCountSupported && m_crashCount > 0) {
+            realArgs << "--crashes" << QString::number(m_crashCount);
         }
 
         QProcess *ret = new QProcess(this);
-        ret->setProgram(mainExec);
+        ret->setProgram(m_exec);
         ret->setArguments(realArgs);
 
         // TODO: Support all fields properly..
-        qDebug() << "Command: " << mainExec << " " << realArgs;
+        qDebug() << "Command: " << m_exec << " " << realArgs;
 
         return ret;
     }
 
     const QString &DesktopFile::name()
     {
-        return this->desktopName;
+        return m_name;
     }
 
     const QString &DesktopFile::iconName()
     {
-        return this->desktopIcon;
+        return m_icon;
     }
 
     QIcon DesktopFile::icon()
     {
         // TODO: Check if we actually have some kind of QPixmap ..
-        if (this->desktopIcon.isEmpty()) {
+        if (m_icon.isEmpty()) {
             return QIcon::fromTheme("image-missing");
         }
-        return QIcon::fromTheme(this->desktopIcon, QIcon::fromTheme("image-missing"));
+        return QIcon::fromTheme(m_icon, QIcon::fromTheme("image-missing"));
     }
 
     bool DesktopFile::visible()
     {
-        return !this->desktopNoDisplay;
+        return !m_noDisplay;
     }
 }
 

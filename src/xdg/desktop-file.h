@@ -124,24 +124,24 @@ namespace Desktop
         bool visible();
 
     private:
-        bool valid;
-        QString path;
-        QString desktopID;
-        QString desktopExec;
-        QString desktopTryExec;
-        QString desktopName;
-        QString desktopIcon;
-        QStringList desktopOnlyShowIn;
-        QString desktopExecutable;
-        QString desktopFullCommand;
-        QString basename;
-        AutostartPhase desktopAutostartPhase;
-        int desktopAutostartDelay;
-        int desktopCrashCount;
-        bool desktopSupportCrashCount;
-        bool desktopNoDisplay;
-        QString mainExec;
-        QStringList mainArgs;
+        bool m_valid;
+        QString m_path;
+        QString m_id;
+        QString m_exec;
+        QString m_tryExec;
+        QString m_name;
+        QString m_icon;
+        QStringList m_onlyShowIn;
+        QString m_executable;
+        QString m_fullCommand;
+        QString m_basename;
+        AutostartPhase m_autostartPhase;
+        int m_autostartDelay;
+        int m_crashCount;
+        bool m_crashCountSupported;
+        bool m_noDisplay;
+        QString m_mainExec;
+        QStringList m_args;
 
         bool resolveExec(const QString &exec);
         void resolveAutostartConditions();
