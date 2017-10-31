@@ -124,14 +124,14 @@ namespace Desktop
         return true;
     }
 
-    bool DesktopFile::isValid()
+    bool DesktopFile::valid()
     {
-        return this->m_valid;
+        return m_valid;
     }
 
     const QString &DesktopFile::id()
     {
-        return this->m_basename;
+        return m_basename;
     }
 
     bool DesktopFile::canShowInDesktop(const QString &desktopName)

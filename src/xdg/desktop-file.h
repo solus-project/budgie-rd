@@ -41,7 +41,7 @@ namespace Desktop
         /**
          * Determine if the given .desktop file is actually valid
          */
-        bool isValid();
+        bool valid();
 
         /**
          * Return the ID for this desktop file, i.e. "gedit.desktop"

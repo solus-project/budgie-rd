@@ -134,7 +134,7 @@ namespace Session
 
                 // Determine if the path is really valid ..
                 auto desktopFile = new DesktopFile(iter.filePath());
-                if (!desktopFile->isValid() || !desktopFile->canShowInDesktop(xdgDesktopName)) {
+                if (!desktopFile->valid() || !desktopFile->canShowInDesktop(xdgDesktopName)) {
                     delete desktopFile;
                     continue;
                 }
@@ -167,7 +167,7 @@ namespace Session
             }
 
             auto desktopFile = new DesktopFile(iter.filePath());
-            if (!desktopFile->isValid() || !desktopFile->canShowInDesktop(xdgDesktopName)) {
+            if (!desktopFile->valid() || !desktopFile->canShowInDesktop(xdgDesktopName)) {
                 qWarning() << "Found .desktop file in session directory that isn't valid: "
                            << iter.filePath();
                 delete desktopFile;
