@@ -23,6 +23,7 @@ am_cppflags = [
     '-Wunreachable-code',
     '-Wall',
     '-W',
+    '-fPIC',
 ]
 
 # Global dirs
