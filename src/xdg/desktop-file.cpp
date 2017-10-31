@@ -242,6 +242,23 @@ namespace Desktop
         return m_name;
     }
 
+    QString DesktopFile::nameLocal()
+    {
+        static const QString desktopHeader = QStringLiteral("Desktop Entry");
+        static const QString localeName = QLocale::system().name();
+        static const QStringList localeSplit = localeName.split("_");
+
+        auto lookup = getString(desktopHeader, QString("Name[" + localeName + "]"));
+        if (!lookup.isEmpty()) {
+            return lookup;
+        }
+        lookup = getString(desktopHeader, QString("Name[" + localeSplit[0] + "]"), "");
+        if (!lookup.isEmpty()) {
+            return lookup;
+        }
+        return m_name;
+    }
+
     const QString &DesktopFile::iconName()
     {
         return m_icon;

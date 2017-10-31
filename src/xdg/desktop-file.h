@@ -108,6 +108,11 @@ namespace Desktop
         const QString &name();
 
         /**
+         * Return the localised name if possible
+         */
+        QString nameLocal();
+
+        /**
          * Return the icon field of the .desktop file.
          */
         const QString &iconName();
