@@ -27,6 +27,13 @@ namespace Desktop
           desktopSupportCrashCount(false)
     {
         static const QString desktopHeader = QStringLiteral("Desktop Entry");
+        QFileInfo inf(path);
+
+        if (!inf.exists()) {
+            return;
+        }
+
+        basename = inf.fileName();
 
         if (!hasSection(desktopHeader)) {
             return;
