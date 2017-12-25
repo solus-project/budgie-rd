@@ -8,7 +8,7 @@ shell_mocs = qt5.preprocess(
 
 shell_qrc = qt5.preprocess(
     qresources: [
-        'shell.qrc'
+        join_paths(meson.current_source_dir(), 'shell.qrc'),
     ]
 )
 
