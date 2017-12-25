@@ -29,6 +29,8 @@ namespace Panel
 
         connect(triggerButton, &QPushButton::clicked, this, &RavenTriggerApplet::onButtonClicked);
         setObjectName("raven-trigger-applet");
+
+        triggerButton->setFocusPolicy(Qt::NoFocus);
     }
 
     void RavenTriggerApplet::onButtonClicked()

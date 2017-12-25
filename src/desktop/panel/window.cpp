@@ -17,6 +17,9 @@
 #include <QDebug>
 #include <QHBoxLayout>
 
+#include "clock/clock.h"
+#include "raven-trigger/raven-trigger.h"
+
 namespace Panel
 {
     Window::Window(Desktop::ManagerInterface *desktopIface)
@@ -38,15 +41,24 @@ namespace Panel
         layout->addWidget(rootWidget);
         layout->setMargin(0);
 
+        // Clear any existing styles.
+        setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+
+        // Colour picking
         rootWidget->setObjectName("budgie-panel");
-        rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(0, 0, 0, 0.8); }");
+        // rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(68, 108, 179, 0.8);
+        // }");
+        rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(34, 49, 63, 0.89); }");
         rootWidget->setLayout(new QBoxLayout(QBoxLayout::LeftToRight));
         rootWidget->layout()->setMargin(0);
+
+        insertApplet(new ClockApplet());
+        insertApplet(new RavenTriggerApplet());
     }
 
     void Window::insertApplet(Applet *applet)
     {
-        static auto appletAlign = Qt::AlignLeft | Qt::AlignTop;
+        static auto appletAlign = Qt::AlignRight | Qt::AlignVCenter;
 
         auto layout = qobject_cast<QBoxLayout *>(this->rootWidget->layout());
         applet->setParent(rootWidget);

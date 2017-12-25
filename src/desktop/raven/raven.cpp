@@ -14,6 +14,7 @@
 #include <KWindowEffects>
 #include <QBoxLayout>
 #include <QDebug>
+#include <QLabel>
 
 namespace Raven
 {
@@ -33,10 +34,23 @@ namespace Raven
         layout->addWidget(rootWidget);
         layout->setMargin(0);
 
+        // Colour play
         rootWidget->setObjectName("raven-window");
-        rootWidget->setStyleSheet("#raven-window { background-color: rgba(0, 0, 0, 0.8); }");
-        rootWidget->setLayout(new QBoxLayout(QBoxLayout::LeftToRight));
+        // rootWidget->setStyleSheet("#raven-window { background-color: rgba(1, 50, 67, 0.8); }");
+        rootWidget->setStyleSheet("#raven-window { background-color: rgba(228, 241, 254, 0.8); }");
+
+        auto rlayout = new QBoxLayout(QBoxLayout::TopToBottom);
+        rootWidget->setLayout(rlayout);
         rootWidget->layout()->setMargin(0);
+
+        // Mimicking look of old Budgie
+        auto fakeHeader = new QWidget(rootWidget);
+        rlayout->addWidget(fakeHeader, 0, Qt::AlignTop);
+        fakeHeader->setStyleSheet("background-color: rgba(44, 62, 80, 0.99);");
+        fakeHeader->setFixedSize(500, 35);
+
+        auto lab = new QLabel("How Pretty Doth The Raven Seem\nIf only seen unto me", rootWidget);
+        rlayout->addWidget(lab, 0, Qt::AlignCenter);
     }
 
     void Window::handleDismiss()
