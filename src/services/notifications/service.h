@@ -27,7 +27,7 @@ namespace Budgie
      * as printing and power alerts, so that they can safely be displayed
      * once our main plugin is up and running.
      */
-    class NotificationService : public QObject, public ServiceInterface
+    class Q_DECL_EXPORT NotificationService : public QObject, public ServiceInterface
     {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "org.budgie-desktop.services.Notifications" FILE "service.json")
