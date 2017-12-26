@@ -26,7 +26,7 @@ const QString &Budgie::Shell::name()
 
 bool Budgie::Shell::start()
 {
-    auto service = m_registry->getService("notifications");
+    auto service = m_registry->getService(QStringLiteral("notifications"));
     if (service.isNull()) {
         qWarning() << "Failed to load notifications";
         return false;
