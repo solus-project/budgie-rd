@@ -66,7 +66,7 @@ static ShellStartupInfo *startup(int argc, char **argv)
 /**
  * Handle the GUI specific startup routine now
  */
-static QApplication *gui_main(int argc, char **argv)
+static QApplication *createApplication(int argc, char **argv)
 {
     QGuiApplication::setFallbackSessionManagementEnabled(false);
     QApplication *ret = nullptr;
@@ -115,7 +115,7 @@ int main(int argc, char **argv)
     qInfo() << "Starting shell session: " << shell->name();
 
     // Ideally we know what to do by this point, do GUI cruft.
-    gui.reset(gui_main(argc, argv));
+    gui.reset(createApplication(argc, argv));
     return gui->exec();
 }
 
