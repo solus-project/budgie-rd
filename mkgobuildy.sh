@@ -27,7 +27,7 @@ fi
 
 if [[ ! -d build ]]; then
     echo "Configuring budgie-rd"
-    meson build --prefix=/usr --sysconfdir=/etc --libdir=$LIBDIR
+    meson build --prefix=/usr --sysconfdir=/etc --libdir=$LIBDIR --buildtype debugoptimized
 fi
 
 echo "Building budgie-rd"
