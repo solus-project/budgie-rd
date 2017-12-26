@@ -14,7 +14,19 @@
 #include <QGuiApplication>
 #include <QScopedPointer>
 
+#include <QDebug>
+
 #include "config.h"
+
+/**
+ * Will expand in future, but we get this object from startup()
+ * which allows us to control the rest of our session startup,
+ * and control specific details before we attempt to initialise
+ * a display context.
+ */
+struct ShellStartupInfo {
+    QString sessionName;
+};
 
 /**
  * Handle our basic CLI parsing with a throwaway QCoreApplication
@@ -24,17 +36,31 @@
  * the QCoreApplication::arguments() even if you process manually,
  * hence this entry.
  */
-static void startup(int argc, char **argv)
+static ShellStartupInfo *startup(int argc, char **argv)
 {
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName("budgie-shell");
     QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
 
+    // Set up parser
     QCommandLineParser p;
     p.addHelpOption();
     p.addVersionOption();
     p.setApplicationDescription("Budgie Desktop R&D Shell");
+
+    // Allow setting the session type here
+    QCommandLineOption optSession({ "s", "session" },
+                                  QCoreApplication::translate("main", "Set the session to launch"),
+                                  "session-name",
+                                  "budgie-desktop");
+    p.addOption(optSession);
+
     p.process(app);
+
+    // Return what we know so far.
+    auto ret = new ShellStartupInfo();
+    ret->sessionName = p.value(optSession);
+    return ret;
 }
 
 /**
@@ -57,9 +83,12 @@ static QApplication *gui_main(int argc, char **argv)
 int main(int argc, char **argv)
 {
     QScopedPointer<QApplication> gui;
+    QScopedPointer<ShellStartupInfo> info;
 
     // Basic arg handling first
-    startup(argc, argv);
+    info.reset(startup(argc, argv));
+
+    qInfo() << "Starting shell session: " << info->sessionName;
 
     // Ideally we know what to do by this point, do GUI cruft.
     gui.reset(gui_main(argc, argv));
