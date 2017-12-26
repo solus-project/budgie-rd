@@ -56,6 +56,7 @@ bool Budgie::Shell::startServiceSet(const QStringList &serviceIDs, bool fatal)
             if (fatal) {
                 return false;
             }
+            continue;
         }
 
         qDebug() << "Starting service: " << serviceID;
@@ -64,6 +65,7 @@ bool Budgie::Shell::startServiceSet(const QStringList &serviceIDs, bool fatal)
             if (fatal) {
                 return false;
             }
+            continue;
         }
     }
 
