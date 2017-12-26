@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <QDir>
 #include <QObject>
 
 namespace Budgie
@@ -25,6 +26,9 @@ namespace Budgie
 
     public:
         explicit PluginRegistry();
+
+    private:
+        QDir m_systemDirectory;
     };
 }
 /*

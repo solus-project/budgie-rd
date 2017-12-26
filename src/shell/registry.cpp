@@ -9,11 +9,17 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QDebug>
+
+#include "config.h"
 #include "registry.h"
 
 Budgie::PluginRegistry::PluginRegistry()
 {
-#warning "IMPLEMENT ME!"
+    // Set up our default loader paths
+    m_systemDirectory = QStringLiteral(BUDGIE_PLUGIN_DIRECTORY);
+
+    qDebug() << "Set system directory to: " << m_systemDirectory.path();
 }
 
 /*
