@@ -12,6 +12,7 @@ plugin_kwin_sources = [
 
 plugin_kwin_includes = [
     config_h_dir,
+    libservice_interface_includes,
     include_directories('.'),
 ]
 
@@ -24,6 +25,5 @@ plugin_kwin = shared_module(
     include_directories: plugin_kwin_includes,
     dependencies: [
         dep_qtwidgets,
-        link_libservice_interface,
     ],
 )
