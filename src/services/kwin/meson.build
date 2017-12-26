@@ -19,6 +19,8 @@ plugin_kwin_includes = [
 # Windowing. It helps
 plugin_kwin = shared_module(
     'kwin',
+    install: true,
+    install_dir: service_plugin_dir,
     sources: [
         plugin_kwin_sources,
     ],

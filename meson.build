@@ -31,6 +31,10 @@ prefix = get_option('prefix')
 datadir = join_paths(prefix, get_option('datadir'))
 sessiondir = join_paths(datadir, 'budgie-session')
 sessiondir_desktop = join_paths(sessiondir, 'desktop')
+libdir = get_option('libdir')
+
+# Single top level plugin tree defined at build time
+budgie_plugin_dir = join_paths(libdir, meson.project_name(), 'plugins')
 
 add_global_arguments(am_cppflags, language: 'cpp')
 compiler = meson.get_compiler('cpp')

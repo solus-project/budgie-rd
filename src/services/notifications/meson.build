@@ -19,6 +19,8 @@ plugin_notifications_includes = [
 # Notification plugin
 plugin_notifications = shared_module(
     'notifications',
+    install: true,
+    install_dir: service_plugin_dir,
     sources: [
         plugin_notifications_sources,
     ],
