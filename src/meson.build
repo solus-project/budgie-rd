@@ -1,1 +1,2 @@
 subdir('shell')
+subdir('services')
