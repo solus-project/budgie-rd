@@ -35,13 +35,32 @@ namespace Budgie
         const QString &name();
 
         /**
-         * Attempt to start this shell instance.
+         * Attempt early initialisation of Shell, i.e. begin
+         * search for our plugins.
          */
-        bool start();
+        bool init();
+
+        /**
+         * Start absolutely essential services, usually this is just the
+         * window manager itself, just to ensure we have a valid graphical
+         * context before constructing an application.
+         */
+        bool startEssential();
+
+        /**
+         * Now continue with executing the rest of the services and begin
+         * a full shell startup
+         */
+        bool startRemaining();
 
     private:
         QSharedPointer<PluginRegistry> m_registry;
         QString m_name;
+
+        QStringList m_essentialServices;
+        QStringList m_standardServices;
+
+        bool startServiceSet(const QStringList &serviceIDs, bool fatal);
     };
 }
 /*

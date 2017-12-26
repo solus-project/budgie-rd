@@ -13,10 +13,14 @@
 
 #include "shell.h"
 
-Budgie::Shell::Shell(const QString &name)
+Budgie::Shell::Shell(const QString &name) : m_essentialServices({ "windowmanager" })
 {
     m_name = name;
     m_registry.reset(new PluginRegistry());
+
+    // This is a bit unrealistic but in future we'll take the service plugin
+    // list from some definition file.
+    m_standardServices << "notifications";
 }
 
 const QString &Budgie::Shell::name()
@@ -24,15 +28,46 @@ const QString &Budgie::Shell::name()
     return m_name;
 }
 
-bool Budgie::Shell::start()
+bool Budgie::Shell::init()
 {
-    auto service = m_registry->getService(QStringLiteral("notifications"));
-    if (service.isNull()) {
-        qWarning() << "Failed to load notifications";
-        return false;
+    // Lets pretend we error check
+    return true;
+}
+
+bool Budgie::Shell::startEssential()
+{
+    // We must be able to start all of our required service IDs otherwise
+    // we've failed completely.
+    return startServiceSet(m_essentialServices, true);
+}
+
+bool Budgie::Shell::startRemaining()
+{
+    // Not so fatal.
+    return startServiceSet(m_standardServices, false);
+}
+
+bool Budgie::Shell::startServiceSet(const QStringList &serviceIDs, bool fatal)
+{
+    for (const auto &serviceID : serviceIDs) {
+        auto service = m_registry->getService(serviceID);
+        if (service.isNull()) {
+            qWarning() << "Failed to load service: " << serviceID;
+            if (fatal) {
+                return false;
+            }
+        }
+
+        qDebug() << "Starting service: " << serviceID;
+        if (!service->start()) {
+            qWarning() << "Failed to start service: " << serviceID;
+            if (fatal) {
+                return false;
+            }
+        }
     }
-    qDebug() << "Starting notifications...";
-    return service->start();
+
+    return true;
 }
 
 /*

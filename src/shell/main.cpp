@@ -114,15 +114,28 @@ int main(int argc, char **argv)
 
     shell.reset(new Budgie::Shell(info->sessionName));
 
-    // Ideally we know what to do by this point, do GUI cruft.
+    // Sanitize our setup, ensure all services are accounted for
+    qDebug() << "init(): " << info->sessionName;
+    if (!shell->init()) {
+        qWarning() << "init(): Failed";
+        return 1;
+    }
+
+    // Now load essential services (windowmanager, etc.)
+    qDebug() << "startEssental(): " << info->sessionName;
+    if (!shell->startEssential()) {
+        qWarning() << "startEssential(): Failed";
+        return 1;
+    }
+
+    // By this point, essential services are running, now allow GUI
     gui.reset(createApplication(argc, argv));
 
     qInfo() << "Starting shell session: " << shell->name();
 
-    // Once the application is up and running with an event loop lets try
-    // to load the shell
+    // Start all remaining services now on the main event loop
     QTimer::singleShot(0, [shell]() {
-        if (!shell->start()) {
+        if (!shell->startRemaining()) {
             QCoreApplication::exit(1);
         }
     });
