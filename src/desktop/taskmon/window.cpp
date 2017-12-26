@@ -12,6 +12,7 @@
 #include "window.h"
 
 #include <KWindowSystem>
+#include <QDebug>
 #include <QString>
 
 namespace Task
@@ -29,6 +30,30 @@ namespace Task
         winIcon = info.iconName();
     }
 
+    void Window::close()
+    {
+        // Requires Qt5X11Extras which doesnt seem to be available via pkg-config, but im probably
+        // just to stupid to find it
+        // NETRootInfo(QX11Info::display(), NET::CloseWindow).closeWindowRequest(id);
+    }
+
+    void Window::minimize()
+    {
+        qDebug() << "Minimize " << winTitle;
+        KWindowSystem::minimizeWindow(id);
+    }
+
+    void Window::unminimize()
+    {
+        qDebug() << "Unminimize " << winTitle;
+        KWindowSystem::unminimizeWindow(id);
+    }
+
+    void Window::activate()
+    {
+        KWindowSystem::activateWindow(id);
+    }
+
     /* Getters */
     const QString Window::title()
     {
@@ -38,6 +63,16 @@ namespace Task
     const QString Window::iconName()
     {
         return this->winIcon;
+    }
+
+    const bool Window::active()
+    {
+        return KWindowSystem::activeWindow() == id;
+    }
+
+    const bool Window::minimized()
+    {
+        return KWindowInfo(id, NET::WMState | NET::XAWMState).isMinimized();
     }
 
     /* Setters - these will ensure we minimise signal noise by checking

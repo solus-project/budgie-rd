@@ -11,7 +11,9 @@
 
 #include "taskbutton.h"
 
+#include <QAction>
 #include <QDebug>
+#include <QMenu>
 
 namespace Panel
 {
@@ -20,11 +22,35 @@ namespace Panel
     {
         connect(window, &Task::Window::iconNameChanged, this, &TasklistButton::iconNameChanged);
         connect(window, &Task::Window::titleChanged, this, &TasklistButton::titleChanged);
+        connect(this, SIGNAL(released()), this, SLOT(handleRelease()));
+        createActions();
 
         titleChanged(window->title());
 
         // TODO: Make sure we have fallback icons in taskmon
         iconNameChanged(window->iconName());
+    }
+
+    void TasklistButton::createActions()
+    {
+        minimizeAct = new QAction(tr("&Minimize"), this);
+        minimizeAct->setStatusTip(tr("Minimze Window"));
+        connect(minimizeAct, SIGNAL(triggered()), window, SLOT(minimize()));
+
+        unminimizeAct = new QAction(tr("&Unminimize"), this);
+        unminimizeAct->setStatusTip(tr("Unminimize Window"));
+        connect(unminimizeAct, SIGNAL(triggered()), window, SLOT(activate()));
+    }
+
+    void TasklistButton::contextMenuEvent(QContextMenuEvent *event)
+    {
+        QMenu menu(this);
+        if (window->minimized()) {
+            menu.addAction(unminimizeAct);
+        } else {
+            menu.addAction(minimizeAct);
+        }
+        menu.exec(event->globalPos());
     }
 
     void TasklistButton::titleChanged(const QString &title)
@@ -35,5 +61,14 @@ namespace Panel
     void TasklistButton::iconNameChanged(const QString &iconName)
     {
         qDebug() << "Aaah an icon " << iconName;
+    }
+
+    void TasklistButton::handleRelease()
+    {
+        if (window->active()) {
+            window->minimize();
+        } else {
+            window->activate();
+        }
     }
 }

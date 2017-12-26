@@ -36,6 +36,35 @@ namespace Task
          */
         const QString iconName();
 
+        /**
+         * Wether this window has active focus or not.
+         */
+        const bool active();
+
+        const bool minimized();
+
+    public slots:
+
+        /**
+         * Close window
+         */
+        void close();
+
+        /**
+         * Minimize window
+         */
+        void minimize();
+
+        /**
+         * Unminimize window
+         */
+        void unminimize();
+
+        /**
+         * Activates window
+         */
+        void activate();
+
     signals:
 
         void titleChanged(const QString &title);
