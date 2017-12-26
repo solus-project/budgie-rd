@@ -60,4 +60,16 @@ foreach kde_component: kf5_components_needed
     kf5_deps += dep_tmp_kf5
 endforeach
 
+# Get configuration bits together
+cdata = configuration_data()
+cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
+cdata.set_quoted('PACKAGE_NAME', meson.project_name())
+
+# Write config.h now
+config_h = configure_file(
+     configuration: cdata,
+     output: 'config.h',
+)
+config_h_dir = include_directories('.')
+
 subdir('src')

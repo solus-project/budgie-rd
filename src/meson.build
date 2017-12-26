@@ -1,1 +1,1 @@
-# TODO: Flesh out attempt #2.
+subdir('shell')
