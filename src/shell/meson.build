@@ -1,5 +1,13 @@
+shell_mocs = qt5.preprocess(
+    moc_headers: [
+        'registry.h',
+    ],
+)
+
 shell_sources = [
     'main.cpp',
+    'registry.cpp',
+    shell_mocs,
 ]
 
 shell_includes = [
