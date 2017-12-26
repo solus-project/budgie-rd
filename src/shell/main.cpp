@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <QGuiApplication>
 #include <QScopedPointer>
+#include <QTimer>
 
 #include "config.h"
 #include "shell.h"
@@ -105,17 +106,27 @@ int main(int argc, char **argv)
 
     QScopedPointer<QApplication> gui;
     QScopedPointer<ShellStartupInfo> info;
-    QScopedPointer<Budgie::Shell> shell;
+    // Share refcount with timer singleShot
+    QSharedPointer<Budgie::Shell> shell;
 
     // Basic arg handling first
     info.reset(startup(argc, argv));
 
     shell.reset(new Budgie::Shell(info->sessionName));
 
-    qInfo() << "Starting shell session: " << shell->name();
-
     // Ideally we know what to do by this point, do GUI cruft.
     gui.reset(createApplication(argc, argv));
+
+    qInfo() << "Starting shell session: " << shell->name();
+
+    // Once the application is up and running with an event loop lets try
+    // to load the shell
+    QTimer::singleShot(0, [shell]() {
+        if (!shell->start()) {
+            QCoreApplication::exit(1);
+        }
+    });
+
     return gui->exec();
 }
 

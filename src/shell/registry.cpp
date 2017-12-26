@@ -22,6 +22,12 @@ Budgie::PluginRegistry::PluginRegistry()
     qDebug() << "Set system directory to: " << m_systemDirectory.path();
 }
 
+QSharedPointer<Budgie::ServiceInterface> Budgie::PluginRegistry::getService(const QString &name)
+{
+    qDebug() << "Looking for: " << name;
+    return nullptr;
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

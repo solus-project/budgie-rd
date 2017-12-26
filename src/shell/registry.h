@@ -13,6 +13,9 @@
 
 #include <QDir>
 #include <QObject>
+#include <QSharedPointer>
+
+#include "../services/service-interface.h"
 
 namespace Budgie
 {
@@ -26,6 +29,14 @@ namespace Budgie
 
     public:
         explicit PluginRegistry();
+
+        /**
+         * Get a service from our known service providers by the given
+         * name.
+         *
+         * Implementations to ensure to check for nullptr here.
+         */
+        QSharedPointer<ServiceInterface> getService(const QString &name);
 
     private:
         QDir m_systemDirectory;

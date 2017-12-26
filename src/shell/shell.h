@@ -34,6 +34,11 @@ namespace Budgie
          */
         const QString &name();
 
+        /**
+         * Attempt to start this shell instance.
+         */
+        bool start();
+
     private:
         QSharedPointer<PluginRegistry> m_registry;
         QString m_name;

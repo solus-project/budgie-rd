@@ -9,6 +9,8 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QDebug>
+
 #include "shell.h"
 
 Budgie::Shell::Shell(const QString &name)
@@ -20,6 +22,17 @@ Budgie::Shell::Shell(const QString &name)
 const QString &Budgie::Shell::name()
 {
     return m_name;
+}
+
+bool Budgie::Shell::start()
+{
+    auto service = m_registry->getService("notifications");
+    if (service.isNull()) {
+        qWarning() << "Failed to load notifications";
+        return false;
+    }
+    qDebug() << "Starting notifications...";
+    return service->start();
 }
 
 /*
