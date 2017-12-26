@@ -9,25 +9,19 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#pragma once
+#include "shell.h"
 
-#include <QObject>
-
-namespace Budgie
+Budgie::Shell::Shell()
 {
-    /**
-     * The PluginRegistry is used to locate plugins by capability and load
-     * them to construct a dynamic desktop environment.
-     */
-    class PluginRegistry : public QObject
-    {
-        Q_OBJECT
-
-    public:
-        explicit PluginRegistry();
-        ~PluginRegistry();
-    };
+    // Just set up our registry for now.
+    this->registry.reset(new PluginRegistry());
 }
+
+Budgie::Shell::~Shell()
+{
+#warning "IMPLEMENT ME!"
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

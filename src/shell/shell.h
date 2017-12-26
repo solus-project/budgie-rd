@@ -12,20 +12,26 @@
 #pragma once
 
 #include <QObject>
+#include <QSharedPointer>
+
+#include "registry.h"
 
 namespace Budgie
 {
     /**
-     * The PluginRegistry is used to locate plugins by capability and load
-     * them to construct a dynamic desktop environment.
+     * The Budgie::Shell is the basic execution environment for Budgie
+     * and uses the PluginRegistry to create and maintain a desktop environment.
      */
-    class PluginRegistry : public QObject
+    class Shell : public QObject
     {
         Q_OBJECT
 
     public:
-        explicit PluginRegistry();
-        ~PluginRegistry();
+        explicit Shell();
+        ~Shell();
+
+    private:
+        QSharedPointer<PluginRegistry> registry;
     };
 }
 /*
