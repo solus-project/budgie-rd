@@ -11,15 +11,20 @@
 
 #include "shell.h"
 
-Budgie::Shell::Shell()
+Budgie::Shell::Shell(const QString &name)
 {
-    // Just set up our registry for now.
-    this->registry.reset(new PluginRegistry());
+    m_name = name;
+    m_registry.reset(new PluginRegistry());
 }
 
 Budgie::Shell::~Shell()
 {
 #warning "IMPLEMENT ME!"
+}
+
+const QString &Budgie::Shell::name()
+{
+    return m_name;
 }
 
 /*

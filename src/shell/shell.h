@@ -27,11 +27,17 @@ namespace Budgie
         Q_OBJECT
 
     public:
-        explicit Shell();
+        explicit Shell(const QString &name);
         ~Shell();
 
+        /**
+         * Get the name for this Shell environment
+         */
+        const QString &name();
+
     private:
-        QSharedPointer<PluginRegistry> registry;
+        QSharedPointer<PluginRegistry> m_registry;
+        QString m_name;
     };
 }
 /*

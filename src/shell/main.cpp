@@ -11,12 +11,12 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QDebug>
 #include <QGuiApplication>
 #include <QScopedPointer>
 
-#include <QDebug>
-
 #include "config.h"
+#include "shell.h"
 
 /**
  * Will expand in future, but we get this object from startup()
@@ -84,11 +84,14 @@ int main(int argc, char **argv)
 {
     QScopedPointer<QApplication> gui;
     QScopedPointer<ShellStartupInfo> info;
+    QScopedPointer<Budgie::Shell> shell;
 
     // Basic arg handling first
     info.reset(startup(argc, argv));
 
-    qInfo() << "Starting shell session: " << info->sessionName;
+    shell.reset(new Budgie::Shell(info->sessionName));
+
+    qInfo() << "Starting shell session: " << shell->name();
 
     // Ideally we know what to do by this point, do GUI cruft.
     gui.reset(gui_main(argc, argv));
