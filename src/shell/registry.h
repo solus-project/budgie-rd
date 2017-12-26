@@ -25,7 +25,6 @@ namespace Budgie
 
     public:
         explicit PluginRegistry();
-        ~PluginRegistry();
     };
 }
 /*

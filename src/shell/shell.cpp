@@ -17,11 +17,6 @@ Budgie::Shell::Shell(const QString &name)
     m_registry.reset(new PluginRegistry());
 }
 
-Budgie::Shell::~Shell()
-{
-#warning "IMPLEMENT ME!"
-}
-
 const QString &Budgie::Shell::name()
 {
     return m_name;

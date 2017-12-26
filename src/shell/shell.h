@@ -28,7 +28,6 @@ namespace Budgie
 
     public:
         explicit Shell(const QString &name);
-        ~Shell();
 
         /**
          * Get the name for this Shell environment

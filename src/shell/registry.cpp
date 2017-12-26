@@ -11,11 +11,7 @@
 
 #include "registry.h"
 
-Budgie::PluginRegistry::PluginRegistry(){
-#warning "IMPLEMENT ME!"
-}
-
-Budgie::PluginRegistry::~PluginRegistry()
+Budgie::PluginRegistry::PluginRegistry()
 {
 #warning "IMPLEMENT ME!"
 }
