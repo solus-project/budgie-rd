@@ -2,10 +2,12 @@ plugin_kwin_mocs = qt5.preprocess(
     moc_headers: [
         'service.h',
     ],
+    include_directories: libservice_interface_includes,
 )
 
 plugin_kwin_sources = [
     'service.cpp',
+    plugin_kwin_mocs,
 ]
 
 plugin_kwin_includes = [
