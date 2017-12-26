@@ -26,18 +26,16 @@ am_cppflags = [
     '-fPIC',
 ]
 
-# Global dirs
-prefix = get_option('prefix')
-datadir = join_paths(prefix, get_option('datadir'))
-sessiondir = join_paths(datadir, 'budgie-session')
-sessiondir_desktop = join_paths(sessiondir, 'desktop')
-libdir = join_paths(prefix, get_option('libdir'))
-
-# Single top level plugin tree defined at build time
-budgie_plugin_dir = join_paths(libdir, meson.project_name(), 'plugins')
-
 add_global_arguments(am_cppflags, language: 'cpp')
 compiler = meson.get_compiler('cpp')
+
+path_prefix = get_option('prefix')
+path_sysconfdir = join_paths(path_prefix, get_option('sysconfdir'))
+path_datadir = join_paths(path_prefix, get_option('datadir'))
+path_bindir = join_paths(path_prefix, get_option('bindir'))
+path_libdir = join_paths(path_prefix, get_option('libdir'))
+
+path_plugin_dir = join_paths(path_libdir, meson.project_name(), 'plugins')
 
 qt5 = import('qt5')
 qt_min_version = '>= 5.9.1'
@@ -68,7 +66,7 @@ endforeach
 cdata = configuration_data()
 cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 cdata.set_quoted('PACKAGE_NAME', meson.project_name())
-cdata.set_quoted('BUDGIE_PLUGIN_DIRECTORY', budgie_plugin_dir)
+cdata.set_quoted('BUDGIE_PLUGIN_DIRECTORY', path_plugin_dir)
 
 # Write config.h now
 config_h = configure_file(
@@ -78,3 +76,18 @@ config_h = configure_file(
 config_h_dir = include_directories('.')
 
 subdir('src')
+
+report = [
+    '    Build configuration:',
+    '    ====================',
+    '',
+    '    prefix:                                 @0@'.format(path_prefix),
+    '    datadir:                                @0@'.format(path_datadir),
+    '    sysconfdir:                             @0@'.format(path_sysconfdir),
+    '    bindir:                                 @0@'.format(path_bindir),
+    '    libdir:                                 @0@'.format(path_libdir),
+    '    plugins:                                @0@'.format(path_plugin_dir),
+]
+
+# Output some stuff to validate the build config
+message('\n\n\n' + '\n'.join(report) + '\n\n')

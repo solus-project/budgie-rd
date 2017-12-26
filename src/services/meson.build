@@ -8,7 +8,7 @@ enabled_services = [
     'notifications',
 ]
 
-service_plugin_dir = join_paths(budgie_plugin_dir, 'services')
+path_service_plugin_dir = join_paths(path_plugin_dir, 'services')
 
 foreach service : enabled_services
     subdir(service)

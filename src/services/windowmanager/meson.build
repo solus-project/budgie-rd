@@ -20,7 +20,7 @@ plugin_windowmanager_includes = [
 plugin_windowmanager = shared_module(
     'windowmanager',
     install: true,
-    install_dir: service_plugin_dir,
+    install_dir: path_service_plugin_dir,
     sources: [
         plugin_windowmanager_sources,
     ],
