@@ -30,9 +30,9 @@ namespace Panel
         timer.reset(new QTimer());
 
         connect(timer.data(), &QTimer::timeout, this, &ClockApplet::onTimer);
-        
-        //Prediction of the first time where the time changed
-        //59 - QDateTime::currentDateTime().time().second() + 2
+
+        // Prediction of the first time where the time changed
+        // 59 - QDateTime::currentDateTime().time().second() + 2
         timer->setInterval((61 - QDateTime::currentDateTime().time().second()) * 1000);
         timer->start();
 
@@ -45,7 +45,7 @@ namespace Panel
 
     void ClockApplet::onTimer()
     {
-        //Set to 60s instead of the first Interval
+        // Set to 60s instead of the first Interval
         timer.setInterval(60000);
         QString now = QDateTime::currentDateTime().toString(QStringLiteral("hh:mm"));
 
