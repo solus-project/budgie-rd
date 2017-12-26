@@ -4,7 +4,7 @@ libservice_interface_includes = [
 
 # In future we may allow disabling some services
 enabled_services = [
-    'kwin',
+    'windowmanager',
     'notifications',
 ]
 

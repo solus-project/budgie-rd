@@ -11,12 +11,12 @@
 
 #include "service.h"
 
-bool Budgie::KWinService::start()
+bool Budgie::WindowManager::start()
 {
     return false;
 }
 
-bool Budgie::KWinService::stop()
+bool Budgie::WindowManager::stop()
 {
     return true;
 }

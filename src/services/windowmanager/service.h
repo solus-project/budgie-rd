@@ -18,13 +18,13 @@
 namespace Budgie
 {
     /**
-     * KWinService implements base level support for the KWin window
+     * WindowManager implements base level support for the KWin window
      * manager within Budgie.
      */
-    class Q_DECL_EXPORT KWinService : public QObject, public ServiceInterface
+    class Q_DECL_EXPORT WindowManager : public QObject, public ServiceInterface
     {
         Q_OBJECT
-        Q_PLUGIN_METADATA(IID "org.budgie-desktop.services.KWin" FILE "service.json")
+        Q_PLUGIN_METADATA(IID "org.budgie-desktop.services.WindowManager" FILE "service.json")
         Q_INTERFACES(Budgie::ServiceInterface)
 
     public:
