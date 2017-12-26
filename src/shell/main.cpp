@@ -78,10 +78,31 @@ static QApplication *gui_main(int argc, char **argv)
 }
 
 /**
+ * Handle any session-specific desktop overrides we need to put in place.
+ * Currently this is setting the xdg desktop name/session name for this
+ * process and all descendants.
+ */
+static void initEnvironment()
+{
+    QString xdgDesktopName = "Budgie";
+    auto xdgLocal = xdgDesktopName.toLocal8Bit();
+
+    // Ensure desktop session is correct
+    qputenv("DESKTOP_SESSION", xdgLocal);
+
+    // Must ensure XDG_DESKTOP_NAME is correct, display managers may end up
+    // changing this which we very much do not want.
+    qputenv("XDG_DESKTOP_NAME", xdgLocal);
+}
+
+/**
  * Main entry: Process args, begin main
  */
 int main(int argc, char **argv)
 {
+    // Before any Qt usage
+    initEnvironment();
+
     QScopedPointer<QApplication> gui;
     QScopedPointer<ShellStartupInfo> info;
     QScopedPointer<Budgie::Shell> shell;
