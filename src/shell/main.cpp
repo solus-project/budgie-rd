@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     p.setApplicationDescription("Budgie Desktop R&D Shell");
     p.process(app);
 
-    return 0;
+    return app.exec();
 }
 
 /*
