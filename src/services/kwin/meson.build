@@ -16,7 +16,7 @@ plugin_kwin_includes = [
     include_directories('.'),
 ]
 
-# Our main plugin_kwin is the execution environment
+# Windowing. It helps
 plugin_kwin = shared_module(
     'kwin',
     sources: [
