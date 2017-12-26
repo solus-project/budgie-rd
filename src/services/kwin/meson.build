@@ -1,18 +1,15 @@
 plugin_kwin_mocs = qt5.preprocess(
     moc_headers: [
         'service.h',
-        '../service-interface.h'
     ],
 )
 
 plugin_kwin_sources = [
     'service.cpp',
-    plugin_kwin_mocs,
 ]
 
 plugin_kwin_includes = [
     config_h_dir,
-    shell_includes,
     include_directories('.'),
 ]
 
@@ -25,5 +22,6 @@ plugin_kwin = shared_module(
     include_directories: plugin_kwin_includes,
     dependencies: [
         dep_qtwidgets,
+        link_libservice_interface,
     ],
 )

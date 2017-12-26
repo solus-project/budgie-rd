@@ -13,7 +13,7 @@
 
 #include <QObject>
 
-#include "../service-interface.h"
+#include "service-interface.h"
 
 namespace Budgie
 {
