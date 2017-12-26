@@ -12,20 +12,21 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QGuiApplication>
+#include <QScopedPointer>
 
 #include "config.h"
 
 /**
- * Main entry into Budgie.
- * Effectively start the application lifecycle, and then load all the relevant
- * services/providers to build a desktop environment for the user.
+ * Handle our basic CLI parsing with a throwaway QCoreApplication
+ *
+ * This ensures we don't yet use any display-context sensitive event
+ * loops. Unfortunately QCommandLineParser will still try to use
+ * the QCoreApplication::arguments() even if you process manually,
+ * hence this entry.
  */
-int main(int argc, char **argv)
+static void startup(int argc, char **argv)
 {
-    QGuiApplication::setFallbackSessionManagementEnabled(false);
-
-    QApplication app(argc, argv);
-
+    QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName("budgie-shell");
     QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
 
@@ -34,8 +35,35 @@ int main(int argc, char **argv)
     p.addVersionOption();
     p.setApplicationDescription("Budgie Desktop R&D Shell");
     p.process(app);
+}
 
-    return app.exec();
+/**
+ * Handle the GUI specific startup routine now
+ */
+static QApplication *gui_main(int argc, char **argv)
+{
+    QGuiApplication::setFallbackSessionManagementEnabled(false);
+    QApplication *ret = nullptr;
+
+    // TODO: Maybe do something useful here
+    ret = new QApplication(argc, argv);
+
+    return ret;
+}
+
+/**
+ * Main entry: Process args, begin main
+ */
+int main(int argc, char **argv)
+{
+    QScopedPointer<QApplication> gui;
+
+    // Basic arg handling first
+    startup(argc, argv);
+
+    // Ideally we know what to do by this point, do GUI cruft.
+    gui.reset(gui_main(argc, argv));
+    return gui->exec();
 }
 
 /*
