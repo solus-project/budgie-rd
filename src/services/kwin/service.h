@@ -23,8 +23,8 @@ namespace Budgie
      */
     class KWinPlugin : public QObject, public ServiceInterface
     {
-        Q_PLUGIN_METADATA(IID "org.budgie-desktop.services.KWin" FILE "service.json")
         Q_OBJECT
+        Q_PLUGIN_METADATA(IID "org.budgie-desktop.services.KWin" FILE "service.json")
         Q_INTERFACES(Budgie::ServiceInterface)
 
     public:
