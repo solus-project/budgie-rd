@@ -18,8 +18,8 @@
 namespace Budgie
 {
     /**
-     * WindowManager implements base level support for the KWin window
-     * manager within Budgie.
+     * WindowManager implements basic abstraction around the window manager
+     * so that it can be managed within the execution context
      */
     class Q_DECL_EXPORT WindowManager : public QObject, public ServiceInterface
     {
