@@ -137,9 +137,11 @@ int main(int argc, char **argv)
     QTimer::singleShot(0, [shell]() {
         if (!shell->startRemaining()) {
             QCoreApplication::exit(1);
+            return;
         }
         if (!shell->startFace()) {
             QCoreApplication::exit(1);
+            return;
         }
         qDebug() << "Budgie startup reported as nominal";
     });
