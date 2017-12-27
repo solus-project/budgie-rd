@@ -38,6 +38,15 @@ bool Budgie::Shell::init()
             qWarning() << "Missing service plugin: " << id;
             return false;
         }
+        auto service = m_registry->getService(id);
+        if (service.isNull()) {
+            qWarning() << "Failed to load service: " << id;
+            return false;
+        }
+        if (!service->init(this)) {
+            qWarning() << "Cannot init plugin: " << id;
+            return false;
+        }
     }
 
     // We need our face
@@ -66,13 +75,6 @@ bool Budgie::Shell::startServiceSet(const QStringList &serviceIDs, bool fatal)
 {
     for (const auto &serviceID : serviceIDs) {
         auto service = m_registry->getService(serviceID);
-        if (service.isNull()) {
-            qWarning() << "Failed to load service: " << serviceID;
-            if (fatal) {
-                return false;
-            }
-            continue;
-        }
 
         qDebug() << "Starting service: " << serviceID;
         if (!service->start()) {
@@ -96,7 +98,7 @@ bool Budgie::Shell::startFace()
     }
 
     // Init plugin
-    if (!face->init()) {
+    if (!face->init(this)) {
         qWarning() << "Failed to init face:" << m_faceName;
         return false;
     }

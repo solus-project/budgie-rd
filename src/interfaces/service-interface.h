@@ -11,6 +11,8 @@
 
 #pragma once
 
+#include "shell-interface.h"
+
 namespace Budgie
 {
     /**
@@ -27,6 +29,11 @@ namespace Budgie
         virtual ~ServiceInterface()
         {
         }
+
+        /**
+         * Ask the service to initialise with the given ShellInterface
+         */
+        virtual bool init(const ShellInterface *shell) = 0;
 
         /**
          * Ask the service interface to start itself

@@ -13,6 +13,12 @@
 
 #include "service.h"
 
+bool Budgie::WindowManagerService::init(const Budgie::ShellInterface *interface)
+{
+    m_shell = interface;
+    return true;
+}
+
 bool Budgie::WindowManagerService::start()
 {
     qDebug() << "Hello from WindowManagerService";

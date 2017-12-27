@@ -15,6 +15,7 @@
 #include <QSharedPointer>
 
 #include "registry.h"
+#include "shell-interface.h"
 
 namespace Budgie
 {
@@ -22,7 +23,7 @@ namespace Budgie
      * The Budgie::Shell is the basic execution environment for Budgie
      * and uses the PluginRegistry to create and maintain a desktop environment.
      */
-    class Shell : public QObject
+    class Shell : public QObject, public ShellInterface
     {
         Q_OBJECT
 

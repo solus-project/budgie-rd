@@ -9,26 +9,24 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QDebug>
+#pragma once
 
-#include "service.h"
-
-bool Budgie::NotificationService::init(const Budgie::ShellInterface *interface)
+namespace Budgie
 {
-    m_shell = interface;
-    return true;
+    /**
+     * The ShellInterface provides access to the Shell APIs, and allows
+     * registration and querying of services.
+     */
+    class ShellInterface
+    {
+    public:
+        virtual ~ShellInterface()
+        {
+        }
+    };
 }
 
-bool Budgie::NotificationService::start()
-{
-    qDebug() << "Hello from NotificationService";
-    return true;
-}
-
-bool Budgie::NotificationService::stop()
-{
-    return true;
-}
+Q_DECLARE_INTERFACE(Budgie::ShellInterface, "org.budgie-desktop.ShellInterface")
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

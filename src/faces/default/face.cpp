@@ -13,8 +13,9 @@
 
 #include "face.h"
 
-bool Budgie::DefaultFace::init()
+bool Budgie::DefaultFace::init(const Budgie::ShellInterface *interface)
 {
+    m_shell = interface;
     qDebug() << "Init DefaultFace";
     return true;
 }
