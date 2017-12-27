@@ -30,13 +30,8 @@ Budgie::Plugin::Plugin(QPluginLoader *loader) : m_loader(loader)
 {
     m_filename = m_loader->fileName();
     auto json = m_loader->metaData().toVariantMap();
-
-    // TODO: Set our name from the JSON
-    for (const auto &key : json.keys()) {
-        qDebug() << "JSON key: " << key;
-    }
-
-    qDebug() << "New plugin loaded: " << m_filename;
+    m_name = m_loader->metaData().value("IID").toString();
+    qDebug() << "New plugin loaded: " << m_name;
 }
 
 Budgie::Plugin::~Plugin()
