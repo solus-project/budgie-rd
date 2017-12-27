@@ -2,7 +2,12 @@
 # for the include_directories
 subdir('interfaces')
 
+# Build primary shell and services
 subdir('shell')
 subdir('services')
 
+# Build our scaffolding components for the faces to make use of
+subdir('scaffolding')
+
+# Now build our actual desktop
 subdir('faces')
