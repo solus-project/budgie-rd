@@ -9,11 +9,14 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QDebug>
+
 #include "service.h"
 
 bool Budgie::WindowManagerService::start()
 {
-    return false;
+    qDebug() << "Hello from WindowManagerService";
+    return true;
 }
 
 bool Budgie::WindowManagerService::stop()

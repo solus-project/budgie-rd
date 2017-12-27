@@ -9,11 +9,14 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QDebug>
+
 #include "service.h"
 
 bool Budgie::NotificationService::start()
 {
-    return false;
+    qDebug() << "Hello from NotificationService";
+    return true;
 }
 
 bool Budgie::NotificationService::stop()
