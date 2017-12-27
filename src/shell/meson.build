@@ -1,5 +1,6 @@
 shell_mocs = qt5.preprocess(
     moc_headers: [
+        'plugin.h',
         'registry.h',
         'shell.h',
     ],
@@ -7,6 +8,7 @@ shell_mocs = qt5.preprocess(
 
 shell_sources = [
     'main.cpp',
+    'plugin.cpp',
     'registry.cpp',
     'shell.cpp',
     shell_mocs,

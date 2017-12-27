@@ -24,8 +24,38 @@ Budgie::PluginRegistry::PluginRegistry()
 
 QSharedPointer<Budgie::ServiceInterface> Budgie::PluginRegistry::getService(const QString &name)
 {
-    qDebug() << "Looking for: " << name;
+    QString lookup("services/" + name);
+    qDebug() << "Looking for: " << lookup;
     return nullptr;
+}
+
+/**
+ * Attempt to load a service plugin with the given name
+ */
+bool Budgie::PluginRegistry::loadServicePlugin(const QString &name)
+{
+    QDir serviceDir(m_systemDirectory.filePath("services"));
+    QString lookup("services/" + name);
+
+    // Sure, whatever. We already loaded it. :P
+    if (m_plugins.contains(lookup)) {
+        return true;
+    }
+
+    // TODO: Make this portable and not janky.
+    QString libName("lib" + name + ".so");
+    QString fullPath = serviceDir.filePath(libName);
+
+    Budgie::Plugin *plugin = Budgie::Plugin::newFromFilename(fullPath);
+
+    if (!plugin) {
+        return false;
+    }
+
+    // Now make this plugin instance owned
+    qDebug() << "Loaded " << lookup;
+    m_plugins.insert(lookup, QSharedPointer<Budgie::Plugin>(plugin));
+    return true;
 }
 
 /*

@@ -11,13 +11,8 @@
 
 #pragma once
 
-#include <QDir>
-#include <QHash>
 #include <QObject>
-#include <QSharedPointer>
-
-#include "../services/service-interface.h"
-#include "plugin.h"
+#include <QPluginLoader>
 
 namespace Budgie
 {
@@ -25,29 +20,34 @@ namespace Budgie
      * The PluginRegistry is used to locate plugins by capability and load
      * them to construct a dynamic desktop environment.
      */
-    class PluginRegistry : public QObject
+    class Plugin : public QObject
     {
         Q_OBJECT
 
-        friend class Shell;
-
     public:
-        explicit PluginRegistry();
+        ~Plugin();
 
         /**
-         * Get a service from our known service providers by the given
-         * name.
-         *
-         * Implementations to ensure to check for nullptr here.
+         * Attempt to construct a new plugin from the given filepath
          */
-        QSharedPointer<ServiceInterface> getService(const QString &name);
+        static Plugin *newFromFilename(const QString &path);
 
-    protected:
-        bool loadServicePlugin(const QString &name);
+        /**
+         * Grab the name for this plugin
+         */
+        const QString &name();
+
+        /**
+         * Get the absolute filename for this plugin
+         */
+        const QString &fileName();
 
     private:
-        QDir m_systemDirectory;
-        QHash<QString, QSharedPointer<Plugin>> m_plugins;
+        explicit Plugin(QPluginLoader *loader);
+
+        QString m_name;
+        QString m_filename;
+        QScopedPointer<QPluginLoader> m_loader;
     };
 }
 /*

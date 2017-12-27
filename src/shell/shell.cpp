@@ -30,7 +30,13 @@ const QString &Budgie::Shell::name()
 
 bool Budgie::Shell::init()
 {
-    // Lets pretend we error check
+    auto serviceSet = m_essentialServices + m_standardServices;
+    for (const auto &id : serviceSet) {
+        if (!m_registry->loadServicePlugin(id)) {
+            qWarning() << "Unable to load service plugin: " << id;
+            return false;
+        }
+    }
     return true;
 }
 
