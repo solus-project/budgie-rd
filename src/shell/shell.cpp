@@ -14,15 +14,11 @@
 #include "shell.h"
 
 Budgie::Shell::Shell(const QString &name)
-    : m_faceName("org.budgie-desktop.faces.Default"),
-      m_essentialServices({ "org.budgie-desktop.services.WindowManager" })
+    : m_registry(new PluginRegistry()), m_name(name),
+      m_faceName("org.budgie-desktop.faces.Default"),
+      m_essentialServices({ "org.budgie-desktop.services.WindowManager" }),
+      m_standardServices({ "org.budgie-desktop.services.Notifications" })
 {
-    m_name = name;
-    m_registry.reset(new PluginRegistry());
-
-    // This is a bit unrealistic but in future we'll take the service plugin
-    // list from some definition file.
-    m_standardServices << "org.budgie-desktop.services.Notifications";
 }
 
 const QString &Budgie::Shell::name()
