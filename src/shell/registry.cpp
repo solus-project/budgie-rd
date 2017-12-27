@@ -22,30 +22,24 @@ Budgie::PluginRegistry::PluginRegistry()
     qDebug() << "Set system directory to: " << m_systemDirectory.path();
 }
 
-QSharedPointer<Budgie::ServiceInterface> Budgie::PluginRegistry::getService(const QString &name)
+template <class T> QSharedPointer<T> Budgie::PluginRegistry::getPlugin(const QString &name)
 {
-    QString lookup("services/" + name);
-    QSharedPointer<Budgie::Plugin> plugin = m_plugins.value(lookup, nullptr);
+    QSharedPointer<Budgie::Plugin> plugin = m_plugins.value(name, nullptr);
     if (plugin.isNull()) {
-        qDebug() << "Unknown service plugin: " << name;
+        qDebug() << "Unknown plugin: " << name;
         return nullptr;
     }
+    return QSharedPointer<T>(qobject_cast<T *>(plugin->instance()));
+}
 
-    return QSharedPointer<Budgie::ServiceInterface>(
-        qobject_cast<Budgie::ServiceInterface *>(plugin->instance()));
+QSharedPointer<Budgie::ServiceInterface> Budgie::PluginRegistry::getService(const QString &name)
+{
+    return getPlugin<Budgie::ServiceInterface>(QStringLiteral("services/") + name);
 }
 
 QSharedPointer<Budgie::FaceInterface> Budgie::PluginRegistry::getFace(const QString &name)
 {
-    QString lookup("faces/" + name);
-    QSharedPointer<Budgie::Plugin> plugin = m_plugins.value(lookup, nullptr);
-    if (plugin.isNull()) {
-        qDebug() << "Unknown face plugin:" << name;
-        return nullptr;
-    }
-
-    return QSharedPointer<Budgie::FaceInterface>(
-        qobject_cast<Budgie::FaceInterface *>(plugin->instance()));
+    return getPlugin<Budgie::FaceInterface>(QStringLiteral("faces/") + name);
 }
 
 bool Budgie::PluginRegistry::hasPlugin(const QString &name)

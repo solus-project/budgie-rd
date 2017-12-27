@@ -36,6 +36,13 @@ namespace Budgie
         explicit PluginRegistry();
 
         /**
+         * Return a Plugin instance with the given absolute name.
+         * Callers should ensure to prefix with the right type or
+         * use the accessor functions.
+         */
+        template <class T> QSharedPointer<T> getPlugin(const QString &name);
+
+        /**
          * Get a service from our known service providers by the given
          * name.
          *
