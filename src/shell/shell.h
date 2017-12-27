@@ -33,7 +33,7 @@ namespace Budgie
         /**
          * Get the name for this Shell environment
          */
-        const QString &name();
+        const QString &sessionName() override;
 
         /**
          * Attempt early initialisation of Shell, i.e. begin
@@ -61,7 +61,7 @@ namespace Budgie
 
     private:
         QSharedPointer<PluginRegistry> m_registry;
-        QString m_name;
+        QString m_sessionName;
 
         QString m_faceName;
 

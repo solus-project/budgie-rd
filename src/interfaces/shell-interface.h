@@ -23,6 +23,11 @@ namespace Budgie
         virtual ~ShellInterface()
         {
         }
+
+        /**
+         * Return the session name
+         */
+        virtual const QString &sessionName() = 0;
     };
 }
 

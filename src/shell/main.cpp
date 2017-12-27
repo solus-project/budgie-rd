@@ -131,7 +131,7 @@ int main(int argc, char **argv)
     // By this point, essential services are running, now allow GUI
     gui.reset(createApplication(argc, argv));
 
-    qInfo() << "Starting shell session: " << shell->name();
+    qInfo() << "Starting shell session: " << shell->sessionName();
 
     // Start all remaining services now on the main event loop
     QTimer::singleShot(0, [shell]() {
