@@ -2,7 +2,7 @@ plugin_notifications_mocs = qt5.preprocess(
     moc_headers: [
         'service.h',
     ],
-    include_directories: libservice_interface_includes,
+    include_directories: interface_include_directories,
 )
 
 plugin_notifications_sources = [
@@ -12,7 +12,7 @@ plugin_notifications_sources = [
 
 plugin_notifications_includes = [
     config_h_dir,
-    libservice_interface_includes,
+    interface_include_directories,
     include_directories('.'),
 ]
 

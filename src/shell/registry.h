@@ -16,9 +16,9 @@
 #include <QObject>
 #include <QSharedPointer>
 
-#include "../faces/face-interface.h"
-#include "../services/service-interface.h"
+#include "face-interface.h"
 #include "plugin.h"
+#include "service-interface.h"
 
 namespace Budgie
 {

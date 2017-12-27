@@ -2,7 +2,7 @@ plugin_default_face_mocs = qt5.preprocess(
     moc_headers: [
         'face.h',
     ],
-    include_directories: libface_interface_includes,
+    include_directories: interface_include_directories,
 )
 
 plugin_default_face_sources = [
@@ -12,7 +12,7 @@ plugin_default_face_sources = [
 
 plugin_default_face_includes = [
     config_h_dir,
-    libface_interface_includes,
+    interface_include_directories,
     include_directories('.'),
 ]
 

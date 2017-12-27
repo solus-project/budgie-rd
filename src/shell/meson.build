@@ -4,6 +4,7 @@ shell_mocs = qt5.preprocess(
         'registry.h',
         'shell.h',
     ],
+    include_directories: interface_include_directories,
 )
 
 shell_sources = [
@@ -17,6 +18,7 @@ shell_sources = [
 shell_includes = [
     config_h_dir,
     include_directories('.'),
+    interface_include_directories,
 ]
 
 # Our main shell is the execution environment
