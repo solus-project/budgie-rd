@@ -45,12 +45,9 @@ bool Budgie::PluginRegistry::hasServicePlugin(const QString &name)
     return m_plugins.contains(QStringLiteral("services/") + name);
 }
 
-/**
- * Discover all available plugins and store them by their identifiers
- */
-void Budgie::PluginRegistry::discover()
+void Budgie::PluginRegistry::discoverType(const QString &type)
 {
-    QDir serviceDir(m_systemDirectory.filePath("services"));
+    QDir serviceDir(m_systemDirectory.filePath(type));
     QDirIterator it(serviceDir, QDirIterator::NoIteratorFlags);
     while (it.hasNext()) {
         QFileInfo info(it.next());
@@ -69,16 +66,26 @@ void Budgie::PluginRegistry::discover()
             continue;
         }
 
-        QString fullID("services/" + plugin->name());
+        QString fullID(type + "/" + plugin->name());
         if (m_plugins.contains(fullID)) {
-            qDebug() << "Not replacing service plugin" << fullID << "with " << info.fileName();
+            qDebug() << "Not replacing " << type << " plugin" << fullID << "with "
+                     << info.fileName();
             delete plugin;
             continue;
         }
 
         m_plugins.insert(fullID, QSharedPointer<Budgie::Plugin>(plugin));
-        qDebug() << "New plugin: " << fullID << "(" << info.filePath() << ")";
+        qDebug() << "New " << type << " plugin: " << fullID << "(" << info.filePath() << ")";
     }
+}
+
+/**
+ * Discover all available plugins and store them by their identifiers
+ */
+void Budgie::PluginRegistry::discover()
+{
+    discoverType("services");
+    discoverType("faces");
 }
 
 /*

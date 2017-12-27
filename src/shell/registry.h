@@ -54,6 +54,7 @@ namespace Budgie
 
     protected:
         void discover();
+        void discoverType(const QString &type);
 
     private:
         QDir m_systemDirectory;
