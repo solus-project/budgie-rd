@@ -27,12 +27,25 @@ QSharedPointer<Budgie::ServiceInterface> Budgie::PluginRegistry::getService(cons
     QString lookup("services/" + name);
     QSharedPointer<Budgie::Plugin> plugin = m_plugins.value(lookup, nullptr);
     if (plugin.isNull()) {
-        qDebug() << "Unknown plugin: " << name;
+        qDebug() << "Unknown service plugin: " << name;
         return nullptr;
     }
 
     return QSharedPointer<Budgie::ServiceInterface>(
         qobject_cast<Budgie::ServiceInterface *>(plugin->instance()));
+}
+
+QSharedPointer<Budgie::FaceInterface> Budgie::PluginRegistry::getFace(const QString &name)
+{
+    QString lookup("faces/" + name);
+    QSharedPointer<Budgie::Plugin> plugin = m_plugins.value(lookup, nullptr);
+    if (plugin.isNull()) {
+        qDebug() << "Unknown face plugin:" << name;
+        return nullptr;
+    }
+
+    return QSharedPointer<Budgie::FaceInterface>(
+        qobject_cast<Budgie::FaceInterface *>(plugin->instance()));
 }
 
 bool Budgie::PluginRegistry::hasPlugin(const QString &name)
@@ -43,6 +56,11 @@ bool Budgie::PluginRegistry::hasPlugin(const QString &name)
 bool Budgie::PluginRegistry::hasServicePlugin(const QString &name)
 {
     return m_plugins.contains(QStringLiteral("services/") + name);
+}
+
+bool Budgie::PluginRegistry::hasFacePlugin(const QString &name)
+{
+    return m_plugins.contains(QStringLiteral("faces/") + name);
 }
 
 void Budgie::PluginRegistry::discoverType(const QString &type)

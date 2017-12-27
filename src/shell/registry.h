@@ -16,6 +16,7 @@
 #include <QObject>
 #include <QSharedPointer>
 
+#include "../faces/face-interface.h"
 #include "../services/service-interface.h"
 #include "plugin.h"
 
@@ -38,9 +39,17 @@ namespace Budgie
          * Get a service from our known service providers by the given
          * name.
          *
-         * Implementations to ensure to check for nullptr here.
+         * Implementations should ensure they check for nullptr here
          */
         QSharedPointer<ServiceInterface> getService(const QString &name);
+
+        /**
+         * Get a face from our known face providers by the given
+         * name.
+         *
+         * Implementations should ensure they check for nullptr here
+         */
+        QSharedPointer<FaceInterface> getFace(const QString &name);
 
         /**
          * Determine if we have the given plugin or not
@@ -51,6 +60,11 @@ namespace Budgie
          * Wrap hasPlugin to lookup the name with services/ prefix
          */
         bool hasServicePlugin(const QString &name);
+
+        /**
+         * Wrap hasPlugin to lookup the name with the faces/ prefix
+         */
+        bool hasFacePlugin(const QString &name);
 
     protected:
         void discover();
