@@ -21,7 +21,7 @@ namespace Budgie
      * WindowManager implements basic abstraction around the window manager
      * so that it can be managed within the execution context
      */
-    class Q_DECL_EXPORT WindowManager : public QObject, public ServiceInterface
+    class Q_DECL_EXPORT WindowManagerService : public QObject, public ServiceInterface
     {
         Q_OBJECT
         Q_PLUGIN_METADATA(IID "org.budgie-desktop.services.WindowManager" FILE "service.json")
