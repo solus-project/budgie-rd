@@ -18,15 +18,19 @@ Budgie::PluginRegistry::PluginRegistry()
 {
     // Set up our default loader paths
     m_systemDirectory = QStringLiteral(BUDGIE_PLUGIN_DIRECTORY);
-
     qDebug() << "Set system directory to: " << m_systemDirectory.path();
 }
 
 QSharedPointer<Budgie::ServiceInterface> Budgie::PluginRegistry::getService(const QString &name)
 {
     QString lookup("services/" + name);
-    qDebug() << "Looking for: " << lookup;
-    return nullptr;
+    QSharedPointer<Budgie::Plugin> plugin = m_plugins.value(lookup, nullptr);
+    if (plugin.isNull()) {
+        qDebug() << "Unknown plugin: " << name;
+        return nullptr;
+    }
+    return QSharedPointer<Budgie::ServiceInterface>(
+        qobject_cast<Budgie::ServiceInterface *>(plugin->m_loader->instance()));
 }
 
 /**

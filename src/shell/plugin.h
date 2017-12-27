@@ -24,6 +24,8 @@ namespace Budgie
     {
         Q_OBJECT
 
+        friend class PluginRegistry;
+
     public:
         ~Plugin();
 
@@ -42,12 +44,14 @@ namespace Budgie
          */
         const QString &fileName();
 
+    protected:
+        QScopedPointer<QPluginLoader> m_loader;
+
     private:
         explicit Plugin(QPluginLoader *loader);
 
         QString m_name;
         QString m_filename;
-        QScopedPointer<QPluginLoader> m_loader;
     };
 }
 /*
