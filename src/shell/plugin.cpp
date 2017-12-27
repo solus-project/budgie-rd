@@ -54,8 +54,12 @@ const QString &Budgie::Plugin::fileName()
     return m_filename;
 }
 
-QObject *Budgie::Plugin::instance()
+QSharedPointer<QObject> Budgie::Plugin::instance()
 {
+    if (!m_instance.isNull()) {
+        return m_instance;
+    }
+
     QObject *ret = m_loader->instance();
 
     if (!ret) {
@@ -64,7 +68,8 @@ QObject *Budgie::Plugin::instance()
         return nullptr;
     }
 
-    return ret;
+    m_instance.reset(ret);
+    return m_instance;
 }
 
 /*

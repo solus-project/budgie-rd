@@ -29,7 +29,7 @@ template <class T> QSharedPointer<T> Budgie::PluginRegistry::getPlugin(const QSt
         qDebug() << "Unknown plugin: " << name;
         return nullptr;
     }
-    return QSharedPointer<T>(qobject_cast<T *>(plugin->instance()));
+    return qSharedPointerDynamicCast<T>(plugin->instance());
 }
 
 QSharedPointer<Budgie::ServiceInterface> Budgie::PluginRegistry::getService(const QString &name)

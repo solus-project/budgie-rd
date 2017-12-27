@@ -39,7 +39,7 @@ namespace Budgie
          *
          * This will usually result in the plugin being loaded
          */
-        QObject *instance();
+        QSharedPointer<QObject> instance();
 
         /**
          * Grab the name for this plugin
@@ -59,6 +59,7 @@ namespace Budgie
 
         QString m_name;
         QString m_filename;
+        QSharedPointer<QObject> m_instance;
     };
 }
 /*
