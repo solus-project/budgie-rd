@@ -42,8 +42,18 @@ namespace Budgie
          */
         QSharedPointer<ServiceInterface> getService(const QString &name);
 
+        /**
+         * Determine if we have the given plugin or not
+         */
+        bool hasPlugin(const QString &name);
+
+        /**
+         * Wrap hasPlugin to lookup the name with services/ prefix
+         */
+        bool hasServicePlugin(const QString &name);
+
     protected:
-        bool loadServicePlugin(const QString &name);
+        void discover();
 
     private:
         QDir m_systemDirectory;

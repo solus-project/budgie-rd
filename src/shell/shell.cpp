@@ -13,14 +13,15 @@
 
 #include "shell.h"
 
-Budgie::Shell::Shell(const QString &name) : m_essentialServices({ "windowmanager" })
+Budgie::Shell::Shell(const QString &name)
+    : m_essentialServices({ "org.budgie-desktop.services.WindowManager" })
 {
     m_name = name;
     m_registry.reset(new PluginRegistry());
 
     // This is a bit unrealistic but in future we'll take the service plugin
     // list from some definition file.
-    m_standardServices << "notifications";
+    m_standardServices << "org.budgie-desktop.services.Notifications";
 }
 
 const QString &Budgie::Shell::name()
@@ -30,13 +31,18 @@ const QString &Budgie::Shell::name()
 
 bool Budgie::Shell::init()
 {
+    // Discover all services
+    m_registry->discover();
+
+    // Make sure essential plugins are present
     auto serviceSet = m_essentialServices + m_standardServices;
     for (const auto &id : serviceSet) {
-        if (!m_registry->loadServicePlugin(id)) {
-            qWarning() << "Unable to load service plugin: " << id;
+        if (!m_registry->hasServicePlugin(id)) {
+            qWarning() << "Missing plugin: " << id;
             return false;
         }
     }
+
     return true;
 }
 

@@ -19,19 +19,23 @@ Budgie::Plugin *Budgie::Plugin::newFromFilename(const QString &filename)
 {
     QScopedPointer<QPluginLoader> loader(new QPluginLoader(filename));
     loader->setLoadHints(QLibrary::ResolveAllSymbolsHint);
-    if (!loader->load()) {
-        qDebug() << "Failed to load plugin \"" << filename << "\": " << loader->errorString();
+    auto json = loader->metaData().toVariantMap();
+
+    // Ensure this is a valid plugin.
+    if (!json.contains("IID") || !json.contains("MetaData")) {
+        qDebug() << "Invalid plugin misses metadata: " << filename;
         return nullptr;
     }
+
     return new Budgie::Plugin(loader.take());
 }
 
 Budgie::Plugin::Plugin(QPluginLoader *loader) : m_loader(loader)
 {
+    // Just ensure we have everything set up here now
     m_filename = m_loader->fileName();
     auto json = m_loader->metaData().toVariantMap();
     m_name = m_loader->metaData().value("IID").toString();
-    qDebug() << "New plugin loaded: " << m_name;
 }
 
 Budgie::Plugin::~Plugin()
@@ -48,6 +52,19 @@ const QString &Budgie::Plugin::name()
 const QString &Budgie::Plugin::fileName()
 {
     return m_filename;
+}
+
+QObject *Budgie::Plugin::instance()
+{
+    QObject *ret = m_loader->instance();
+
+    if (!ret) {
+        qWarning() << "Failed to construct object from" << m_name;
+        qWarning() << "Loader error: " << m_loader->errorString();
+        return nullptr;
+    }
+
+    return ret;
 }
 
 /*

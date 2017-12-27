@@ -35,6 +35,13 @@ namespace Budgie
         static Plugin *newFromFilename(const QString &path);
 
         /**
+         * Return the object instance if at all possible
+         *
+         * This will usually result in the plugin being loaded
+         */
+        QObject *instance();
+
+        /**
          * Grab the name for this plugin
          */
         const QString &name();

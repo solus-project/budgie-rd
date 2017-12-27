@@ -10,6 +10,7 @@
  */
 
 #include <QDebug>
+#include <QDirIterator>
 
 #include "config.h"
 #include "registry.h"
@@ -29,37 +30,55 @@ QSharedPointer<Budgie::ServiceInterface> Budgie::PluginRegistry::getService(cons
         qDebug() << "Unknown plugin: " << name;
         return nullptr;
     }
+
     return QSharedPointer<Budgie::ServiceInterface>(
-        qobject_cast<Budgie::ServiceInterface *>(plugin->m_loader->instance()));
+        qobject_cast<Budgie::ServiceInterface *>(plugin->instance()));
+}
+
+bool Budgie::PluginRegistry::hasPlugin(const QString &name)
+{
+    return m_plugins.contains(name);
+}
+
+bool Budgie::PluginRegistry::hasServicePlugin(const QString &name)
+{
+    return m_plugins.contains(QStringLiteral("services/") + name);
 }
 
 /**
- * Attempt to load a service plugin with the given name
+ * Discover all available plugins and store them by their identifiers
  */
-bool Budgie::PluginRegistry::loadServicePlugin(const QString &name)
+void Budgie::PluginRegistry::discover()
 {
     QDir serviceDir(m_systemDirectory.filePath("services"));
-    QString lookup("services/" + name);
+    QDirIterator it(serviceDir, QDirIterator::NoIteratorFlags);
+    while (it.hasNext()) {
+        QFileInfo info(it.next());
+        Budgie::Plugin *plugin = nullptr;
 
-    // Sure, whatever. We already loaded it. :P
-    if (m_plugins.contains(lookup)) {
-        return true;
+        if (!info.isFile()) {
+            continue;
+        }
+        if (!info.fileName().endsWith(QStringLiteral(".so"))) {
+            continue;
+        }
+
+        plugin = Budgie::Plugin::newFromFilename(info.filePath());
+        if (!plugin) {
+            qDebug() << "Invalid plugin: " << info.filePath();
+            continue;
+        }
+
+        QString fullID("services/" + plugin->name());
+        if (m_plugins.contains(fullID)) {
+            qDebug() << "Not replacing service plugin" << fullID << "with " << info.fileName();
+            delete plugin;
+            continue;
+        }
+
+        m_plugins.insert(fullID, QSharedPointer<Budgie::Plugin>(plugin));
+        qDebug() << "New plugin: " << fullID << "(" << info.filePath() << ")";
     }
-
-    // TODO: Make this portable and not janky.
-    QString libName("lib" + name + ".so");
-    QString fullPath = serviceDir.filePath(libName);
-
-    Budgie::Plugin *plugin = Budgie::Plugin::newFromFilename(fullPath);
-
-    if (!plugin) {
-        return false;
-    }
-
-    // Now make this plugin instance owned
-    qDebug() << "Loaded " << lookup;
-    m_plugins.insert(lookup, QSharedPointer<Budgie::Plugin>(plugin));
-    return true;
 }
 
 /*
