@@ -138,6 +138,10 @@ int main(int argc, char **argv)
         if (!shell->startRemaining()) {
             QCoreApplication::exit(1);
         }
+        if (!shell->startFace()) {
+            QCoreApplication::exit(1);
+        }
+        qDebug() << "Budgie startup reported as nominal";
     });
 
     return gui->exec();

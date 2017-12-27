@@ -14,7 +14,8 @@
 #include "shell.h"
 
 Budgie::Shell::Shell(const QString &name)
-    : m_essentialServices({ "org.budgie-desktop.services.WindowManager" })
+    : m_faceName("org.budgie-desktop.faces.Default"),
+      m_essentialServices({ "org.budgie-desktop.services.WindowManager" })
 {
     m_name = name;
     m_registry.reset(new PluginRegistry());
@@ -38,9 +39,15 @@ bool Budgie::Shell::init()
     auto serviceSet = m_essentialServices + m_standardServices;
     for (const auto &id : serviceSet) {
         if (!m_registry->hasServicePlugin(id)) {
-            qWarning() << "Missing plugin: " << id;
+            qWarning() << "Missing service plugin: " << id;
             return false;
         }
+    }
+
+    // We need our face
+    if (!m_registry->hasFacePlugin(m_faceName)) {
+        qWarning() << "Missing face plugin: " << m_faceName;
+        return false;
     }
 
     return true;
@@ -81,6 +88,30 @@ bool Budgie::Shell::startServiceSet(const QStringList &serviceIDs, bool fatal)
         }
     }
 
+    return true;
+}
+
+bool Budgie::Shell::startFace()
+{
+    auto face = m_registry->getFace(m_faceName);
+    if (face.isNull()) {
+        qWarning() << "Failed to load face:" << m_faceName;
+        return false;
+    }
+
+    // Init plugin
+    if (!face->init()) {
+        qWarning() << "Failed to init face:" << m_faceName;
+        return false;
+    }
+
+    // Get it on screen
+    if (!face->show()) {
+        qWarning() << "Failed to set face to show:" << m_faceName;
+        return false;
+    }
+
+    // We're now on screen apparently.
     return true;
 }
 

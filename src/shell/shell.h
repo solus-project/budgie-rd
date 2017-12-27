@@ -53,9 +53,16 @@ namespace Budgie
          */
         bool startRemaining();
 
+        /**
+         * Now we have the service lifecycle started, launch the face
+         */
+        bool startFace();
+
     private:
         QSharedPointer<PluginRegistry> m_registry;
         QString m_name;
+
+        QString m_faceName;
 
         QStringList m_essentialServices;
         QStringList m_standardServices;
