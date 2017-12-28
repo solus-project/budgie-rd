@@ -29,6 +29,7 @@ libpanel = shared_library(
     include_directories: libpanel_includes,
     dependencies: [
         dep_qtwidgets,
+        kf5_deps,
     ],
 )
 

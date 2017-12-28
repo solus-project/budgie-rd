@@ -9,7 +9,9 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <KWindowEffects>
 #include <QBoxLayout>
+#include <QEvent>
 
 #include "window.h"
 
@@ -38,10 +40,31 @@ Budgie::PanelWindow::PanelWindow()
     rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(34, 49, 63, 0.89); }");
     rootWidget->setLayout(new QBoxLayout(QBoxLayout::LeftToRight));
     rootWidget->layout()->setMargin(0);
+
+    ensurePolished();
 }
 
 Budgie::PanelWindow::~PanelWindow()
 {
+}
+
+bool Budgie::PanelWindow::event(QEvent *event)
+{
+    switch (event->type()) {
+    case QEvent::WinIdChange:
+        m_winID = effectiveWinId();
+        updateWindow();
+        return true;
+    default:
+        return QWidget::event(event);
+    }
+}
+
+void Budgie::PanelWindow::updateWindow()
+{
+    // TODO: Abstract this through a well known interface!
+    // For now just set blur/etc, which will later be dock-specific controls..
+    KWindowEffects::enableBlurBehind(m_winID);
 }
 
 /*

@@ -29,6 +29,11 @@ namespace Budgie
     public:
         explicit PanelWindow();
         ~PanelWindow();
+
+    private:
+        WId m_winID;
+        bool event(QEvent *event) override;
+        void updateWindow();
     };
 }
 
