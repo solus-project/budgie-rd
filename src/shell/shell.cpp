@@ -21,10 +21,11 @@
 
 Budgie::Shell::Shell(const QString &name)
     : m_registry(new ShellRegistry()), m_sessionName(name),
-      m_faceName("org.budgie-desktop.faces.Default"),
-      m_essentialServices({ "org.budgie-desktop.services.WindowManager" }),
-      m_standardServices({ "org.budgie-desktop.services.Notifications" })
+      m_faceName("org.budgie-desktop.faces.Default")
 {
+    // For now we only need to know about Notifications
+    m_requiredServices << "org.budgie-desktop.services.Notifications";
+
     // At this point we can kinda register ourselves, even if it is a bit weird.
     registerInterface(this);
 }
@@ -40,8 +41,7 @@ bool Budgie::Shell::init()
     m_registry->discover();
 
     // Make sure essential plugins are present
-    auto serviceSet = m_essentialServices + m_standardServices;
-    for (const auto &id : serviceSet) {
+    for (const auto &id : m_requiredServices) {
         if (!m_registry->hasServicePlugin(id)) {
             qWarning() << "Missing service plugin: " << id;
             return false;
@@ -66,31 +66,16 @@ bool Budgie::Shell::init()
     return true;
 }
 
-bool Budgie::Shell::startEssential()
+bool Budgie::Shell::startServices()
 {
-    // We must be able to start all of our required service IDs otherwise
-    // we've failed completely.
-    return startServiceSet(m_essentialServices, true);
-}
-
-bool Budgie::Shell::startRemaining()
-{
-    // Not so fatal.
-    return startServiceSet(m_standardServices, false);
-}
-
-bool Budgie::Shell::startServiceSet(const QStringList &serviceIDs, bool fatal)
-{
-    for (const auto &serviceID : serviceIDs) {
+    for (const auto &serviceID : m_requiredServices) {
         auto service = m_registry->getService(serviceID);
 
         qDebug() << "Starting service: " << serviceID;
         if (!service->start()) {
             qWarning() << "Failed to start service: " << serviceID;
-            if (fatal) {
-                return false;
-            }
-            continue;
+            shutdownShell();
+            return false;
         }
         m_activeServices << serviceID;
     }

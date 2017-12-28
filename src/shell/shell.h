@@ -42,17 +42,11 @@ namespace Budgie
         bool init();
 
         /**
-         * Start absolutely essential services, usually this is just the
-         * window manager itself, just to ensure we have a valid graphical
-         * context before constructing an application.
+         * Start the services we require to support the rest of the shell,
+         * such as the notifications service. This is all performed via
+         * plugin loads before we ever show the UI.
          */
-        bool startEssential();
-
-        /**
-         * Now continue with executing the rest of the services and begin
-         * a full shell startup
-         */
-        bool startRemaining();
+        bool startServices();
 
         /**
          * Now we have the service lifecycle started, launch the face
@@ -76,14 +70,12 @@ namespace Budgie
 
         QString m_faceName;
 
-        QStringList m_essentialServices;
-        QStringList m_standardServices;
+        QStringList m_requiredServices;
         QStringList m_activeServices;
 
         QHash<QString, BaseInterface *> m_interfaces;
 
         bool m_shutdownRequested;
-        bool startServiceSet(const QStringList &serviceIDs, bool fatal);
     };
 }
 /*

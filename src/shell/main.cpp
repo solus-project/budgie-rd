@@ -20,28 +20,19 @@
 #include "shell.h"
 
 /**
- * Will expand in future, but we get this object from startup()
- * which allows us to control the rest of our session startup,
- * and control specific details before we attempt to initialise
- * a display context.
+ * Main entry: Process args, begin main
  */
-struct ShellStartupInfo {
-    QString sessionName;
-};
-
-/**
- * Handle our basic CLI parsing with a throwaway QCoreApplication
- *
- * This ensures we don't yet use any display-context sensitive event
- * loops. Unfortunately QCommandLineParser will still try to use
- * the QCoreApplication::arguments() even if you process manually,
- * hence this entry.
- */
-static ShellStartupInfo *startup(int argc, char **argv)
+int main(int argc, char **argv)
 {
-    QCoreApplication app(argc, argv);
+    QApplication app(argc, argv);
+
+    // Share refcount with timer singleShot
+    QSharedPointer<Budgie::Shell> shell;
+
     QCoreApplication::setApplicationName("budgie-shell");
     QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
+    QGuiApplication::setFallbackSessionManagementEnabled(false);
+    app.setQuitOnLastWindowClosed(false);
 
     // Set up parser
     QCommandLineParser p;
@@ -58,64 +49,19 @@ static ShellStartupInfo *startup(int argc, char **argv)
 
     p.process(app);
 
-    // Return what we know so far.
-    auto ret = new ShellStartupInfo();
-    ret->sessionName = p.value(optSession);
-    return ret;
-}
-
-/**
- * Handle the GUI specific startup routine now
- */
-static QApplication *createApplication(int argc, char **argv)
-{
-    QGuiApplication::setFallbackSessionManagementEnabled(false);
-    QApplication *ret = nullptr;
-
-    // TODO: Maybe do something useful here
-    ret = new QApplication(argc, argv);
-    ret->setQuitOnLastWindowClosed(false);
-
-    return ret;
-}
-
-/**
- * Main entry: Process args, begin main
- */
-int main(int argc, char **argv)
-{
-    QScopedPointer<QApplication> gui;
-    QScopedPointer<ShellStartupInfo> info;
-    // Share refcount with timer singleShot
-    QSharedPointer<Budgie::Shell> shell;
-
-    // Basic arg handling first
-    info.reset(startup(argc, argv));
-
-    shell.reset(new Budgie::Shell(info->sessionName));
+    shell.reset(new Budgie::Shell(p.value(optSession)));
 
     // Sanitize our setup, ensure all services are accounted for
-    qDebug() << "init(): " << info->sessionName;
     if (!shell->init()) {
         qWarning() << "init(): Failed";
         return 1;
     }
 
-    // Now load essential services (windowmanager, etc.)
-    qDebug() << "startEssental(): " << info->sessionName;
-    if (!shell->startEssential()) {
-        qWarning() << "startEssential(): Failed";
-        return 1;
-    }
-
-    // By this point, essential services are running, now allow GUI
-    gui.reset(createApplication(argc, argv));
-
     qInfo() << "Starting shell session: " << shell->sessionName();
 
     // Start all remaining services now on the main event loop
     QTimer::singleShot(0, [shell]() {
-        if (!shell->startRemaining()) {
+        if (!shell->startServices()) {
             QCoreApplication::exit(1);
             return;
         }
@@ -126,7 +72,7 @@ int main(int argc, char **argv)
         qDebug() << "Budgie startup reported as nominal";
     });
 
-    return gui->exec();
+    return app.exec();
 }
 
 /*
