@@ -11,7 +11,9 @@
 
 #include <KWindowEffects>
 #include <QBoxLayout>
+#include <QDebug>
 #include <QEvent>
+#include <QPushButton>
 
 #include "window.h"
 
@@ -38,8 +40,16 @@ Budgie::PanelWindow::PanelWindow(ShellInterface *interface) : m_shell(interface)
     // Colour picking
     rootWidget->setObjectName("budgie-panel");
     rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(34, 49, 63, 0.89); }");
-    rootWidget->setLayout(new QBoxLayout(QBoxLayout::LeftToRight));
+    auto tlayout = new QBoxLayout(QBoxLayout::LeftToRight);
+    rootWidget->setLayout(tlayout);
     rootWidget->layout()->setMargin(0);
+
+    auto button = new QPushButton("Ermagahd Raven", rootWidget);
+    connect(button, &QPushButton::clicked, this, &Budgie::PanelWindow::demoButtonClicked);
+    tlayout->addWidget(button, 0, Qt::AlignRight);
+    button->setFocusPolicy(Qt::NoFocus);
+    button->setStyleSheet("color: white;");
+    button->setFlat(true);
 
     ensurePolished();
 }
@@ -65,6 +75,16 @@ void Budgie::PanelWindow::updateWindow()
     // TODO: Abstract this through a well known interface!
     // For now just set blur/etc, which will later be dock-specific controls..
     KWindowEffects::enableBlurBehind(m_winID);
+}
+
+void Budgie::PanelWindow::demoButtonClicked()
+{
+    auto raven = m_shell->getRaven();
+    if (!raven) {
+        qDebug() << "No Raven!";
+        return;
+    }
+    raven->toggle();
 }
 
 /*

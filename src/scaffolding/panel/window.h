@@ -14,6 +14,7 @@
 #include <QWidget>
 
 #include "panel-manager-interface.h"
+#include "shell-interface.h"
 
 namespace Budgie
 {
@@ -29,6 +30,9 @@ namespace Budgie
     public:
         explicit PanelWindow(ShellInterface *interface);
         ~PanelWindow();
+
+    private slots:
+        void demoButtonClicked();
 
     private:
         WId m_winID;
