@@ -182,7 +182,7 @@ Budgie::PanelManagerInterface *Budgie::Shell::getPanelManager()
  */
 Budgie::RavenInterface *Budgie::Shell::getRaven()
 {
-    return dynamic_cast<Budgie::RavenInterface *>(getInterface(RavenInterfaceIID));
+    return dynamic_cast<Budgie::RavenInterface *>(getInterface(BudgieRavenInterfaceIID));
 }
 
 /*

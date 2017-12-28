@@ -13,7 +13,7 @@
 
 #include "base-interface.h"
 
-#define RavenInterfaceIID "org.budgie-desktop.RavenInterface"
+#define BudgieRavenInterfaceIID "org.budgie-desktop.RavenInterface"
 
 namespace Budgie
 {
@@ -30,7 +30,7 @@ namespace Budgie
 
         inline const QString interfaceName() override
         {
-            return QStringLiteral(RavenInterfaceIID);
+            return QStringLiteral(BudgieRavenInterfaceIID);
         }
 
         /**
@@ -50,7 +50,7 @@ namespace Budgie
     };
 }
 
-Q_DECLARE_INTERFACE(Budgie::RavenInterface, RavenInterfaceIID)
+Q_DECLARE_INTERFACE(Budgie::RavenInterface, BudgieRavenInterfaceIID)
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
