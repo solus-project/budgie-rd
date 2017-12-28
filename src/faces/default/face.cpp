@@ -31,6 +31,8 @@ bool Budgie::DefaultFace::init(Budgie::ShellInterface *interface)
 bool Budgie::DefaultFace::show()
 {
     qDebug() << "Showing DefaultFace";
+
+    m_panelManager->showPanels();
     return true;
 }
 

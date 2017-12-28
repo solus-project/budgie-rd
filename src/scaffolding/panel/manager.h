@@ -12,6 +12,8 @@
 #pragma once
 
 #include <QObject>
+#include <QScopedPointer>
+#include <QWidget>
 
 #include "panel-manager-interface.h"
 
@@ -28,6 +30,12 @@ namespace Budgie
     public:
         explicit PanelManager(QObject *parent = nullptr);
         ~PanelManager();
+
+        /* We have go ahead to show content on screen now */
+        void showPanels();
+
+    private:
+        QScopedPointer<QWidget> m_dummyWindow;
     };
 }
 
