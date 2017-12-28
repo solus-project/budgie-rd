@@ -11,19 +11,20 @@
 
 #pragma once
 
+#include "base-interface.h"
+
 namespace Budgie
 {
     /**
      * The PanelInterface is the abstract API with which to interact with
      * a panel object.
      */
-    class PanelInterface
+    class PanelInterface : public BaseInterface
     {
     public:
         virtual ~PanelInterface()
         {
         }
-
         /**
          * Request the panel show itself
          */

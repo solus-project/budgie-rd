@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include "base-interface.h"
 #include "shell-interface.h"
 
 namespace Budgie
@@ -19,7 +20,7 @@ namespace Budgie
      * Plugins implementing FaceInterface are the primary visual entry point
      * nito the desktop and provide the main UI seen on screen.
      */
-    class FaceInterface
+    class FaceInterface : public BaseInterface
     {
     public:
         virtual ~FaceInterface()

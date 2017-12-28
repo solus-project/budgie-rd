@@ -11,29 +11,23 @@
 
 #pragma once
 
-#include "base-interface.h"
-
 namespace Budgie
 {
     /**
-     * The PanelManagerInterface is the abstract API with which to interact with
-     * a Panel Manager implementation.
-     *
-     * Panel Managers are responsible for managing PanelInterface implementations
-     * and allowing a FaceInterface to provide a panelled desktop experience.
+     * All interfaces within Budgie derive from the BaseInterface.
      */
-    class PanelManagerInterface : public BaseInterface
+    class BaseInterface
     {
     public:
-        virtual ~PanelManagerInterface()
+        virtual ~BaseInterface()
         {
         }
     };
 }
 
-#define BudgiePanelManagerInterfaceIID "org.budgie-desktop.PanelManagerInterface"
+#define BudgieBaseInterfaceIID "org.budgie-desktop.BaseInterface"
 
-Q_DECLARE_INTERFACE(Budgie::PanelManagerInterface, BudgiePanelManagerInterfaceIID)
+Q_DECLARE_INTERFACE(Budgie::BaseInterface, BudgieBaseInterfaceIID)
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

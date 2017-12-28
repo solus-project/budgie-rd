@@ -13,19 +13,20 @@
 
 #include <QObject>
 
+#include "base-interface.h"
+
 namespace Budgie
 {
     /**
      * The ShellInterface provides access to the Shell APIs, and allows
      * registration and querying of services.
      */
-    class ShellInterface
+    class ShellInterface : public BaseInterface
     {
     public:
         virtual ~ShellInterface()
         {
         }
-
         /**
          * Return the session name
          */

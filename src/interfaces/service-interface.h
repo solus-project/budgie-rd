@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include "base-interface.h"
 #include "shell-interface.h"
 
 namespace Budgie
@@ -23,13 +24,12 @@ namespace Budgie
      * within the desktop environment, such as the window manager or
      * notifications.
      */
-    class ServiceInterface
+    class ServiceInterface : BaseInterface
     {
     public:
         virtual ~ServiceInterface()
         {
         }
-
         /**
          * Ask the service to initialise with the given ShellInterface
          */
