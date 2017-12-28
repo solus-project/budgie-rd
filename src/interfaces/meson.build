@@ -1,3 +1,1 @@
-interface_include_directories = [
-    include_directories('.'),
-]
+interface_include_directories = include_directories('.')
