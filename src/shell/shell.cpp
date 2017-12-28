@@ -97,6 +97,9 @@ bool Budgie::Shell::startFace()
         return false;
     }
 
+    // At this point we can kinda register ourselves, even if it is a bit weird.
+    registerInterface(BudgieShellInterfaceIID, this);
+
     // Init plugin
     if (!face->init(this)) {
         qWarning() << "Failed to init face:" << m_faceName;
@@ -111,6 +114,38 @@ bool Budgie::Shell::startFace()
 
     // We're now on screen apparently.
     return true;
+}
+
+/**
+ * Store an internal reference to the object so that interface sharing
+ * works.
+ */
+bool Budgie::Shell::registerInterface(const QString &id, QObject *interface)
+{
+    if (m_interfaces.contains(id)) {
+        qDebug() << "Interface ID already registered: " << id;
+        qDebug() << "Refusing to replace";
+        return false;
+    }
+    if (id == QStringLiteral(BudgieServiceInterfaceIID)) {
+        qDebug() << "Refusing to register by service ID";
+        return false;
+    }
+    m_interfaces.insert(id, interface);
+    return true;
+}
+
+/**
+ * Return a pointer to the interface or null
+ */
+const QObject *Budgie::Shell::getInterface(const QString &id)
+{
+    return m_interfaces.value(id, nullptr);
+}
+
+bool Budgie::Shell::hasInterface(const QString &id)
+{
+    return getInterface(id) == nullptr ? false : true;
 }
 
 /*

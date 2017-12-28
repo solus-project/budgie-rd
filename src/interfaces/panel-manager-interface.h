@@ -29,7 +29,9 @@ namespace Budgie
     };
 }
 
-Q_DECLARE_INTERFACE(Budgie::PanelManagerInterface, "org.budgie-desktop.PanelManagerInterface")
+#define BudgiePanelManagerInterfaceIID "org.budgie-desktop.PanelManagerInterface"
+
+Q_DECLARE_INTERFACE(Budgie::PanelManagerInterface, BudgiePanelManagerInterfaceIID)
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

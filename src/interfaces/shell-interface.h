@@ -11,6 +11,8 @@
 
 #pragma once
 
+#include <QObject>
+
 namespace Budgie
 {
     /**
@@ -28,10 +30,29 @@ namespace Budgie
          * Return the session name
          */
         virtual const QString &sessionName() = 0;
+
+        /**
+         * Register some interface with the ShellInterface so that it
+         * can be accessed later.
+         */
+        virtual bool registerInterface(const QString &id, QObject *instance) = 0;
+
+        /**
+         * Attempt to retrieve an implementation of the given interface
+         * from the ShellInterface context, if one exists.
+         */
+        virtual const QObject *getInterface(const QString &id) = 0;
+
+        /**
+         * Ask the implementation if it has the given interface or not
+         */
+        virtual bool hasInterface(const QString &id) = 0;
     };
 }
 
-Q_DECLARE_INTERFACE(Budgie::ShellInterface, "org.budgie-desktop.ShellInterface")
+#define BudgieShellInterfaceIID "org.budgie-desktop.ShellInterface"
+
+Q_DECLARE_INTERFACE(Budgie::ShellInterface, BudgieShellInterfaceIID)
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
