@@ -12,6 +12,8 @@
 #pragma once
 
 #include <QObject>
+#include <QProcess>
+#include <QScopedPointer>
 
 #include "session-module-interface.h"
 
@@ -30,6 +32,13 @@ namespace Budgie
     public:
         bool start() override;
         bool stop() override;
+
+    private slots:
+        void processCrashed(QProcess::ProcessError e);
+        void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
+    private:
+        QScopedPointer<QProcess> m_process;
     };
 }
 
