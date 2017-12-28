@@ -11,3 +11,6 @@ subdir('scaffolding')
 
 # Now build our actual desktop
 subdir('faces')
+
+# Now the session to wrap it all up
+subdir('session')
