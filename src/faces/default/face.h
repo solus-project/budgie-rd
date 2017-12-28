@@ -14,6 +14,7 @@
 #include <QObject>
 
 #include "face-interface.h"
+#include "manager.h"
 
 namespace Budgie
 {
@@ -34,6 +35,7 @@ namespace Budgie
 
     private:
         ShellInterface *m_shell;
+        PanelManager *m_panelManager;
     };
 }
 
