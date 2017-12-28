@@ -22,24 +22,14 @@ Budgie::PluginRegistry::PluginRegistry()
     qDebug() << "Set system directory to: " << m_systemDirectory.path();
 }
 
-template <class T> QSharedPointer<T> Budgie::PluginRegistry::getPlugin(const QString &name)
+const QDir &Budgie::PluginRegistry::systemDirectory()
 {
-    QSharedPointer<Budgie::Plugin> plugin = m_plugins.value(name, nullptr);
-    if (plugin.isNull()) {
-        qDebug() << "Unknown plugin: " << name;
-        return nullptr;
-    }
-    return qSharedPointerDynamicCast<T>(plugin->instance());
+    return m_systemDirectory;
 }
 
-QSharedPointer<Budgie::ServiceInterface> Budgie::PluginRegistry::getService(const QString &name)
+void Budgie::PluginRegistry::appendSearchPath(const QString &path)
 {
-    return getPlugin<Budgie::ServiceInterface>(QStringLiteral("services/") + name);
-}
-
-QSharedPointer<Budgie::FaceInterface> Budgie::PluginRegistry::getFace(const QString &name)
-{
-    return getPlugin<Budgie::FaceInterface>(QStringLiteral("faces/") + name);
+    m_searchPaths << path;
 }
 
 bool Budgie::PluginRegistry::hasPlugin(const QString &name)
@@ -47,20 +37,22 @@ bool Budgie::PluginRegistry::hasPlugin(const QString &name)
     return m_plugins.contains(name);
 }
 
-bool Budgie::PluginRegistry::hasServicePlugin(const QString &name)
+void Budgie::PluginRegistry::discover()
 {
-    return m_plugins.contains(QStringLiteral("services/") + name);
+    for (const auto &dirname : m_searchPaths) {
+        discoverDir(QDir(dirname));
+    }
 }
 
-bool Budgie::PluginRegistry::hasFacePlugin(const QString &name)
+void Budgie::PluginRegistry::discoverDir(const QDir &dir)
 {
-    return m_plugins.contains(QStringLiteral("faces/") + name);
-}
+    if (!dir.exists()) {
+        return;
+    }
 
-void Budgie::PluginRegistry::discoverType(const QString &type)
-{
-    QDir serviceDir(m_systemDirectory.filePath(type));
-    QDirIterator it(serviceDir, QDirIterator::NoIteratorFlags);
+    auto type = dir.dirName();
+
+    QDirIterator it(dir, QDirIterator::NoIteratorFlags);
     while (it.hasNext()) {
         QFileInfo info(it.next());
         Budgie::Plugin *plugin = nullptr;
@@ -89,25 +81,6 @@ void Budgie::PluginRegistry::discoverType(const QString &type)
         m_plugins.insert(fullID, QSharedPointer<Budgie::Plugin>(plugin));
         qDebug() << "New " << type << " plugin: " << fullID << "(" << info.filePath() << ")";
     }
-}
-
-/**
- * Discover all available plugins and store them by their identifiers
- */
-void Budgie::PluginRegistry::discover()
-{
-    discoverType("services");
-    discoverType("faces");
-}
-
-void Budgie::PluginRegistry::unloadFace(const QString &face)
-{
-    unload("faces/" + face);
-}
-
-void Budgie::PluginRegistry::unloadService(const QString &service)
-{
-    unload("services/" + service);
 }
 
 void Budgie::PluginRegistry::unload(const QString &name)

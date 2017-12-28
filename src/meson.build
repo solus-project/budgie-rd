@@ -2,6 +2,9 @@
 # for the include_directories
 subdir('interfaces')
 
+# Various parts of Budgie use libbudgie-common API
+subdir('common')
+
 # Build primary shell and services
 subdir('shell')
 subdir('services')

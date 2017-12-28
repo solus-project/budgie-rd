@@ -1,7 +1,6 @@
 shell_mocs = qt5.preprocess(
     moc_headers: [
-        'plugin.h',
-        'registry.h',
+        'shell-registry.h',
         'shell.h',
     ],
     include_directories: interface_include_directories,
@@ -9,8 +8,7 @@ shell_mocs = qt5.preprocess(
 
 shell_sources = [
     'main.cpp',
-    'plugin.cpp',
-    'registry.cpp',
+    'shell-registry.cpp',
     'shell.cpp',
     shell_mocs,
 ]
@@ -30,6 +28,7 @@ shell = executable(
     ],
     include_directories: shell_includes,
     dependencies: [
+        link_libcommon,
         dep_qtwidgets,
     ],
 )

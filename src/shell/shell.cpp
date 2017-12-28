@@ -16,10 +16,11 @@
 
 #include "panel-manager-interface.h"
 #include "raven-interface.h"
+#include "shell-registry.h"
 #include "shell.h"
 
 Budgie::Shell::Shell(const QString &name)
-    : m_registry(new PluginRegistry()), m_sessionName(name),
+    : m_registry(new ShellRegistry()), m_sessionName(name),
       m_faceName("org.budgie-desktop.faces.Default"),
       m_essentialServices({ "org.budgie-desktop.services.WindowManager" }),
       m_standardServices({ "org.budgie-desktop.services.Notifications" })

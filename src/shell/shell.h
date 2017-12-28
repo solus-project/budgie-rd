@@ -14,8 +14,8 @@
 #include <QObject>
 #include <QSharedPointer>
 
-#include "registry.h"
 #include "shell-interface.h"
+#include "shell-registry.h"
 
 namespace Budgie
 {
@@ -71,7 +71,7 @@ namespace Budgie
         void shutdownShell();
 
     private:
-        QSharedPointer<PluginRegistry> m_registry;
+        QSharedPointer<ShellRegistry> m_registry;
         QString m_sessionName;
 
         QString m_faceName;

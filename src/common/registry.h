@@ -30,8 +30,6 @@ namespace Budgie
     {
         Q_OBJECT
 
-        friend class Shell;
-
     public:
         explicit PluginRegistry();
 
@@ -40,23 +38,14 @@ namespace Budgie
          * Callers should ensure to prefix with the right type or
          * use the accessor functions.
          */
-        template <class T> QSharedPointer<T> getPlugin(const QString &name);
-
-        /**
-         * Get a service from our known service providers by the given
-         * name.
-         *
-         * Implementations should ensure they check for nullptr here
-         */
-        QSharedPointer<ServiceInterface> getService(const QString &name);
-
-        /**
-         * Get a face from our known face providers by the given
-         * name.
-         *
-         * Implementations should ensure they check for nullptr here
-         */
-        QSharedPointer<FaceInterface> getFace(const QString &name);
+        template <class T> QSharedPointer<T> getPlugin(const QString &name)
+        {
+            QSharedPointer<Plugin> plugin = m_plugins.value(name, nullptr);
+            if (plugin.isNull()) {
+                return nullptr;
+            }
+            return qSharedPointerDynamicCast<T>(plugin->instance());
+        }
 
         /**
          * Determine if we have the given plugin or not
@@ -64,37 +53,31 @@ namespace Budgie
         bool hasPlugin(const QString &name);
 
         /**
-         * Wrap hasPlugin to lookup the name with services/ prefix
-         */
-        bool hasServicePlugin(const QString &name);
-
-        /**
-         * Wrap hasPlugin to lookup the name with the faces/ prefix
-         */
-        bool hasFacePlugin(const QString &name);
-
-        /**
          * Unload a named plugin
          */
         void unload(const QString &name);
 
         /**
-         * Unload a Face plugin
+         * Discover all possible plugins
          */
-        void unloadFace(const QString &name);
+        void discover();
 
         /**
-         * Unload a Service plugin
+         * Append a new directory to the search path
          */
-        void unloadService(const QString &name);
+        void appendSearchPath(const QString &searchDir);
 
-    protected:
-        void discover();
-        void discoverType(const QString &type);
+        /**
+         * Return the root to the system directory for plugins
+         */
+        const QDir &systemDirectory();
 
     private:
         QDir m_systemDirectory;
+        QStringList m_searchPaths;
+
         QHash<QString, QSharedPointer<Plugin>> m_plugins;
+        void discoverDir(const QDir &rootDir);
     };
 }
 /*
