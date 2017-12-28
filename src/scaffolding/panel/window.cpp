@@ -15,7 +15,7 @@
 
 #include "window.h"
 
-Budgie::PanelWindow::PanelWindow()
+Budgie::PanelWindow::PanelWindow(ShellInterface *interface) : m_shell(interface)
 {
     move(0, 1080 - 30);
     setFixedSize(1920, 30);

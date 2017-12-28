@@ -27,13 +27,14 @@ namespace Budgie
         Q_OBJECT
 
     public:
-        explicit PanelWindow();
+        explicit PanelWindow(ShellInterface *interface);
         ~PanelWindow();
 
     private:
         WId m_winID;
         bool event(QEvent *event) override;
         void updateWindow();
+        ShellInterface *m_shell;
     };
 }
 

@@ -14,7 +14,7 @@
 Budgie::PanelManager::PanelManager(Budgie::ShellInterface *interface, QObject *parent)
     : QObject(parent), m_shell(interface)
 {
-    m_dummyWindow.reset(new Budgie::PanelWindow());
+    m_dummyWindow.reset(new Budgie::PanelWindow(m_shell));
 }
 
 Budgie::PanelManager::~PanelManager()
