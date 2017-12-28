@@ -40,6 +40,7 @@ bool Budgie::Session::init()
             return false;
         }
     }
+
     return true;
 }
 
@@ -55,7 +56,8 @@ bool Budgie::Session::start()
         }
         m_activeServices << serviceID;
     }
-    return false;
+
+    return true;
 }
 
 void Budgie::Session::shutdownSession()

@@ -16,12 +16,12 @@
 bool Budgie::WindowManagerModule::start()
 {
     qDebug() << "Hello from WindowManagerModule";
-    return false;
+    return true;
 }
 
 bool Budgie::WindowManagerModule::stop()
 {
-    return false;
+    return true;
 }
 
 /*

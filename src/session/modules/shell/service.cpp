@@ -16,12 +16,12 @@
 bool Budgie::ShellModule::start()
 {
     qDebug() << "Hello from ShellModule";
-    return false;
+    return true;
 }
 
 bool Budgie::ShellModule::stop()
 {
-    return false;
+    return true;
 }
 
 /*
