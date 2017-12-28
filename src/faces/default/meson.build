@@ -27,6 +27,7 @@ plugin_default_face = shared_module(
     include_directories: plugin_default_face_includes,
     dependencies: [
         link_libpanel,
+        link_libraven,
         dep_qtwidgets,
     ],
 )

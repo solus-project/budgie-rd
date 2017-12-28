@@ -11,33 +11,32 @@
 
 #pragma once
 
-#include <QObject>
+#include <QWidget>
 
-#include "face-interface.h"
-#include "manager.h"
-#include "raven-window.h"
+#include "raven-interface.h"
 
 namespace Budgie
 {
     /**
-     * DefaultFace provides the default Budgie Experience, i.e. a modern take
-     * on the traditional desktop metaphor
+     * The main window implements the RavenInterface and provides the
+     * user with a sidebar style control that allows access to various
+     * extensions, notifications, etc.
      */
-    class Q_DECL_EXPORT DefaultFace : public QObject, public FaceInterface
+    class RavenWindow : public QWidget, public RavenInterface
     {
         Q_OBJECT
-        Q_PLUGIN_METADATA(IID "org.budgie-desktop.faces.Default" FILE "face.json")
-        Q_INTERFACES(Budgie::FaceInterface)
 
     public:
-        bool init(ShellInterface *interface) override;
-        bool show() override;
-        void shutdown() override;
+        explicit RavenWindow(ShellInterface *interface);
+        ~RavenWindow();
+
+        /* Overrides */
+        void show() override;
+        void hide() override;
+        void toggle() override;
 
     private:
         ShellInterface *m_shell;
-        PanelManager *m_panelManager;
-        QScopedPointer<RavenWindow> m_raven;
     };
 }
 
