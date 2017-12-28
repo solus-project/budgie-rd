@@ -38,12 +38,6 @@ Budgie::Plugin::Plugin(QPluginLoader *loader) : m_loader(loader)
     m_name = m_loader->metaData().value("IID").toString();
 }
 
-Budgie::Plugin::~Plugin()
-{
-    // Always attempt to unload the library when we're being destroyed
-    m_loader->unload();
-}
-
 const QString &Budgie::Plugin::name()
 {
     return m_name;

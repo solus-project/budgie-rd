@@ -27,8 +27,6 @@ namespace Budgie
         friend class PluginRegistry;
 
     public:
-        ~Plugin();
-
         /**
          * Attempt to construct a new plugin from the given filepath
          */
@@ -52,7 +50,7 @@ namespace Budgie
         const QString &fileName();
 
     protected:
-        QScopedPointer<QPluginLoader> m_loader;
+        QSharedPointer<QPluginLoader> m_loader;
 
     private:
         explicit Plugin(QPluginLoader *loader);
