@@ -13,11 +13,9 @@
 
 Budgie::ShellRegistry::ShellRegistry()
 {
-    auto system = QDir(systemDirectory());
-
     // We only care about services/faces
-    appendSearchPath(system.filePath("services"));
-    appendSearchPath(system.filePath("faces"));
+    appendSearchPath(systemDirectory().filePath("services"));
+    appendSearchPath(systemDirectory().filePath("faces"));
 }
 
 QSharedPointer<Budgie::ServiceInterface> Budgie::ShellRegistry::getService(const QString &name)
