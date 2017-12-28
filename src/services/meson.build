@@ -1,6 +1,5 @@
 # In future we may allow disabling some services
 enabled_services = [
-    'windowmanager',
     'notifications',
 ]
 

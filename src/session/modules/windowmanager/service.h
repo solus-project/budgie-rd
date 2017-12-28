@@ -13,7 +13,7 @@
 
 #include <QObject>
 
-#include "service-interface.h"
+#include "session-module-interface.h"
 
 namespace Budgie
 {
@@ -21,19 +21,15 @@ namespace Budgie
      * WindowManager implements basic abstraction around the window manager
      * so that it can be managed within the execution context
      */
-    class Q_DECL_EXPORT WindowManagerService : public QObject, public ServiceInterface
+    class Q_DECL_EXPORT WindowManagerModule : public QObject, public SessionModuleInterface
     {
         Q_OBJECT
-        Q_PLUGIN_METADATA(IID "org.budgie-desktop.services.WindowManager" FILE "service.json")
-        Q_INTERFACES(Budgie::ServiceInterface)
+        Q_PLUGIN_METADATA(IID "org.budgie-desktop.session.WindowManager" FILE "service.json")
+        Q_INTERFACES(Budgie::SessionModuleInterface)
 
     public:
-        bool init(ShellInterface *interface) override;
         bool start() override;
         bool stop() override;
-
-    private:
-        ShellInterface *m_shell;
     };
 }
 

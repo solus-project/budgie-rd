@@ -13,21 +13,15 @@
 
 #include "service.h"
 
-bool Budgie::WindowManagerService::init(Budgie::ShellInterface *interface)
+bool Budgie::WindowManagerModule::start()
 {
-    m_shell = interface;
-    return true;
+    qDebug() << "Hello from WindowManagerModule";
+    return false;
 }
 
-bool Budgie::WindowManagerService::start()
+bool Budgie::WindowManagerModule::stop()
 {
-    qDebug() << "Hello from WindowManagerService";
-    return true;
-}
-
-bool Budgie::WindowManagerService::stop()
-{
-    return true;
+    return false;
 }
 
 /*

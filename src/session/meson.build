@@ -32,3 +32,6 @@ session = executable(
         dep_qtcore,
     ],
 )
+
+# Support modules for the session
+subdir('modules')
