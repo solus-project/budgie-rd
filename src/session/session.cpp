@@ -16,6 +16,21 @@ Budgie::Session::Session(const QString &name)
 {
 }
 
+const QString &Budgie::Session::sessionName()
+{
+    return m_sessionName;
+}
+
+bool Budgie::Session::init()
+{
+    return false;
+}
+
+bool Budgie::Session::start()
+{
+    return false;
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

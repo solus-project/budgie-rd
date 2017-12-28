@@ -11,8 +11,11 @@
 
 #include <QCommandLineParser>
 #include <QCoreApplication>
+#include <QDebug>
+#include <QTimer>
 
 #include "config.h"
+#include "session.h"
 
 /**
  * Handle any session-specific desktop overrides we need to put in place.
@@ -63,8 +66,26 @@ int main(int argc, char **argv)
                                   "session-name",
                                   "budgie-desktop");
     p.addOption(optSession);
-
     p.process(app);
+
+    // Sanitize our setup, ensure all services are accounted for
+    QSharedPointer<Budgie::Session> session(new Budgie::Session(p.value(optSession)));
+
+    if (!session->init()) {
+        qWarning() << "init(): Failed";
+        return 1;
+    }
+
+    qInfo() << "Starting session session: " << session->sessionName();
+
+    // Start all services now on the main event loop
+    QTimer::singleShot(0, [session]() {
+        if (!session->start()) {
+            QCoreApplication::exit(1);
+            return;
+        }
+        qDebug() << "Budgie session startup reported as nominal";
+    });
 
     return app.exec();
 }

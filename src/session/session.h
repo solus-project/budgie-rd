@@ -30,6 +30,24 @@ namespace Budgie
     public:
         explicit Session(const QString &name);
 
+        /**
+         * Return the session name that we will be using, to permit fallback
+         * paths for failed session starts.
+         */
+        const QString &sessionName();
+
+        /**
+         * Ensure we have a sane configuration and we're actually able to
+         * perform a startup. Does not actually start any services
+         */
+        bool init();
+
+        /**
+         * Once the main event loop is rolling, start bringing up support
+         * services in the session, including the main shell itself.
+         */
+        bool start();
+
     private:
         QString m_sessionName;
         QSharedPointer<SessionRegistry> m_registry;
