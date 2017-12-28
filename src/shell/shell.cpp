@@ -146,7 +146,7 @@ bool Budgie::Shell::registerInterface(Budgie::BaseInterface *interface, const QS
         qDebug() << "Refusing to register by base ID";
         return false;
     }
-    qDebug() << "Register service: " << lookup;
+    qDebug() << "Registered interface: " << lookup;
     m_interfaces.insert(lookup, interface);
     return true;
 }
