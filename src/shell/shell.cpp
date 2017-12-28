@@ -12,6 +12,7 @@
 #include <QDebug>
 
 #include "panel-manager-interface.h"
+#include "raven-interface.h"
 #include "shell.h"
 
 Budgie::Shell::Shell(const QString &name)
@@ -174,6 +175,14 @@ Budgie::PanelManagerInterface *Budgie::Shell::getPanelManager()
 {
     return dynamic_cast<Budgie::PanelManagerInterface *>(
         getInterface(BudgiePanelManagerInterfaceIID));
+}
+
+/**
+ * Trivial wrapper around getInterface for RavenInterface
+ */
+Budgie::RavenInterface *Budgie::Shell::getRaven()
+{
+    return dynamic_cast<Budgie::RavenInterface *>(getInterface(RavenInterfaceIID));
 }
 
 /*

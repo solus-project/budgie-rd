@@ -64,6 +64,7 @@ namespace Budgie
         BaseInterface *getInterface(const QString &id) override;
         bool hasInterface(const QString &id) override;
         PanelManagerInterface *getPanelManager() override;
+        RavenInterface *getRaven() override;
 
     private:
         QSharedPointer<PluginRegistry> m_registry;

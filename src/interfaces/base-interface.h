@@ -20,6 +20,7 @@ namespace Budgie
     class FaceInterface;
     class PanelInterface;
     class PanelManagerInterface;
+    class RavenInterface;
     class ServiceInterface;
     class ShellInterface;
 

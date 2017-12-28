@@ -12,6 +12,8 @@
 #pragma once
 
 #include "base-interface.h"
+#include "panel-manager-interface.h"
+#include "raven-interface.h"
 
 #define BudgieShellInterfaceIID "org.budgie-desktop.ShellInterface"
 
@@ -61,6 +63,11 @@ namespace Budgie
          * Return the registered Panel Manager, if one is present in this desktop
          */
         virtual PanelManagerInterface *getPanelManager() = 0;
+
+        /**
+         * Get the registered Raven instance, if one is present in this desktop
+         */
+        virtual RavenInterface *getRaven() = 0;
     };
 }
 

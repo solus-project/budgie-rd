@@ -13,39 +13,44 @@
 
 #include "base-interface.h"
 
-#define BudgiePanelInterfaceIID "org.budgie-desktop.PanelInterface"
+#define RavenInterfaceIID "org.budgie-desktop.RavenInterface"
 
 namespace Budgie
 {
     /**
-     * The PanelInterface is the abstract API with which to interact with
+     * The RavenInterface is the abstract API with which to interact with
      * a panel object.
      */
-    class PanelInterface : public BaseInterface
+    class RavenInterface : public BaseInterface
     {
     public:
-        virtual ~PanelInterface()
+        virtual ~RavenInterface()
         {
         }
 
         inline const QString interfaceName() override
         {
-            return QStringLiteral(BudgiePanelInterfaceIID);
+            return QStringLiteral(RavenInterfaceIID);
         }
 
         /**
-         * Request the panel show itself
+         * Request the Raven instance open to the default view
          */
         virtual void show() = 0;
 
         /**
-         * Request the panel hide itself
+         * Explicitly hide the Raven instance if open
          */
         virtual void hide() = 0;
+
+        /**
+         * If Raven is visible, hide it, otherwise, show it.
+         */
+        virtual void toggle() = 0;
     };
 }
 
-Q_DECLARE_INTERFACE(Budgie::PanelInterface, BudgiePanelInterfaceIID)
+Q_DECLARE_INTERFACE(Budgie::RavenInterface, RavenInterfaceIID)
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
