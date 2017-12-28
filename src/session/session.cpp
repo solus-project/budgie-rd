@@ -9,11 +9,19 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QCoreApplication>
+#include <QDebug>
+
 #include "session.h"
 
 Budgie::Session::Session(const QString &name)
     : m_sessionName(name), m_registry(new SessionRegistry())
 {
+    // Start window manager first, very important. :P
+    m_requiredServices << "org.budgie-desktop.session.WindowManager";
+
+    // Get the shell up and running next
+    m_requiredServices << "org.budgie-desktop.session.Shell";
 }
 
 const QString &Budgie::Session::sessionName()
@@ -23,12 +31,49 @@ const QString &Budgie::Session::sessionName()
 
 bool Budgie::Session::init()
 {
-    return false;
+    // Discover all modules
+    m_registry->discover();
+
+    for (const auto &serviceID : m_requiredServices) {
+        if (!m_registry->hasSessionModule(serviceID)) {
+            qWarning() << "Missing session module: " << serviceID;
+            return false;
+        }
+    }
+    return true;
 }
 
 bool Budgie::Session::start()
 {
+    for (const auto &serviceID : m_requiredServices) {
+        auto service = m_registry->getSessionModule(serviceID);
+        qDebug() << "Starting session module: " << serviceID;
+        if (!service->start()) {
+            qWarning() << "Failed to start session module: " << serviceID;
+            shutdownSession();
+            return false;
+        }
+        m_activeServices << serviceID;
+    }
     return false;
+}
+
+void Budgie::Session::shutdownSession()
+{
+    std::reverse(std::begin(m_activeServices), std::end(m_activeServices));
+
+    for (const auto &id : m_activeServices) {
+        auto service = m_registry->getSessionModule(id);
+        if (!service) {
+            qWarning() << "Error in accounting: " << id << " is not accounted for";
+            continue;
+        }
+        qDebug() << "Stopping shell module: " << id;
+        service->stop();
+    }
+
+    qDebug() << "Closing Session";
+    QCoreApplication::quit();
 }
 
 /*

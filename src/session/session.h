@@ -50,7 +50,11 @@ namespace Budgie
 
     private:
         QString m_sessionName;
+        QStringList m_requiredServices;
+        QStringList m_activeServices;
         QSharedPointer<SessionRegistry> m_registry;
+
+        void shutdownSession();
     };
 }
 /*
