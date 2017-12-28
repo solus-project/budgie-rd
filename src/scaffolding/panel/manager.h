@@ -16,6 +16,7 @@
 #include <QWidget>
 
 #include "panel-manager-interface.h"
+#include "shell-interface.h"
 #include "window.h"
 
 namespace Budgie
@@ -29,7 +30,7 @@ namespace Budgie
         Q_OBJECT
 
     public:
-        explicit PanelManager(QObject *parent = nullptr);
+        explicit PanelManager(ShellInterface *interface, QObject *parent = nullptr);
         ~PanelManager();
 
         /* We have go ahead to show content on screen now */
@@ -37,6 +38,7 @@ namespace Budgie
 
     private:
         QScopedPointer<PanelWindow> m_dummyWindow;
+        ShellInterface *m_shell;
     };
 }
 
