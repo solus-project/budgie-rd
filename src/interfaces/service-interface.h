@@ -14,6 +14,8 @@
 #include "base-interface.h"
 #include "shell-interface.h"
 
+#define BudgieServiceInterfaceIID "org.budgie-desktop.ServiceInterface"
+
 namespace Budgie
 {
     /**
@@ -30,6 +32,12 @@ namespace Budgie
         virtual ~ServiceInterface()
         {
         }
+
+        inline const QString interfaceName() override
+        {
+            return QStringLiteral(BudgieServiceInterfaceIID);
+        }
+
         /**
          * Ask the service to initialise with the given ShellInterface
          */
@@ -46,8 +54,6 @@ namespace Budgie
         virtual bool stop() = 0;
     };
 }
-
-#define BudgieServiceInterfaceIID "org.budgie-desktop.ServiceInterface"
 
 Q_DECLARE_INTERFACE(Budgie::ServiceInterface, BudgieServiceInterfaceIID)
 

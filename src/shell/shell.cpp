@@ -20,7 +20,7 @@ Budgie::Shell::Shell(const QString &name)
       m_standardServices({ "org.budgie-desktop.services.Notifications" })
 {
     // At this point we can kinda register ourselves, even if it is a bit weird.
-    registerInterface(BudgieShellInterfaceIID, this);
+    registerInterface(this);
 }
 
 const QString &Budgie::Shell::sessionName()
@@ -100,7 +100,9 @@ bool Budgie::Shell::startFace()
     }
 
     // In case anyone abuses the service API
-    if (!registerInterface(BudgieFaceInterfaceIID, face.data())) {
+    // Also make sure we force the face IID here in case the interface
+    // has multiple IDs in use.
+    if (!registerInterface(face.data(), BudgieFaceInterfaceIID)) {
         qWarning() << "Someone abused the API and stole Face IID";
         qWarning() << "This is fatal. Bye bye.";
         return false;
@@ -126,22 +128,25 @@ bool Budgie::Shell::startFace()
  * Store an internal reference to the object so that interface sharing
  * works.
  */
-bool Budgie::Shell::registerInterface(const QString &id, Budgie::BaseInterface *interface)
+bool Budgie::Shell::registerInterface(Budgie::BaseInterface *interface, const QString &id)
 {
-    if (m_interfaces.contains(id)) {
-        qDebug() << "Interface ID already registered: " << id;
+    const QString &lookup = !id.isEmpty() ? id : interface->interfaceName();
+
+    if (m_interfaces.contains(lookup)) {
+        qDebug() << "Interface ID already registered: " << lookup;
         qDebug() << "Refusing to replace";
         return false;
     }
-    if (id == QStringLiteral(BudgieServiceInterfaceIID)) {
+    if (lookup == QStringLiteral(BudgieServiceInterfaceIID)) {
         qDebug() << "Refusing to register by service ID";
         return false;
     }
-    if (id == QStringLiteral(BudgieBaseInterfaceIID)) {
+    if (lookup == QStringLiteral(BudgieBaseInterfaceIID)) {
         qDebug() << "Refusing to register by base ID";
         return false;
     }
-    m_interfaces.insert(id, interface);
+    qDebug() << "Register service: " << lookup;
+    m_interfaces.insert(lookup, interface);
     return true;
 }
 

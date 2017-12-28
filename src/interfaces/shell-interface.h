@@ -13,6 +13,8 @@
 
 #include "base-interface.h"
 
+#define BudgieShellInterfaceIID "org.budgie-desktop.ShellInterface"
+
 namespace Budgie
 {
     /**
@@ -25,6 +27,12 @@ namespace Budgie
         virtual ~ShellInterface()
         {
         }
+
+        inline const QString interfaceName() override
+        {
+            return QStringLiteral(BudgieShellInterfaceIID);
+        }
+
         /**
          * Return the session name
          */
@@ -34,7 +42,7 @@ namespace Budgie
          * Register some interface with the ShellInterface so that it
          * can be accessed later.
          */
-        virtual bool registerInterface(const QString &id, BaseInterface *instance) = 0;
+        virtual bool registerInterface(BaseInterface *instance, const QString &id = nullptr) = 0;
 
         /**
          * Attempt to retrieve an implementation of the given interface
@@ -48,8 +56,6 @@ namespace Budgie
         virtual bool hasInterface(const QString &id) = 0;
     };
 }
-
-#define BudgieShellInterfaceIID "org.budgie-desktop.ShellInterface"
 
 Q_DECLARE_INTERFACE(Budgie::ShellInterface, BudgieShellInterfaceIID)
 

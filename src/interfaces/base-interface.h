@@ -11,6 +11,8 @@
 
 #pragma once
 
+#define BudgieBaseInterfaceIID "org.budgie-desktop.BaseInterface"
+
 namespace Budgie
 {
     /**
@@ -22,10 +24,10 @@ namespace Budgie
         virtual ~BaseInterface()
         {
         }
+
+        virtual const QString interfaceName() = 0;
     };
 }
-
-#define BudgieBaseInterfaceIID "org.budgie-desktop.BaseInterface"
 
 Q_DECLARE_INTERFACE(Budgie::BaseInterface, BudgieBaseInterfaceIID)
 

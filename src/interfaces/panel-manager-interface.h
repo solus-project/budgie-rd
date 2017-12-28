@@ -13,6 +13,8 @@
 
 #include "base-interface.h"
 
+#define BudgiePanelManagerInterfaceIID "org.budgie-desktop.PanelManagerInterface"
+
 namespace Budgie
 {
     /**
@@ -28,10 +30,13 @@ namespace Budgie
         virtual ~PanelManagerInterface()
         {
         }
+
+        inline const QString interfaceName() override
+        {
+            return QStringLiteral(BudgiePanelManagerInterfaceIID);
+        }
     };
 }
-
-#define BudgiePanelManagerInterfaceIID "org.budgie-desktop.PanelManagerInterface"
 
 Q_DECLARE_INTERFACE(Budgie::PanelManagerInterface, BudgiePanelManagerInterfaceIID)
 

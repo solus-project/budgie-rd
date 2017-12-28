@@ -60,7 +60,7 @@ namespace Budgie
         bool startFace();
 
         /* ShellInterface methods */
-        bool registerInterface(const QString &id, BaseInterface *interface) override;
+        bool registerInterface(BaseInterface *interface, const QString &id = nullptr) override;
         const BaseInterface *getInterface(const QString &id) override;
         bool hasInterface(const QString &id) override;
 

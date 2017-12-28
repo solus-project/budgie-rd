@@ -14,6 +14,8 @@
 #include "base-interface.h"
 #include "shell-interface.h"
 
+#define BudgieFaceInterfaceIID "org.budgie-desktop.FaceInterface"
+
 namespace Budgie
 {
     /**
@@ -25,6 +27,11 @@ namespace Budgie
     public:
         virtual ~FaceInterface()
         {
+        }
+
+        inline const QString interfaceName() override
+        {
+            return QStringLiteral(BudgieFaceInterfaceIID);
         }
 
         /**
@@ -43,8 +50,6 @@ namespace Budgie
         virtual void shutdown() = 0;
     };
 }
-
-#define BudgieFaceInterfaceIID "org.budgie-desktop.FaceInterface"
 
 Q_DECLARE_INTERFACE(Budgie::FaceInterface, BudgieFaceInterfaceIID)
 
