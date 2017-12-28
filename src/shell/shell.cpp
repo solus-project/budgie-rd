@@ -99,6 +99,7 @@ bool Budgie::Shell::startFace()
 
     // At this point we can kinda register ourselves, even if it is a bit weird.
     registerInterface(BudgieShellInterfaceIID, this);
+    registerInterface(BudgieFaceInterfaceIID, face.data());
 
     // Init plugin
     if (!face->init(this)) {
