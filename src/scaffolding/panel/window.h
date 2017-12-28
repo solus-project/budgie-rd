@@ -33,6 +33,7 @@ namespace Budgie
 
     private slots:
         void demoButtonClicked();
+        void quitButtonClicked();
 
     private:
         WId m_winID;

@@ -11,6 +11,7 @@
 
 #include <KWindowEffects>
 #include <QBoxLayout>
+#include <QCoreApplication>
 #include <QDebug>
 #include <QEvent>
 #include <QPushButton>
@@ -44,7 +45,14 @@ Budgie::PanelWindow::PanelWindow(ShellInterface *interface) : m_shell(interface)
     rootWidget->setLayout(tlayout);
     rootWidget->layout()->setMargin(0);
 
-    auto button = new QPushButton("Ermagahd Raven", rootWidget);
+    auto button = new QPushButton("Quit!", rootWidget);
+    connect(button, &QPushButton::clicked, this, &Budgie::PanelWindow::quitButtonClicked);
+    tlayout->addWidget(button, 0, Qt::AlignRight);
+    button->setFocusPolicy(Qt::NoFocus);
+    button->setStyleSheet("color: white;");
+    button->setFlat(true);
+
+    button = new QPushButton("Ermagahd Raven", rootWidget);
     connect(button, &QPushButton::clicked, this, &Budgie::PanelWindow::demoButtonClicked);
     tlayout->addWidget(button, 0, Qt::AlignRight);
     button->setFocusPolicy(Qt::NoFocus);
@@ -85,6 +93,14 @@ void Budgie::PanelWindow::demoButtonClicked()
         return;
     }
     raven->toggle();
+}
+
+/**
+ * Dumb dumb dumb but we need a way to bail
+ */
+void Budgie::PanelWindow::quitButtonClicked()
+{
+    QCoreApplication::quit();
 }
 
 /*
