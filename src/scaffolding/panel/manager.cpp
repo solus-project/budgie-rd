@@ -13,14 +13,7 @@
 
 Budgie::PanelManager::PanelManager(QObject *parent) : QObject(parent)
 {
-    m_dummyWindow.reset(new QWidget());
-    m_dummyWindow->move(0, 1080 - 30);
-    m_dummyWindow->setFixedSize(1920, 30);
-    m_dummyWindow->setAttribute(Qt::WA_X11NetWmWindowTypeDock);
-    m_dummyWindow->setAttribute(Qt::WA_X11DoNotAcceptFocus);
-    m_dummyWindow->setAttribute(Qt::WA_ShowWithoutActivating);
-    m_dummyWindow->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-    m_dummyWindow->setFocusPolicy(Qt::NoFocus);
+    m_dummyWindow.reset(new Budgie::PanelWindow());
 }
 
 Budgie::PanelManager::~PanelManager()

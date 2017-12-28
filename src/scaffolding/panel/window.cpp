@@ -9,35 +9,21 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#pragma once
-
-#include <QObject>
-#include <QScopedPointer>
-#include <QWidget>
-
-#include "panel-manager-interface.h"
 #include "window.h"
 
-namespace Budgie
+Budgie::PanelWindow::PanelWindow()
 {
-    /**
-     * A concrete implementation of the PanelManager using QtWidget based
-     * Panels
-     */
-    class PanelManager : public QObject, public PanelManagerInterface
-    {
-        Q_OBJECT
+    move(0, 1080 - 30);
+    setFixedSize(1920, 30);
+    setAttribute(Qt::WA_X11NetWmWindowTypeDock);
+    setAttribute(Qt::WA_X11DoNotAcceptFocus);
+    setAttribute(Qt::WA_ShowWithoutActivating);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    setFocusPolicy(Qt::NoFocus);
+}
 
-    public:
-        explicit PanelManager(QObject *parent = nullptr);
-        ~PanelManager();
-
-        /* We have go ahead to show content on screen now */
-        void showPanels();
-
-    private:
-        QScopedPointer<PanelWindow> m_dummyWindow;
-    };
+Budgie::PanelWindow::~PanelWindow()
+{
 }
 
 /*

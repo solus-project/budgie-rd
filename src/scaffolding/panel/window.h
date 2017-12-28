@@ -11,32 +11,24 @@
 
 #pragma once
 
-#include <QObject>
-#include <QScopedPointer>
 #include <QWidget>
 
 #include "panel-manager-interface.h"
-#include "window.h"
 
 namespace Budgie
 {
     /**
-     * A concrete implementation of the PanelManager using QtWidget based
-     * Panels
+     * The basic lowlevel window part of the Panel implementation. Note this
+     * is not the true Panel implementation, which must be subclassed from
+     * the Window itself.
      */
-    class PanelManager : public QObject, public PanelManagerInterface
+    class PanelWindow : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit PanelManager(QObject *parent = nullptr);
-        ~PanelManager();
-
-        /* We have go ahead to show content on screen now */
-        void showPanels();
-
-    private:
-        QScopedPointer<PanelWindow> m_dummyWindow;
+        explicit PanelWindow();
+        ~PanelWindow();
     };
 }
 

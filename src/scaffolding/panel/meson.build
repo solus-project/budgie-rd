@@ -1,12 +1,14 @@
 libpanel_mocs = qt5.preprocess(
     moc_headers: [
         'manager.h',
+        'window.h',
     ],
     include_directories: interface_include_directories,
 )
 
 libpanel_sources = [
     'manager.cpp',
+    'window.cpp',
     libpanel_mocs,
 ]
 
