@@ -19,6 +19,8 @@ Budgie::Shell::Shell(const QString &name)
       m_essentialServices({ "org.budgie-desktop.services.WindowManager" }),
       m_standardServices({ "org.budgie-desktop.services.Notifications" })
 {
+    // At this point we can kinda register ourselves, even if it is a bit weird.
+    registerInterface(BudgieShellInterfaceIID, this);
 }
 
 const QString &Budgie::Shell::sessionName()
@@ -97,9 +99,12 @@ bool Budgie::Shell::startFace()
         return false;
     }
 
-    // At this point we can kinda register ourselves, even if it is a bit weird.
-    registerInterface(BudgieShellInterfaceIID, this);
-    registerInterface(BudgieFaceInterfaceIID, face.data());
+    // In case anyone abuses the service API
+    if (!registerInterface(BudgieFaceInterfaceIID, face.data())) {
+        qWarning() << "Someone abused the API and stole Face IID";
+        qWarning() << "This is fatal. Bye bye.";
+        return false;
+    }
 
     // Init plugin
     if (!face->init(this)) {
