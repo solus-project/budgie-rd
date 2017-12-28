@@ -39,7 +39,7 @@ Budgie::PanelWindow::PanelWindow(ShellInterface *interface) : m_shell(interface)
 
     // Colour picking
     rootWidget->setObjectName("budgie-panel");
-    rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(34, 49, 63, 0.89); }");
+    rootWidget->setStyleSheet("#budgie-panel { background-color: rgba(44, 62, 80, 0.89); }");
     auto tlayout = new QBoxLayout(QBoxLayout::LeftToRight);
     rootWidget->setLayout(tlayout);
     rootWidget->layout()->setMargin(0);
