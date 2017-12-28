@@ -36,13 +36,13 @@ namespace Budgie
          * Register some interface with the ShellInterface so that it
          * can be accessed later.
          */
-        virtual bool registerInterface(const QString &id, QObject *instance) = 0;
+        virtual bool registerInterface(const QString &id, BaseInterface *instance) = 0;
 
         /**
          * Attempt to retrieve an implementation of the given interface
          * from the ShellInterface context, if one exists.
          */
-        virtual const QObject *getInterface(const QString &id) = 0;
+        virtual const BaseInterface *getInterface(const QString &id) = 0;
 
         /**
          * Ask the implementation if it has the given interface or not

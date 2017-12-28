@@ -60,8 +60,8 @@ namespace Budgie
         bool startFace();
 
         /* ShellInterface methods */
-        bool registerInterface(const QString &id, QObject *interface) override;
-        const QObject *getInterface(const QString &id) override;
+        bool registerInterface(const QString &id, BaseInterface *interface) override;
+        const BaseInterface *getInterface(const QString &id) override;
         bool hasInterface(const QString &id) override;
 
     private:
@@ -73,7 +73,7 @@ namespace Budgie
         QStringList m_essentialServices;
         QStringList m_standardServices;
 
-        QHash<QString, QObject *> m_interfaces;
+        QHash<QString, BaseInterface *> m_interfaces;
 
         bool startServiceSet(const QStringList &serviceIDs, bool fatal);
     };

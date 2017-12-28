@@ -120,7 +120,7 @@ bool Budgie::Shell::startFace()
  * Store an internal reference to the object so that interface sharing
  * works.
  */
-bool Budgie::Shell::registerInterface(const QString &id, QObject *interface)
+bool Budgie::Shell::registerInterface(const QString &id, Budgie::BaseInterface *interface)
 {
     if (m_interfaces.contains(id)) {
         qDebug() << "Interface ID already registered: " << id;
@@ -131,6 +131,10 @@ bool Budgie::Shell::registerInterface(const QString &id, QObject *interface)
         qDebug() << "Refusing to register by service ID";
         return false;
     }
+    if (id == QStringLiteral(BudgieBaseInterfaceIID)) {
+        qDebug() << "Refusing to register by base ID";
+        return false;
+    }
     m_interfaces.insert(id, interface);
     return true;
 }
@@ -138,7 +142,7 @@ bool Budgie::Shell::registerInterface(const QString &id, QObject *interface)
 /**
  * Return a pointer to the interface or null
  */
-const QObject *Budgie::Shell::getInterface(const QString &id)
+const Budgie::BaseInterface *Budgie::Shell::getInterface(const QString &id)
 {
     return m_interfaces.value(id, nullptr);
 }
