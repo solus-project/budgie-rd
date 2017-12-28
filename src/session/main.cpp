@@ -15,6 +15,24 @@
 #include "config.h"
 
 /**
+ * Handle any session-specific desktop overrides we need to put in place.
+ * Currently this is setting the xdg desktop name/session name for this
+ * process and all descendants.
+ */
+static void initEnvironment()
+{
+    QString xdgDesktopName = "Budgie";
+    auto xdgLocal = xdgDesktopName.toLocal8Bit();
+
+    // Ensure desktop session is correct
+    qputenv("DESKTOP_SESSION", xdgLocal);
+
+    // Must ensure XDG_DESKTOP_NAME is correct, display managers may end up
+    // changing this which we very much do not want.
+    qputenv("XDG_DESKTOP_NAME", xdgLocal);
+}
+
+/**
  * Main Budgie entry.
  *
  * The session is responsible for bootstrapping the initial environment and
@@ -26,6 +44,9 @@
  */
 int main(int argc, char **argv)
 {
+    // Before any real Qt usage
+    initEnvironment();
+
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName("budgie-session");
     QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
