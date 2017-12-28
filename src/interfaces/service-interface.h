@@ -41,7 +41,7 @@ namespace Budgie
         /**
          * Ask the service to initialise with the given ShellInterface
          */
-        virtual bool init(const ShellInterface *shell) = 0;
+        virtual bool init(ShellInterface *shell) = 0;
 
         /**
          * Ask the service interface to start itself

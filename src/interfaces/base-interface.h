@@ -15,6 +15,14 @@
 
 namespace Budgie
 {
+    /* Forward declare all classes */
+    class BaseInterface;
+    class FaceInterface;
+    class PanelInterface;
+    class PanelManagerInterface;
+    class ServiceInterface;
+    class ShellInterface;
+
     /**
      * All interfaces within Budgie derive from the BaseInterface.
      */

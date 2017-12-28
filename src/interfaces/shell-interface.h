@@ -48,12 +48,19 @@ namespace Budgie
          * Attempt to retrieve an implementation of the given interface
          * from the ShellInterface context, if one exists.
          */
-        virtual const BaseInterface *getInterface(const QString &id) = 0;
+        virtual BaseInterface *getInterface(const QString &id) = 0;
 
         /**
          * Ask the implementation if it has the given interface or not
          */
         virtual bool hasInterface(const QString &id) = 0;
+
+        /* Friendly accessors for well known interfaces */
+
+        /**
+         * Return the registered Panel Manager, if one is present in this desktop
+         */
+        virtual PanelManagerInterface *getPanelManager() = 0;
     };
 }
 

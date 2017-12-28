@@ -28,12 +28,12 @@ namespace Budgie
         Q_INTERFACES(Budgie::FaceInterface)
 
     public:
-        bool init(const ShellInterface *interface) override;
+        bool init(ShellInterface *interface) override;
         bool show() override;
         void shutdown() override;
 
     private:
-        const ShellInterface *m_shell;
+        ShellInterface *m_shell;
     };
 }
 

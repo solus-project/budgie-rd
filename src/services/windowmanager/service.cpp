@@ -13,7 +13,7 @@
 
 #include "service.h"
 
-bool Budgie::WindowManagerService::init(const Budgie::ShellInterface *interface)
+bool Budgie::WindowManagerService::init(Budgie::ShellInterface *interface)
 {
     m_shell = interface;
     return true;

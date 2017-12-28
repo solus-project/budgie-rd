@@ -13,7 +13,7 @@
 
 #include "service.h"
 
-bool Budgie::NotificationService::init(const Budgie::ShellInterface *interface)
+bool Budgie::NotificationService::init(Budgie::ShellInterface *interface)
 {
     m_shell = interface;
     return true;

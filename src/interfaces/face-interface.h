@@ -37,7 +37,7 @@ namespace Budgie
         /**
          * Ask the Face to initialise
          */
-        virtual bool init(const ShellInterface *shell) = 0;
+        virtual bool init(ShellInterface *shell) = 0;
 
         /**
          * Ask the Face to now make itself visible

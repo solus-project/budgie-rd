@@ -11,6 +11,7 @@
 
 #include <QDebug>
 
+#include "panel-manager-interface.h"
 #include "shell.h"
 
 Budgie::Shell::Shell(const QString &name)
@@ -153,7 +154,7 @@ bool Budgie::Shell::registerInterface(Budgie::BaseInterface *interface, const QS
 /**
  * Return a pointer to the interface or null
  */
-const Budgie::BaseInterface *Budgie::Shell::getInterface(const QString &id)
+Budgie::BaseInterface *Budgie::Shell::getInterface(const QString &id)
 {
     return m_interfaces.value(id, nullptr);
 }
@@ -161,6 +162,18 @@ const Budgie::BaseInterface *Budgie::Shell::getInterface(const QString &id)
 bool Budgie::Shell::hasInterface(const QString &id)
 {
     return getInterface(id) == nullptr ? false : true;
+}
+
+/* Accessor APIs */
+
+/**
+ * Trivial wrapper around getInterface and cast to the correct type, so that
+ * we have safety.
+ */
+Budgie::PanelManagerInterface *Budgie::Shell::getPanelManager()
+{
+    return dynamic_cast<Budgie::PanelManagerInterface *>(
+        getInterface(BudgiePanelManagerInterfaceIID));
 }
 
 /*

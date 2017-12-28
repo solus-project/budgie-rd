@@ -61,8 +61,9 @@ namespace Budgie
 
         /* ShellInterface methods */
         bool registerInterface(BaseInterface *interface, const QString &id = nullptr) override;
-        const BaseInterface *getInterface(const QString &id) override;
+        BaseInterface *getInterface(const QString &id) override;
         bool hasInterface(const QString &id) override;
+        PanelManagerInterface *getPanelManager() override;
 
     private:
         QSharedPointer<PluginRegistry> m_registry;
