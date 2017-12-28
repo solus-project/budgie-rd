@@ -60,11 +60,15 @@ namespace Budgie
         bool startFace();
 
         /* ShellInterface methods */
+        void shutdown() override;
         bool registerInterface(BaseInterface *interface, const QString &id = nullptr) override;
         BaseInterface *getInterface(const QString &id) override;
         bool hasInterface(const QString &id) override;
         PanelManagerInterface *getPanelManager() override;
         RavenInterface *getRaven() override;
+
+    private slots:
+        void shutdownShell();
 
     private:
         QSharedPointer<PluginRegistry> m_registry;
@@ -74,9 +78,11 @@ namespace Budgie
 
         QStringList m_essentialServices;
         QStringList m_standardServices;
+        QStringList m_activeServices;
 
         QHash<QString, BaseInterface *> m_interfaces;
 
+        bool m_shutdownRequested;
         bool startServiceSet(const QStringList &serviceIDs, bool fatal);
     };
 }

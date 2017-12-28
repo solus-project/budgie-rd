@@ -73,6 +73,21 @@ namespace Budgie
          */
         bool hasFacePlugin(const QString &name);
 
+        /**
+         * Unload a named plugin
+         */
+        void unload(const QString &name);
+
+        /**
+         * Unload a Face plugin
+         */
+        void unloadFace(const QString &name);
+
+        /**
+         * Unload a Service plugin
+         */
+        void unloadService(const QString &name);
+
     protected:
         void discover();
         void discoverType(const QString &type);

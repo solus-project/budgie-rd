@@ -11,7 +11,6 @@
 
 #include <KWindowEffects>
 #include <QBoxLayout>
-#include <QCoreApplication>
 #include <QDebug>
 #include <QEvent>
 #include <QPushButton>
@@ -100,7 +99,7 @@ void Budgie::PanelWindow::demoButtonClicked()
  */
 void Budgie::PanelWindow::quitButtonClicked()
 {
-    QCoreApplication::quit();
+    m_shell->shutdown();
 }
 
 /*

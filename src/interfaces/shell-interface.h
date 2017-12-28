@@ -36,6 +36,12 @@ namespace Budgie
         }
 
         /**
+         * Temporary interface, handles the main shutdown routine of the
+         * Shell. In future this will be hidden behind session controls
+         */
+        virtual void shutdown() = 0;
+
+        /**
          * Return the session name
          */
         virtual const QString &sessionName() = 0;

@@ -100,6 +100,25 @@ void Budgie::PluginRegistry::discover()
     discoverType("faces");
 }
 
+void Budgie::PluginRegistry::unloadFace(const QString &face)
+{
+    unload("faces/" + face);
+}
+
+void Budgie::PluginRegistry::unloadService(const QString &service)
+{
+    unload("services/" + service);
+}
+
+void Budgie::PluginRegistry::unload(const QString &name)
+{
+    if (!m_plugins.contains(name)) {
+        qWarning() << "Attempting to remove unknown plugin: " << name;
+        return;
+    }
+    m_plugins.remove(name);
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

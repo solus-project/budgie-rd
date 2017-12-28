@@ -9,7 +9,10 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QCoreApplication>
 #include <QDebug>
+#include <QTimer>
+#include <algorithm>
 
 #include "panel-manager-interface.h"
 #include "raven-interface.h"
@@ -88,6 +91,7 @@ bool Budgie::Shell::startServiceSet(const QStringList &serviceIDs, bool fatal)
             }
             continue;
         }
+        m_activeServices << serviceID;
     }
 
     return true;
@@ -183,6 +187,45 @@ Budgie::PanelManagerInterface *Budgie::Shell::getPanelManager()
 Budgie::RavenInterface *Budgie::Shell::getRaven()
 {
     return dynamic_cast<Budgie::RavenInterface *>(getInterface(BudgieRavenInterfaceIID));
+}
+
+/**
+ * Handle the real shutdown which was ticked on the idle thread
+ */
+void Budgie::Shell::shutdownShell()
+{
+    // Shut down the face first.
+    auto face = m_registry->getFace(m_faceName);
+    if (face) {
+        qDebug() << "Shutting down Face: " << m_faceName;
+        face->shutdown();
+        m_registry->unloadFace(m_faceName);
+    }
+
+    std::reverse(std::begin(m_activeServices), std::end(m_activeServices));
+
+    for (const auto &id : m_activeServices) {
+        auto service = m_registry->getService(id);
+        if (!service) {
+            qWarning() << "Error in accounting: " << id << " is not accounted for";
+            continue;
+        }
+        qDebug() << "Stopping service: " << id;
+        service->stop();
+    }
+
+    qDebug() << "Closing Shell";
+    QCoreApplication::quit();
+}
+
+void Budgie::Shell::shutdown()
+{
+    if (m_shutdownRequested) {
+        return;
+    }
+    qDebug() << "Scheduling shutdown of shell";
+    m_shutdownRequested = true;
+    QTimer::singleShot(0, this, &Budgie::Shell::shutdownShell);
 }
 
 /*

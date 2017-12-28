@@ -74,6 +74,7 @@ static QApplication *createApplication(int argc, char **argv)
 
     // TODO: Maybe do something useful here
     ret = new QApplication(argc, argv);
+    ret->setQuitOnLastWindowClosed(false);
 
     return ret;
 }
