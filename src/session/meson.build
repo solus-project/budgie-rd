@@ -1,5 +1,6 @@
 session_mocs = qt5.preprocess(
     moc_headers: [
+        'session.h',
         'session-registry.h',
     ],
     include_directories: interface_include_directories,
@@ -7,6 +8,7 @@ session_mocs = qt5.preprocess(
 
 session_sources = [
     'main.cpp',
+    'session.cpp',
     'session-registry.cpp',
     session_mocs,
 ]
