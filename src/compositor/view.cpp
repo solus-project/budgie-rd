@@ -10,9 +10,14 @@
  */
 
 #include "view.h"
+#include "window.h"
 
-Budgie::CompositorView::CompositorView(Budgie::CompositorSurfaceItem *surface) : m_surface(surface)
+Budgie::CompositorView::CompositorView(Budgie::CompositorWindow *window,
+                                       Budgie::CompositorSurfaceItem *surface)
+    : m_window(window), m_surface(surface)
 {
+    setSurface(m_surface->surface());
+    setOutput(m_window->output());
 }
 
 /*

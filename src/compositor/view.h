@@ -31,9 +31,10 @@ namespace Budgie
         Q_OBJECT
 
     public:
-        explicit CompositorView(CompositorSurfaceItem *surface);
+        explicit CompositorView(CompositorWindow *window, CompositorSurfaceItem *surface);
 
     private:
+        CompositorWindow *m_window;
         CompositorSurfaceItem *m_surface;
     };
 }
