@@ -41,6 +41,13 @@ namespace Budgie
          */
         void run();
 
+    private slots:
+        void onCreated();
+
+        void surfaceCreated(QWaylandSurface *surface);
+        void wlShellSurfaceCreated(QWaylandWlShellSurface *surface);
+        void xdgSurfaceCreated(QWaylandXdgSurfaceV5 *surface);
+
     private:
         QSharedPointer<QWaylandCompositor> m_compositor;
 
@@ -54,13 +61,6 @@ namespace Budgie
         /* TODO: Add v6 xdg shell when we have Qt 5.10
         QScopedPointer<QWaylandXdgShellV6> m_xdg_shell_v6;
         */
-
-    private slots:
-        void onCreated();
-
-        void surfaceCreated(QWaylandSurface *surface);
-        void wlShellSurfaceCreated(QWaylandWlShellSurface *surface);
-        void xdgSurfaceCreated(QWaylandXdgSurfaceV5 *surface);
     };
 }
 /*
