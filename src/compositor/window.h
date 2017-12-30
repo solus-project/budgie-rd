@@ -21,6 +21,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLTextureBlitter>
 
+#include "compositor-common.h"
 #include "surface-item.h"
 
 namespace Budgie
@@ -34,7 +35,7 @@ namespace Budgie
         Q_OBJECT
 
     public:
-        explicit CompositorWindow(QWaylandOutput *output);
+        explicit CompositorWindow(Compositor *compositor, QWaylandOutput *output);
 
         /**
          * Get the QWaylandOutput we're associated with
@@ -47,8 +48,8 @@ namespace Budgie
         QWaylandCompositor *compositor();
 
     protected:
+        Compositor *m_compositor;
         QScopedPointer<QWaylandOutput> m_output;
-        QWaylandCompositor *m_compositor;
 
         void scheduleDraw();
 

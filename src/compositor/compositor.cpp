@@ -55,10 +55,15 @@ void Budgie::Compositor::run()
     output->addMode(mode, true);
 
     // Create our output manager
-    m_window.reset(new Budgie::CompositorWindow(output));
+    m_window.reset(new Budgie::CompositorWindow(this, output));
 
     // Set stuff in motion now
     m_compositor->create();
+}
+
+QWaylandCompositor *Budgie::Compositor::compositor()
+{
+    return m_compositor.data();
 }
 
 void Budgie::Compositor::onCreated()

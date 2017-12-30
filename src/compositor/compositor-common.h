@@ -36,6 +36,11 @@ namespace Budgie
     };
 
     Q_ENUM_NS(RenderLayer)
+
+    /* Forward declare all our classes */
+    class Compositor;
+    class CompositorWindow;
+    class CompositorSurfaceItem;
 }
 
 /*

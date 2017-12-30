@@ -11,12 +11,12 @@
 
 #include <QWaylandOutputMode>
 
+#include "compositor.h"
 #include "window.h"
 
-Budgie::CompositorWindow::CompositorWindow(QWaylandOutput *output) : m_output(output)
+Budgie::CompositorWindow::CompositorWindow(Budgie::Compositor *compositor, QWaylandOutput *output)
+    : m_compositor(compositor), m_output(output)
 {
-    m_compositor = m_output->compositor();
-
     setSurfaceType(QWindow::OpenGLSurface);
 
     // Stupid but we're forced into demoMode right now
@@ -37,7 +37,7 @@ QWaylandOutput *Budgie::CompositorWindow::output()
 
 QWaylandCompositor *Budgie::CompositorWindow::compositor()
 {
-    return m_compositor;
+    return m_compositor->compositor();
 }
 
 void Budgie::CompositorWindow::currentModeChanged()

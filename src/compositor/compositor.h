@@ -46,6 +46,8 @@ namespace Budgie
          */
         void run();
 
+        QWaylandCompositor *compositor();
+
     protected:
         QList<CompositorSurfaceItem *> getRenderables(CompositorWindow *window);
 
