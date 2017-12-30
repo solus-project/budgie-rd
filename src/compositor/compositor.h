@@ -70,6 +70,11 @@ namespace Budgie
         QHash<QWaylandSurface *, QSharedPointer<CompositorSurfaceItem>> m_surfaces;
 
         CompositorSurfaceItem *getSurfaceItem(QWaylandSurface *surface);
+
+        /* Map a list to each layer */
+        QHash<RenderLayer, QList<CompositorSurfaceItem *>> m_renderables;
+
+        void renderLayer(RenderLayer layer);
     };
 }
 /*

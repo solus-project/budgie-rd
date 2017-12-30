@@ -138,6 +138,14 @@ Budgie::CompositorSurfaceItem *Budgie::Compositor::getSurfaceItem(QWaylandSurfac
     return ret.data();
 }
 
+void Budgie::Compositor::renderLayer(RenderLayer layer)
+{
+    qDebug() << "Render: " << layer;
+    for (Budgie::CompositorSurfaceItem *item : m_renderables[layer]) {
+        qDebug() << "Pretending to draw: " << item;
+    }
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

@@ -19,6 +19,8 @@
 
 namespace Budgie
 {
+    Q_NAMESPACE
+
     /* Helps us to control which "layer" something will be rendered on
      * as we'll render back-to-front
      *
@@ -36,6 +38,8 @@ namespace Budgie
         DND,            /* Show DND icons always, but below cursor */
         CURSOR,         /* Cursor is rendered above everything else */
     };
+
+    Q_ENUM_NS(RenderLayer)
 
     /**
      * The CompositorSurfaceItem wraps a QWaylandSurface to provide general
@@ -77,6 +81,7 @@ namespace Budgie
         RenderLayer m_layer;
     };
 }
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *
