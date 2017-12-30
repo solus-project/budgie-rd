@@ -127,16 +127,17 @@ void Budgie::CompositorWindow::doRender()
 
     m_GLBlitter.bind();
 
-    /* TODO: Make this work.
+    // Blit all relevant textures now
     for (auto surface : m_compositor->getRenderables(this)) {
         renderSurface(surface);
-    }*/
+    }
 
     m_GLBlitter.release();
 }
 
 void Budgie::CompositorWindow::renderSurface(Budgie::CompositorSurfaceItem *item)
 {
+    // TODO: Add some kind of checking to make sure we're the right view for the item!
     Q_UNUSED(item);
 }
 
