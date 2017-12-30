@@ -50,6 +50,14 @@ Budgie::RenderLayer Budgie::CompositorSurfaceItem::layer()
     return m_layer;
 }
 
+/**
+ * Allow the compositor to update the layer
+ */
+void Budgie::CompositorSurfaceItem::setLayer(RenderLayer layer)
+{
+    m_layer = layer;
+}
+
 void Budgie::CompositorSurfaceItem::setShellSurface(QWaylandWlShellSurface *surface)
 {
     m_shell_surface = surface;

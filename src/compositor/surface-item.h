@@ -47,6 +47,7 @@ namespace Budgie
     protected:
         void setShellSurface(QWaylandWlShellSurface *surface);
         void setXdgSurfacev5(QWaylandXdgSurfaceV5 *surface);
+        void setLayer(RenderLayer Layer);
 
     private:
         QWaylandSurface *m_surface;
