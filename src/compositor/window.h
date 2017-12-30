@@ -19,6 +19,9 @@
 /* OpenGL */
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
+#include <QOpenGLTextureBlitter>
+
+#include "surface-item.h"
 
 namespace Budgie
 {
@@ -55,6 +58,7 @@ namespace Budgie
     private:
         /* OpenGL stuff */
         QOpenGLContext *m_GLContext;
+        QOpenGLTextureBlitter m_GLBlitter;
 
         bool event(QEvent *event) override;
         void exposeEvent(QExposeEvent *event) override;
@@ -62,6 +66,7 @@ namespace Budgie
         void ensureGL();
         void blitScreen();
         void doRender();
+        void renderSurface(CompositorSurfaceItem *surface);
     };
 }
 /*

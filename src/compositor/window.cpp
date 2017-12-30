@@ -95,6 +95,8 @@ void Budgie::CompositorWindow::ensureGL()
     m_GLContext->makeCurrent(this);
 
     initializeOpenGLFunctions();
+
+    m_GLBlitter.create();
 }
 
 /**
@@ -121,6 +123,20 @@ void Budgie::CompositorWindow::doRender()
     auto funcs = m_GLContext->functions();
     funcs->glClearColor(0.3f, 0.5f, 0.8f, 1.0f);
     funcs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    m_GLBlitter.bind();
+
+    /* TODO: Make this work.
+    for (auto surface : m_compositor->getRenderables(this)) {
+        renderSurface(surface);
+    }*/
+
+    m_GLBlitter.release();
+}
+
+void Budgie::CompositorWindow::renderSurface(Budgie::CompositorSurfaceItem *item)
+{
+    Q_UNUSED(item);
 }
 
 /*
