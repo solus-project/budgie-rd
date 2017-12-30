@@ -44,6 +44,7 @@ void Budgie::CompositorWindow::currentModeChanged()
     auto size = mode.size();
     qDebug() << "currentModeChanged(): " << size;
     resize(size.width(), size.height());
+    setPosition(m_output->position());
 }
 
 /*

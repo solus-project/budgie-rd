@@ -49,6 +49,7 @@ void Budgie::Compositor::run()
     auto output = new QWaylandOutput(m_compositor.data(), nullptr);
     // Add fake output, 1024x768 @ 60hz
     QWaylandOutputMode mode(QSize(1024, 768), 60000);
+    output->setPosition(QPoint(0, 0));
     output->addMode(mode, true);
 
     // Create our output manager
