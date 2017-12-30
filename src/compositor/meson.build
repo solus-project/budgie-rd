@@ -1,5 +1,15 @@
+compositor_mocs = qt5.preprocess(
+    moc_headers: [
+        'compositor.h',
+    ],
+    include_directories: interface_include_directories,
+)
+
+
 compositor_sources = [
+    'compositor.cpp',
     'main.cpp',
+    compositor_mocs,
 ]
 
 compositor_includes = [

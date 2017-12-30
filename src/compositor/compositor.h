@@ -9,30 +9,35 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QCoreApplication>
-#include <QGuiApplication>
-#include <QTimer>
+#pragma once
 
-#include "compositor.h"
+#include <QObject>
+#include <QSharedPointer>
+#include <QWaylandCompositor>
 
-/**
- * Main Compositor entry
- *
- * Bootstrap the budgie-rd-compositor and show pretty pictures on screen.
- */
-int main(int argc, char **argv)
+namespace Budgie
 {
-    // Support NVIDIA.
-    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts, true);
-    QGuiApplication app(argc, argv);
-    QSharedPointer<Budgie::Compositor> comp(new Budgie::Compositor());
+    /**
+     * The Budgie::Compositor handles the lifecycle for the main compositor
+     * process, and will load the relevant implementation to handle actually
+     * rendering.
+     */
+    class Compositor : public QObject
+    {
+        Q_OBJECT
 
-    // Run once idle loop is active
-    QTimer::singleShot(0, [comp] { comp->run(); });
+    public:
+        explicit Compositor();
 
-    return app.exec();
+        /**
+         * Request that the compositor now run, i.e. create the server.
+         */
+        void run();
+
+    private:
+        QSharedPointer<QWaylandCompositor> m_compositor;
+    };
 }
-
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

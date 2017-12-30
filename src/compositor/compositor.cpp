@@ -9,28 +9,17 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QCoreApplication>
-#include <QGuiApplication>
-#include <QTimer>
-
 #include "compositor.h"
 
-/**
- * Main Compositor entry
- *
- * Bootstrap the budgie-rd-compositor and show pretty pictures on screen.
- */
-int main(int argc, char **argv)
+Budgie::Compositor::Compositor() : m_compositor(new QWaylandCompositor())
 {
-    // Support NVIDIA.
-    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts, true);
-    QGuiApplication app(argc, argv);
-    QSharedPointer<Budgie::Compositor> comp(new Budgie::Compositor());
+}
 
-    // Run once idle loop is active
-    QTimer::singleShot(0, [comp] { comp->run(); });
-
-    return app.exec();
+void Budgie::Compositor::run()
+{
+    // TODO: Hook up outputs
+    m_compositor->create();
+    // TODO: Detect failure if another compositor is bound!
 }
 
 /*
