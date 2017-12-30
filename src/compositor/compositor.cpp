@@ -31,6 +31,7 @@ void Budgie::Compositor::run()
     // Set stuff in motion now
     m_compositor->create();
     output->setCurrentMode(mode);
+    m_compositor->setDefaultOutput(output);
 
     m_window->show();
 }
