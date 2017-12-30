@@ -19,10 +19,29 @@ Budgie::Compositor::Compositor() : m_compositor(new QWaylandCompositor())
     m_wl_shell.reset(new QWaylandWlShell(m_compositor.data()));
     m_xdg_shell_v5.reset(new QWaylandXdgShellV5(m_compositor.data()));
 
+    // We'll sort out our windows when we're created
     connect(m_compositor.data(),
             &QWaylandCompositor::createdChanged,
             this,
             &Budgie::Compositor::onCreated);
+
+    // Respond to wl_surface creation
+    connect(m_compositor.data(),
+            &QWaylandCompositor::surfaceCreated,
+            this,
+            &Budgie::Compositor::surfaceCreated);
+
+    // Respond to wl_shell_surface association
+    connect(m_wl_shell.data(),
+            &QWaylandWlShell::wlShellSurfaceCreated,
+            this,
+            &Budgie::Compositor::wlShellSurfaceCreated);
+
+    // Respond to xdg (v5) shell creation
+    connect(m_xdg_shell_v5.data(),
+            &QWaylandXdgShellV5::xdgSurfaceCreated,
+            this,
+            &Budgie::Compositor::xdgSurfaceCreated);
 }
 
 void Budgie::Compositor::run()
@@ -48,6 +67,39 @@ void Budgie::Compositor::onCreated()
     m_compositor->setDefaultOutput(output);
     m_window->show();
 }
+
+/**
+ * A new toplevel surface has been created
+ *
+ * It should be noted that the ->surface() of each extension surface "belongs"
+ * to the toplevel QWaylandSurface, so we can implement parenting through this
+ * system.
+ */
+void Budgie::Compositor::surfaceCreated(QWaylandSurface *surface)
+{
+    if (surface->isCursorSurface()) {
+        qDebug() << "New cursor surface:" << surface;
+    } else {
+        qDebug() << "New wl_surface: " << surface;
+    }
+}
+
+/**
+ * New wl_shell_surface has been created.
+ */
+void Budgie::Compositor::wlShellSurfaceCreated(QWaylandWlShellSurface *surface)
+{
+    qDebug() << "New wl_shell_surface" << surface << " with real surface: " << surface->surface();
+}
+
+/**
+ * New XDG surface has been created
+ */
+void Budgie::Compositor::xdgSurfaceCreated(QWaylandXdgSurfaceV5 *surface)
+{
+    qDebug() << "New XDG surface" << surface << " with real surface: " << surface->surface();
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

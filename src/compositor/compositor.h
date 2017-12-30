@@ -16,6 +16,7 @@
 #include <QWaylandCompositor>
 
 /* Extensions */
+#include <QWaylandSurface>
 #include <QWaylandWlShell>
 #include <QWaylandXdgShellV5>
 
@@ -56,6 +57,10 @@ namespace Budgie
 
     private slots:
         void onCreated();
+
+        void surfaceCreated(QWaylandSurface *surface);
+        void wlShellSurfaceCreated(QWaylandWlShellSurface *surface);
+        void xdgSurfaceCreated(QWaylandXdgSurfaceV5 *surface);
     };
 }
 /*
