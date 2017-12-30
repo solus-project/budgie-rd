@@ -11,7 +11,8 @@
 
 #include "surface-item.h"
 
-Budgie::CompositorSurfaceItem::CompositorSurfaceItem(QWaylandSurface *surface) : m_surface(surface)
+Budgie::CompositorSurfaceItem::CompositorSurfaceItem(QWaylandSurface *surface)
+    : m_surface(surface), m_shell_surface(nullptr), m_xdg_surface_v5(nullptr)
 {
     m_compositor = m_surface->compositor();
 }
@@ -24,6 +25,20 @@ QWaylandSurface *Budgie::CompositorSurfaceItem::surface()
 QWaylandCompositor *Budgie::CompositorSurfaceItem::compositor()
 {
     return m_compositor;
+}
+
+void Budgie::CompositorSurfaceItem::setShellSurface(QWaylandWlShellSurface *surface)
+{
+    m_shell_surface = surface;
+
+    // TODO: Hook up stuffs
+}
+
+void Budgie::CompositorSurfaceItem::setXdgSurfacev5(QWaylandXdgSurfaceV5 *surface)
+{
+    m_xdg_surface_v5 = surface;
+
+    // TODO: Hook up stuffs
 }
 
 /*

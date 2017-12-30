@@ -96,6 +96,12 @@ void Budgie::Compositor::surfaceCreated(QWaylandSurface *surface)
  */
 void Budgie::Compositor::wlShellSurfaceCreated(QWaylandWlShellSurface *surface)
 {
+    auto parent = getSurfaceItem(surface->surface());
+    if (!parent) {
+        qWarning() << "Cannot set wlShell on unknown surface";
+        return;
+    }
+    parent->setShellSurface(surface);
     qDebug() << "New wl_shell_surface" << surface << " with real surface: " << surface->surface();
 }
 
@@ -104,6 +110,12 @@ void Budgie::Compositor::wlShellSurfaceCreated(QWaylandWlShellSurface *surface)
  */
 void Budgie::Compositor::xdgSurfaceCreated(QWaylandXdgSurfaceV5 *surface)
 {
+    auto parent = getSurfaceItem(surface->surface());
+    if (!parent) {
+        qWarning() << "Cannot set xdgShell on unknown surface";
+        return;
+    }
+    parent->setXdgSurfacev5(surface);
     qDebug() << "New XDG surface" << surface << " with real surface: " << surface->surface();
 }
 

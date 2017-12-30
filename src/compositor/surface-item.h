@@ -14,6 +14,8 @@
 #include <QObject>
 #include <QWaylandCompositor>
 #include <QWaylandSurface>
+#include <QWaylandWlShellSurface>
+#include <QWaylandXdgSurfaceV5>
 
 namespace Budgie
 {
@@ -40,9 +42,16 @@ namespace Budgie
          */
         QWaylandCompositor *compositor();
 
+        void setShellSurface(QWaylandWlShellSurface *surface);
+        void setXdgSurfacev5(QWaylandXdgSurfaceV5 *surface);
+
     protected:
         QWaylandSurface *m_surface;
         QWaylandCompositor *m_compositor;
+
+    private:
+        QWaylandWlShellSurface *m_shell_surface;
+        QWaylandXdgSurfaceV5 *m_xdg_surface_v5;
     };
 }
 /*
