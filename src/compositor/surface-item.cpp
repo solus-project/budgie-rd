@@ -12,7 +12,8 @@
 #include "surface-item.h"
 
 Budgie::CompositorSurfaceItem::CompositorSurfaceItem(QWaylandSurface *surface)
-    : m_surface(surface), m_shell_surface(nullptr), m_xdg_surface_v5(nullptr), m_renderable(false)
+    : m_surface(surface), m_shell_surface(nullptr), m_xdg_surface_v5(nullptr), m_renderable(false),
+      m_layer(RenderLayer::APPLICATION)
 {
     m_compositor = m_surface->compositor();
 }
@@ -39,6 +40,14 @@ QWaylandCompositor *Budgie::CompositorSurfaceItem::compositor()
 bool Budgie::CompositorSurfaceItem::renderable()
 {
     return m_renderable;
+}
+
+/**
+ * Get the rendering layer for this particular surface item.
+ */
+Budgie::RenderLayer Budgie::CompositorSurfaceItem::layer()
+{
+    return m_layer;
 }
 
 void Budgie::CompositorSurfaceItem::setShellSurface(QWaylandWlShellSurface *surface)

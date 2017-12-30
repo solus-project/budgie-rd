@@ -19,6 +19,24 @@
 
 namespace Budgie
 {
+    /* Helps us to control which "layer" something will be rendered on
+     * as we'll render back-to-front
+     *
+     * Each chain is also back-to-front for rendering order to permit z-stacking
+     * within each layer.
+     */
+    enum RenderLayer {
+        BACKGROUND = 0, /* Wallpaper */
+        DESKTOP,        /* Desktop icons */
+        APPLICATION,    /* Ordinary applications */
+        PANEL,          /* Budgie Panel/docks */
+        SIDEBAR,        /* Raven */
+        FULLSCREEN,     /* Exclusive fullscreen */
+        NOTIFICATION,   /* OSD, etc */
+        DND,            /* Show DND icons always, but below cursor */
+        CURSOR,         /* Cursor is rendered above everything else */
+    };
+
     /**
      * The CompositorSurfaceItem wraps a QWaylandSurface to provide general
      * abstraction so that it is in some way *usable* to the Budgie::Compositor.
@@ -40,6 +58,8 @@ namespace Budgie
         const QString &title();
         bool renderable();
 
+        RenderLayer layer();
+
     protected:
         void setShellSurface(QWaylandWlShellSurface *surface);
         void setXdgSurfacev5(QWaylandXdgSurfaceV5 *surface);
@@ -53,6 +73,8 @@ namespace Budgie
 
         QString m_windowTitle;
         bool m_renderable;
+
+        RenderLayer m_layer;
     };
 }
 /*
