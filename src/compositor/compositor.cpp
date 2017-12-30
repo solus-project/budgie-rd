@@ -159,7 +159,7 @@ QList<Budgie::CompositorSurfaceItem *> Budgie::Compositor::getRenderables(
     QList<Budgie::CompositorSurfaceItem *> drawables;
 
     // FIXME: Be less stupid
-    for (int layer = RenderLayer::APPLICATION; layer < RenderLayer::CURSOR; layer++) {
+    for (int layer = RenderLayer::BACKGROUND; layer < RenderLayer::CURSOR; layer++) {
         for (Budgie::CompositorSurfaceItem *item : m_renderables[static_cast<RenderLayer>(layer)]) {
             // TODO: Only return items within this window!
             drawables << item;
