@@ -97,6 +97,10 @@ void Budgie::Compositor::surfaceCreated(QWaylandSurface *surface)
 
     // Make sure we nuke the guy
     connect(surface, &QWaylandSurface::destroyed, this, &Budgie::Compositor::surfaceDestroyed);
+
+    // Now map this guy. Ideally we'd only map in xdg/wl_shell so we'd then know
+    // which monitor to display it.
+    m_window->mapSurface(item);
 }
 
 /**

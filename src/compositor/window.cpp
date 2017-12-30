@@ -12,6 +12,7 @@
 #include <QWaylandOutputMode>
 
 #include "compositor.h"
+#include "view.h"
 #include "window.h"
 
 Budgie::CompositorWindow::CompositorWindow(Budgie::Compositor *compositor, QWaylandOutput *output)
@@ -137,6 +138,16 @@ void Budgie::CompositorWindow::doRender()
 void Budgie::CompositorWindow::renderSurface(Budgie::CompositorSurfaceItem *item)
 {
     Q_UNUSED(item);
+}
+
+/**
+ * We've been asked to map this surface onto our display
+ */
+void Budgie::CompositorWindow::mapSurface(Budgie::CompositorSurfaceItem *surface)
+{
+    /* TODO: Not be crap. */
+    auto view = new Budgie::CompositorView(this, surface);
+    Q_UNUSED(view);
 }
 
 /*
