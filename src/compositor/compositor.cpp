@@ -77,11 +77,18 @@ void Budgie::Compositor::onCreated()
  */
 void Budgie::Compositor::surfaceCreated(QWaylandSurface *surface)
 {
-    if (surface->isCursorSurface()) {
+    /* Store the surface now */
+    auto item = new Budgie::CompositorSurfaceItem(surface);
+    m_surfaces.insert(surface, QSharedPointer<Budgie::CompositorSurfaceItem>(item));
+
+    if (item->surface()->isCursorSurface()) {
         qDebug() << "New cursor surface:" << surface;
     } else {
         qDebug() << "New wl_surface: " << surface;
     }
+
+    // Make sure we nuke the guy
+    connect(surface, &QWaylandSurface::destroyed, this, &Budgie::Compositor::surfaceDestroyed);
 }
 
 /**
@@ -98,6 +105,25 @@ void Budgie::Compositor::wlShellSurfaceCreated(QWaylandWlShellSurface *surface)
 void Budgie::Compositor::xdgSurfaceCreated(QWaylandXdgSurfaceV5 *surface)
 {
     qDebug() << "New XDG surface" << surface << " with real surface: " << surface->surface();
+}
+
+void Budgie::Compositor::surfaceDestroyed()
+{
+    auto surface = static_cast<QWaylandSurface *>(sender());
+    qDebug() << "Surface removed: " << surface;
+    m_surfaces.remove(surface);
+}
+
+/**
+ * Get the corresponding surface item for the given Wayland surface
+ */
+Budgie::CompositorSurfaceItem *Budgie::Compositor::getSurfaceItem(QWaylandSurface *surface)
+{
+    auto ret = m_surfaces.value(surface, nullptr);
+    if (ret.isNull()) {
+        return nullptr;
+    };
+    return ret.data();
 }
 
 /*

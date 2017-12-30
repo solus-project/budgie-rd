@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <QHash>
 #include <QObject>
 #include <QSharedPointer>
 #include <QWaylandCompositor>
@@ -20,6 +21,7 @@
 #include <QWaylandWlShell>
 #include <QWaylandXdgShellV5>
 
+#include "surface-item.h"
 #include "window.h"
 
 namespace Budgie
@@ -48,6 +50,8 @@ namespace Budgie
         void wlShellSurfaceCreated(QWaylandWlShellSurface *surface);
         void xdgSurfaceCreated(QWaylandXdgSurfaceV5 *surface);
 
+        void surfaceDestroyed();
+
     private:
         QSharedPointer<QWaylandCompositor> m_compositor;
 
@@ -61,6 +65,11 @@ namespace Budgie
         /* TODO: Add v6 xdg shell when we have Qt 5.10
         QScopedPointer<QWaylandXdgShellV6> m_xdg_shell_v6;
         */
+
+        /* Map QWaylandSurface into our own items */
+        QHash<QWaylandSurface *, QSharedPointer<CompositorSurfaceItem>> m_surfaces;
+
+        CompositorSurfaceItem *getSurfaceItem(QWaylandSurface *surface);
     };
 }
 /*
