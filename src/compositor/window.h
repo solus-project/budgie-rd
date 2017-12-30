@@ -16,13 +16,17 @@
 #include <QWaylandOutput>
 #include <QWindow>
 
+/* OpenGL */
+#include <QOpenGLContext>
+#include <QOpenGLFunctions>
+
 namespace Budgie
 {
     /**
      * The CompositorWindow wraps a QWaylandOutput to provide actual output
      * on screen, and is responsible for rendering.
      */
-    class CompositorWindow : public QWindow
+    class CompositorWindow : public QWindow, protected QOpenGLFunctions
     {
         Q_OBJECT
 
@@ -43,8 +47,20 @@ namespace Budgie
         QScopedPointer<QWaylandOutput> m_output;
         QWaylandCompositor *m_compositor;
 
+        void scheduleDraw();
+
     private slots:
         void currentModeChanged();
+
+    private:
+        /* OpenGL stuff */
+        QOpenGLContext *mGLContext;
+
+        bool event(QEvent *event) override;
+        void exposeEvent(QExposeEvent *event) override;
+
+        void ensureGL();
+        void blitScreen();
     };
 }
 /*
