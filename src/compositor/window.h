@@ -54,13 +54,14 @@ namespace Budgie
 
     private:
         /* OpenGL stuff */
-        QOpenGLContext *mGLContext;
+        QOpenGLContext *m_GLContext;
 
         bool event(QEvent *event) override;
         void exposeEvent(QExposeEvent *event) override;
 
         void ensureGL();
         void blitScreen();
+        void doRender();
     };
 }
 /*

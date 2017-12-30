@@ -84,15 +84,15 @@ void Budgie::CompositorWindow::scheduleDraw()
  */
 void Budgie::CompositorWindow::ensureGL()
 {
-    if (mGLContext) {
-        mGLContext->makeCurrent(this);
+    if (m_GLContext) {
+        m_GLContext->makeCurrent(this);
         return;
     }
 
-    mGLContext = new QOpenGLContext(this);
-    mGLContext->setFormat(requestedFormat());
-    mGLContext->create();
-    mGLContext->makeCurrent(this);
+    m_GLContext = new QOpenGLContext(this);
+    m_GLContext->setFormat(requestedFormat());
+    m_GLContext->create();
+    m_GLContext->makeCurrent(this);
 
     initializeOpenGLFunctions();
 }
@@ -105,10 +105,22 @@ void Budgie::CompositorWindow::blitScreen()
     // Make sure we have GL
     ensureGL();
 
-    /* TODO: Render here */
+    m_output->frameStarted();
+    doRender();
+    m_output->sendFrameCallbacks();
 
     // Spit out to the screen
-    mGLContext->swapBuffers(this);
+    m_GLContext->swapBuffers(this);
+}
+
+/**
+ * Perform any required rendering
+ */
+void Budgie::CompositorWindow::doRender()
+{
+    auto funcs = m_GLContext->functions();
+    funcs->glClearColor(0.3f, 0.5f, 0.8f, 1.0f);
+    funcs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 /*
