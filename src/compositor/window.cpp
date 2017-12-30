@@ -143,11 +143,10 @@ void Budgie::CompositorWindow::renderSurface(Budgie::CompositorSurfaceItem *item
 /**
  * We've been asked to map this surface onto our display
  */
-void Budgie::CompositorWindow::mapSurface(Budgie::CompositorSurfaceItem *surface)
+Budgie::CompositorView *Budgie::CompositorWindow::mapSurface(Budgie::CompositorSurfaceItem *surface)
 {
     /* TODO: Not be crap. */
-    auto view = new Budgie::CompositorView(this, surface);
-    Q_UNUSED(view);
+    return new Budgie::CompositorView(this, surface);
 }
 
 /*

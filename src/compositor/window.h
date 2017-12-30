@@ -47,7 +47,7 @@ namespace Budgie
          */
         QWaylandCompositor *compositor();
 
-        void mapSurface(CompositorSurfaceItem *surface);
+        CompositorView *mapSurface(CompositorSurfaceItem *surface);
 
     protected:
         Compositor *m_compositor;
