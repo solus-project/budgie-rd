@@ -1,6 +1,7 @@
 compositor_mocs = qt5.preprocess(
     moc_headers: [
         'compositor.h',
+        'window.h',
     ],
     include_directories: interface_include_directories,
 )
@@ -9,6 +10,7 @@ compositor_mocs = qt5.preprocess(
 compositor_sources = [
     'compositor.cpp',
     'main.cpp',
+    'window.cpp',
     compositor_mocs,
 ]
 
@@ -29,5 +31,6 @@ compositor = executable(
     dependencies: [
         dep_qt_compositor,
         dep_qtcore,
+        dep_qtwidgets,
     ],
 )

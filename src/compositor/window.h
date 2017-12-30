@@ -11,36 +11,40 @@
 
 #pragma once
 
-#include <QObject>
-#include <QSharedPointer>
+#include <QScopedPointer>
 #include <QWaylandCompositor>
-
-#include "window.h"
+#include <QWaylandOutput>
+#include <QWindow>
 
 namespace Budgie
 {
     /**
-     * The Budgie::Compositor handles the lifecycle for the main compositor
-     * process, and will load the relevant implementation to handle actually
-     * rendering.
+     * The CompositorWindow wraps a QWaylandOutput to provide actual output
+     * on screen, and is responsible for rendering.
      */
-    class Compositor : public QObject
+    class CompositorWindow : public QWindow
     {
         Q_OBJECT
 
     public:
-        explicit Compositor();
+        explicit CompositorWindow(QWaylandOutput *output);
 
         /**
-         * Request that the compositor now run, i.e. create the server.
+         * Get the QWaylandOutput we're associated with
          */
-        void run();
+        QWaylandOutput *output();
 
-    private:
-        QSharedPointer<QWaylandCompositor> m_compositor;
+        /**
+         * Get the QWaylandCompositor we're associated with
+         */
+        QWaylandCompositor *compositor();
 
-        /* Dummy window. Shush. */
-        QSharedPointer<CompositorWindow> m_window;
+    protected:
+        QScopedPointer<QWaylandOutput> m_output;
+        QWaylandCompositor *m_compositor;
+
+    private slots:
+        void currentModeChanged();
     };
 }
 /*
