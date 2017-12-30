@@ -1,5 +1,6 @@
 compositor_mocs = qt5.preprocess(
     moc_headers: [
+        'compositor-common.h',
         'compositor.h',
         'surface-item.h',
         'window.h',

@@ -17,30 +17,10 @@
 #include <QWaylandWlShellSurface>
 #include <QWaylandXdgSurfaceV5>
 
+#include "compositor-common.h"
+
 namespace Budgie
 {
-    Q_NAMESPACE
-
-    /* Helps us to control which "layer" something will be rendered on
-     * as we'll render back-to-front
-     *
-     * Each chain is also back-to-front for rendering order to permit z-stacking
-     * within each layer.
-     */
-    enum RenderLayer {
-        BACKGROUND = 0, /* Wallpaper */
-        DESKTOP,        /* Desktop icons */
-        APPLICATION,    /* Ordinary applications */
-        PANEL,          /* Budgie Panel/docks */
-        SIDEBAR,        /* Raven */
-        FULLSCREEN,     /* Exclusive fullscreen */
-        NOTIFICATION,   /* OSD, etc */
-        DND,            /* Show DND icons always, but below cursor */
-        CURSOR,         /* Cursor is rendered above everything else */
-    };
-
-    Q_ENUM_NS(RenderLayer)
-
     /**
      * The CompositorSurfaceItem wraps a QWaylandSurface to provide general
      * abstraction so that it is in some way *usable* to the Budgie::Compositor.

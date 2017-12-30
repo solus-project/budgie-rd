@@ -21,6 +21,7 @@
 #include <QWaylandWlShell>
 #include <QWaylandXdgShellV5>
 
+#include "compositor-common.h"
 #include "surface-item.h"
 #include "window.h"
 
