@@ -16,6 +16,8 @@
 
 Budgie::Compositor::Compositor() : m_compositor(new QWaylandCompositor())
 {
+    m_wl_shell.reset(new QWaylandWlShell(m_compositor.data()));
+    m_xdg_shell_v5.reset(new QWaylandXdgShellV5(m_compositor.data()));
 }
 
 void Budgie::Compositor::run()

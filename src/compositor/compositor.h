@@ -15,6 +15,10 @@
 #include <QSharedPointer>
 #include <QWaylandCompositor>
 
+/* Extensions */
+#include <QWaylandWlShell>
+#include <QWaylandXdgShellV5>
+
 #include "window.h"
 
 namespace Budgie
@@ -41,6 +45,14 @@ namespace Budgie
 
         /* Dummy window. Shush. */
         QSharedPointer<CompositorWindow> m_window;
+
+        /* Our Wayland extensions */
+        QScopedPointer<QWaylandWlShell> m_wl_shell;
+        QScopedPointer<QWaylandXdgShellV5> m_xdg_shell_v5;
+
+        /* TODO: Add v6 xdg shell when we have Qt 5.10
+        QScopedPointer<QWaylandXdgShellV6> m_xdg_shell_v6;
+        */
     };
 }
 /*
