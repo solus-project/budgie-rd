@@ -14,7 +14,7 @@
 
 Budgie::CompositorView::CompositorView(Budgie::CompositorWindow *window,
                                        Budgie::CompositorSurfaceItem *surface)
-    : m_window(window), m_surface(surface)
+    : QWaylandView(m_window, m_surface), m_window(window), m_surface(surface)
 {
     setSurface(m_surface->surface());
     setOutput(m_window->output());
