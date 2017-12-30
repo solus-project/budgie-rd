@@ -9,7 +9,9 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QDebug>
+#include <QCoreApplication>
+#include <QGuiApplication>
+#include <QWaylandCompositor>
 
 /**
  * Main Compositor entry
@@ -18,8 +20,15 @@
  */
 int main(int argc, char **argv)
 {
-    qDebug() << "Hurr durr add a compositor";
-    return 0;
+    // Support NVIDIA.
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts, true);
+    QGuiApplication app(argc, argv);
+
+    // TODO: Add this stuff once idle loop is actually up?
+    QWaylandCompositor c;
+    c.create();
+
+    return app.exec();
 }
 
 /*
