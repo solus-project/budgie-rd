@@ -41,13 +41,13 @@ namespace Budgie
         bool renderable();
 
     protected:
-        QWaylandSurface *m_surface;
-        QWaylandCompositor *m_compositor;
-
         void setShellSurface(QWaylandWlShellSurface *surface);
         void setXdgSurfacev5(QWaylandXdgSurfaceV5 *surface);
 
     private:
+        QWaylandSurface *m_surface;
+        QWaylandCompositor *m_compositor;
+
         QWaylandWlShellSurface *m_shell_surface;
         QWaylandXdgSurfaceV5 *m_xdg_surface_v5;
 
