@@ -17,9 +17,9 @@
 #include <QWindow>
 
 /* OpenGL */
-#include <QOpenGLContext>
-#include <QOpenGLFunctions>
+#include <QOpenGLPaintDevice>
 #include <QOpenGLTextureBlitter>
+#include <QOpenGLWindow>
 
 #include "compositor-common.h"
 #include "surface-item.h"
@@ -30,7 +30,7 @@ namespace Budgie
      * The CompositorWindow wraps a QWaylandOutput to provide actual output
      * on screen, and is responsible for rendering.
      */
-    class CompositorWindow : public QWindow, protected QOpenGLFunctions
+    class CompositorWindow : public QOpenGLWindow
     {
         Q_OBJECT
 
@@ -63,14 +63,11 @@ namespace Budgie
 
     private:
         /* OpenGL stuff */
-        QOpenGLContext *m_GLContext;
         QOpenGLTextureBlitter m_GLBlitter;
+        QOpenGLPaintDevice *m_GLDevice;
 
-        bool event(QEvent *event) override;
-        void exposeEvent(QExposeEvent *event) override;
-
-        void ensureGL();
-        void blitScreen();
+        void initializeGL() override;
+        void paintGL() override;
         void doRender();
         void renderSurface(CompositorSurfaceItem *surface);
 

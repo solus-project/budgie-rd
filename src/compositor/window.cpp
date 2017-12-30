@@ -9,6 +9,8 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QOpenGLFunctions>
+#include <QPainter>
 #include <QWaylandOutputMode>
 
 #include "compositor.h"
@@ -50,28 +52,6 @@ void Budgie::CompositorWindow::currentModeChanged()
     setPosition(m_output->position());
 }
 
-bool Budgie::CompositorWindow::event(QEvent *event)
-{
-    switch (event->type()) {
-    case QEvent::UpdateRequest:
-        blitScreen();
-        return true;
-    default:
-        return QWindow::event(event);
-    }
-}
-
-void Budgie::CompositorWindow::exposeEvent(QExposeEvent *event)
-{
-    Q_UNUSED(event);
-
-    if (!isExposed()) {
-        return;
-    }
-
-    blitScreen();
-}
-
 /**
  * We need to be redrawn
  */
@@ -83,37 +63,20 @@ void Budgie::CompositorWindow::scheduleDraw()
 /**
  * Quick helper to ensure we have OpenGL properly initialised
  */
-void Budgie::CompositorWindow::ensureGL()
+void Budgie::CompositorWindow::initializeGL()
 {
-    if (m_GLContext) {
-        m_GLContext->makeCurrent(this);
-        return;
-    }
-
-    m_GLContext = new QOpenGLContext(this);
-    m_GLContext->setFormat(requestedFormat());
-    m_GLContext->create();
-    m_GLContext->makeCurrent(this);
-
-    initializeOpenGLFunctions();
-
+    m_GLDevice = new QOpenGLPaintDevice();
     m_GLBlitter.create();
 }
 
 /**
  * Anything requiring rendering will now be pushed to the screen
  */
-void Budgie::CompositorWindow::blitScreen()
+void Budgie::CompositorWindow::paintGL()
 {
-    // Make sure we have GL
-    ensureGL();
-
     m_output->frameStarted();
     doRender();
     m_output->sendFrameCallbacks();
-
-    // Spit out to the screen
-    m_GLContext->swapBuffers(this);
 }
 
 /**
@@ -121,7 +84,7 @@ void Budgie::CompositorWindow::blitScreen()
  */
 void Budgie::CompositorWindow::doRender()
 {
-    auto funcs = m_GLContext->functions();
+    auto funcs = context()->functions();
     funcs->glClearColor(0.3f, 0.5f, 0.8f, 1.0f);
     funcs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -133,6 +96,10 @@ void Budgie::CompositorWindow::doRender()
     }
 
     m_GLBlitter.release();
+
+    QPainter paint(m_GLDevice);
+    m_GLDevice->setSize(size());
+    paint.drawText(QPoint(20, 20), "CompositorWindow");
 }
 
 void Budgie::CompositorWindow::renderSurface(Budgie::CompositorSurfaceItem *item)
