@@ -35,6 +35,8 @@ namespace Budgie
     {
         Q_OBJECT
 
+        friend class CompositorWindow;
+
     public:
         explicit Compositor();
 
@@ -42,6 +44,9 @@ namespace Budgie
          * Request that the compositor now run, i.e. create the server.
          */
         void run();
+
+    protected:
+        QList<CompositorSurfaceItem *> getRenderables(CompositorWindow *window);
 
     private slots:
         void onCreated();

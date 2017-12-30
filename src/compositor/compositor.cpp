@@ -14,6 +14,8 @@
 
 #include "compositor.h"
 
+using Budgie::RenderLayer;
+
 Budgie::Compositor::Compositor() : m_compositor(new QWaylandCompositor())
 {
     m_wl_shell.reset(new QWaylandWlShell(m_compositor.data()));
@@ -145,6 +147,26 @@ void Budgie::Compositor::renderLayer(RenderLayer layer)
     for (Budgie::CompositorSurfaceItem *item : m_renderables[layer]) {
         qDebug() << "Pretending to draw: " << item;
     }
+}
+
+/**
+ * Used by each window to build a list of renderables (pre-ordered) that should
+ * be displayed and rendered in their current draw cycle.
+ */
+QList<Budgie::CompositorSurfaceItem *> Budgie::Compositor::getRenderables(
+    Budgie::CompositorWindow *window)
+{
+    QList<Budgie::CompositorSurfaceItem *> drawables;
+
+    // FIXME: Be less stupid
+    for (int layer = RenderLayer::APPLICATION; layer < RenderLayer::CURSOR; layer++) {
+        for (Budgie::CompositorSurfaceItem *item : m_renderables[static_cast<RenderLayer>(layer)]) {
+            // TODO: Only return items within this window!
+            drawables << item;
+        }
+    }
+
+    return drawables;
 }
 
 /*
