@@ -12,7 +12,7 @@
 #include "surface-item.h"
 
 Budgie::CompositorSurfaceItem::CompositorSurfaceItem(QWaylandSurface *surface)
-    : m_surface(surface), m_shell_surface(nullptr), m_xdg_surface_v5(nullptr)
+    : m_surface(surface), m_shell_surface(nullptr), m_xdg_surface_v5(nullptr), m_renderable(false)
 {
     m_compositor = m_surface->compositor();
 }
@@ -27,9 +27,18 @@ QWaylandCompositor *Budgie::CompositorSurfaceItem::compositor()
     return m_compositor;
 }
 
+/**
+ * Typically only shell/xdg items will be rendered
+ */
+bool Budgie::CompositorSurfaceItem::renderable()
+{
+    return m_renderable;
+}
+
 void Budgie::CompositorSurfaceItem::setShellSurface(QWaylandWlShellSurface *surface)
 {
     m_shell_surface = surface;
+    m_renderable = true;
 
     // Track surface title
     m_windowTitle = m_shell_surface->title();
@@ -43,6 +52,7 @@ void Budgie::CompositorSurfaceItem::setShellSurface(QWaylandWlShellSurface *surf
 void Budgie::CompositorSurfaceItem::setXdgSurfacev5(QWaylandXdgSurfaceV5 *surface)
 {
     m_xdg_surface_v5 = surface;
+    m_renderable = true;
 
     // TODO: Hook up stuffs
 }
