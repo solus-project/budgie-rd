@@ -15,5 +15,8 @@ subdir('scaffolding')
 # Now build our actual desktop
 subdir('faces')
 
+# Compositor so we can show things to The People
+subdir('compositor')
+
 # Now the session to wrap it all up
 subdir('session')

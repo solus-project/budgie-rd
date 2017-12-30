@@ -44,6 +44,8 @@ dep_qtcore = dependency('Qt5Core', version: qt_min_version)
 dep_qml = dependency('Qt5Quick', version: qt_min_version)
 dep_qml_controls = dependency('Qt5QuickControls2', version: qt_min_version)
 
+dep_qt_compositor = dependency('Qt5WaylandCompositor', version: qt_min_version)
+
 kf5_components_needed = [
     'WindowSystem',
 ]
