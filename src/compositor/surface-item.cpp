@@ -17,11 +17,17 @@ Budgie::CompositorSurfaceItem::CompositorSurfaceItem(QWaylandSurface *surface)
     m_compositor = m_surface->compositor();
 }
 
+/**
+ * Get the QWaylandSurface we're associated with
+ */
 QWaylandSurface *Budgie::CompositorSurfaceItem::surface()
 {
     return m_surface;
 }
 
+/**
+ * Get the QWaylandCompositor we're associated with
+ */
 QWaylandCompositor *Budgie::CompositorSurfaceItem::compositor()
 {
     return m_compositor;
@@ -58,6 +64,10 @@ void Budgie::CompositorSurfaceItem::setXdgSurfacev5(QWaylandXdgSurfaceV5 *surfac
 }
 
 /* Accessors */
+
+/**
+ * Return title for this item
+ */
 const QString &Budgie::CompositorSurfaceItem::title()
 {
     return m_windowTitle;

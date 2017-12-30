@@ -29,32 +29,23 @@ namespace Budgie
     {
         Q_OBJECT
 
+        friend class Compositor;
+
     public:
         explicit CompositorSurfaceItem(QWaylandSurface *surface);
 
-        /**
-         * Get the QWaylandSurface we're associated with
-         */
         QWaylandSurface *surface();
-
-        /**
-         * Get the QWaylandCompositor we're associated with
-         */
         QWaylandCompositor *compositor();
 
-        /**
-         * Return title for this item
-         */
         const QString &title();
-
-        void setShellSurface(QWaylandWlShellSurface *surface);
-        void setXdgSurfacev5(QWaylandXdgSurfaceV5 *surface);
-
         bool renderable();
 
     protected:
         QWaylandSurface *m_surface;
         QWaylandCompositor *m_compositor;
+
+        void setShellSurface(QWaylandWlShellSurface *surface);
+        void setXdgSurfacev5(QWaylandXdgSurfaceV5 *surface);
 
     private:
         QWaylandWlShellSurface *m_shell_surface;
