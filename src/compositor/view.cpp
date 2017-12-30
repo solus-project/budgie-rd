@@ -14,10 +14,21 @@
 
 Budgie::CompositorView::CompositorView(Budgie::CompositorWindow *window,
                                        Budgie::CompositorSurfaceItem *surface)
-    : QWaylandView(m_window, m_surface), m_window(window), m_surface(surface)
+    : QWaylandView(m_window, m_surface), m_window(window), m_surface(surface), m_texture(nullptr)
 {
     setSurface(m_surface->surface());
     setOutput(m_window->output());
+}
+
+QOpenGLTexture *Budgie::CompositorView::texture()
+{
+    if (!advance()) {
+        return m_texture;
+    }
+
+    auto buf = currentBuffer();
+    m_texture = buf.toOpenGLTexture();
+    return m_texture;
 }
 
 /*

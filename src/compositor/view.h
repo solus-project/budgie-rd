@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <QOpenGLTexture>
 #include <QWaylandView>
 
 #include "compositor-common.h"
@@ -33,9 +34,13 @@ namespace Budgie
     public:
         explicit CompositorView(CompositorWindow *window, CompositorSurfaceItem *surface);
 
+        QOpenGLTexture *texture();
+
     private:
         CompositorWindow *m_window;
         CompositorSurfaceItem *m_surface;
+
+        QOpenGLTexture *m_texture;
     };
 }
 /*
