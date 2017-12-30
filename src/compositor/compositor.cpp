@@ -102,6 +102,9 @@ void Budgie::Compositor::surfaceCreated(QWaylandSurface *surface)
     // Now map this guy. Ideally we'd only map in xdg/wl_shell so we'd then know
     // which monitor to display it.
     auto view = m_window->mapSurface(item);
+    if (!view) {
+        return;
+    }
     view->setPrimary();
 }
 
@@ -136,7 +139,14 @@ void Budgie::Compositor::xdgSurfaceCreated(QWaylandXdgSurfaceV5 *surface)
 void Budgie::Compositor::surfaceDestroyed()
 {
     auto surface = static_cast<QWaylandSurface *>(sender());
-    qDebug() << "Surface removed: " << surface;
+    auto surface_wrapper = m_surfaces.value(surface, nullptr);
+    if (!surface_wrapper) {
+        qWarning() << "Acounting error, unknown surface: " << surface;
+        return;
+    }
+
+    qDebug() << "Surface removed: " << surface_wrapper.data();
+    m_window->unmapSurface(surface_wrapper.data());
     m_surfaces.remove(surface);
 }
 

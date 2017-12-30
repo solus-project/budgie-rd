@@ -48,6 +48,7 @@ namespace Budgie
         QWaylandCompositor *compositor();
 
         CompositorView *mapSurface(CompositorSurfaceItem *surface);
+        void unmapSurface(CompositorSurfaceItem *surface);
 
     protected:
         Compositor *m_compositor;
@@ -70,6 +71,9 @@ namespace Budgie
         void blitScreen();
         void doRender();
         void renderSurface(CompositorSurfaceItem *surface);
+
+        /* Map each surface to our own private view here */
+        QHash<CompositorSurfaceItem *, QSharedPointer<CompositorView>> m_views;
     };
 }
 /*

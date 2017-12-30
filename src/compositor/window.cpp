@@ -146,8 +146,22 @@ void Budgie::CompositorWindow::renderSurface(Budgie::CompositorSurfaceItem *item
  */
 Budgie::CompositorView *Budgie::CompositorWindow::mapSurface(Budgie::CompositorSurfaceItem *surface)
 {
-    /* TODO: Not be crap. */
-    return new Budgie::CompositorView(this, surface);
+    if (m_views.contains(surface)) {
+        qDebug() << "Accounting error, we already have: " << surface;
+        return nullptr;
+    }
+    auto view = new Budgie::CompositorView(this, surface);
+    m_views.insert(surface, QSharedPointer<Budgie::CompositorView>(view));
+    return view;
+}
+
+void Budgie::CompositorWindow::unmapSurface(Budgie::CompositorSurfaceItem *surface)
+{
+    if (!m_views.contains(surface)) {
+        qDebug() << "Unknown surface: " << surface;
+        return;
+    }
+    m_views.remove(surface);
 }
 
 /*
