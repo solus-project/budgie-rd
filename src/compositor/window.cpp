@@ -137,6 +137,7 @@ void Budgie::CompositorWindow::doRender()
 
 void Budgie::CompositorWindow::renderSurface(Budgie::CompositorSurfaceItem *item)
 {
+    qDebug() << "Rendering: " << item;
     // TODO: Add some kind of checking to make sure we're the right view for the item!
     Q_UNUSED(item);
 }

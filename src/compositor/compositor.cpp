@@ -120,6 +120,12 @@ void Budgie::Compositor::wlShellSurfaceCreated(QWaylandWlShellSurface *surface)
     }
     parent->setShellSurface(surface);
     qDebug() << "New wl_shell_surface" << surface << " with real surface: " << surface->surface();
+
+    // FIXME: Don't hack
+    parent->setLayer(RenderLayer::APPLICATION);
+    assignLayer(parent);
+
+    m_window->scheduleDraw();
 }
 
 /**
@@ -146,8 +152,11 @@ void Budgie::Compositor::surfaceDestroyed()
     }
 
     qDebug() << "Surface removed: " << surface_wrapper.data();
+    removeLayer(surface_wrapper.data());
     m_window->unmapSurface(surface_wrapper.data());
     m_surfaces.remove(surface);
+
+    m_window->scheduleDraw();
 }
 
 /**
@@ -160,14 +169,6 @@ Budgie::CompositorSurfaceItem *Budgie::Compositor::getSurfaceItem(QWaylandSurfac
         return nullptr;
     };
     return ret.data();
-}
-
-void Budgie::Compositor::renderLayer(RenderLayer layer)
-{
-    qDebug() << "Render: " << layer;
-    for (Budgie::CompositorSurfaceItem *item : m_renderables[layer]) {
-        qDebug() << "Pretending to draw: " << item;
-    }
 }
 
 /**
@@ -188,6 +189,16 @@ QList<Budgie::CompositorSurfaceItem *> Budgie::Compositor::getRenderables(
     }
 
     return drawables;
+}
+
+void Budgie::Compositor::assignLayer(Budgie::CompositorSurfaceItem *item)
+{
+    m_renderables[item->layer()].append(item);
+}
+
+void Budgie::Compositor::removeLayer(Budgie::CompositorSurfaceItem *item)
+{
+    m_renderables[item->layer()].removeAll(item);
 }
 
 /*

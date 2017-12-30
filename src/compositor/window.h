@@ -34,6 +34,8 @@ namespace Budgie
     {
         Q_OBJECT
 
+        friend class Compositor;
+
     public:
         explicit CompositorWindow(Compositor *compositor, QWaylandOutput *output);
 

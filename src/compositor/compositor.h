@@ -82,7 +82,8 @@ namespace Budgie
         /* Map a list to each layer */
         QHash<RenderLayer, QList<CompositorSurfaceItem *>> m_renderables;
 
-        void renderLayer(RenderLayer layer);
+        void assignLayer(CompositorSurfaceItem *item);
+        void removeLayer(CompositorSurfaceItem *item);
     };
 }
 /*
