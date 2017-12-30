@@ -18,6 +18,11 @@ Budgie::Compositor::Compositor() : m_compositor(new QWaylandCompositor())
 {
     m_wl_shell.reset(new QWaylandWlShell(m_compositor.data()));
     m_xdg_shell_v5.reset(new QWaylandXdgShellV5(m_compositor.data()));
+
+    connect(m_compositor.data(),
+            &QWaylandCompositor::createdChanged,
+            this,
+            &Budgie::Compositor::onCreated);
 }
 
 void Budgie::Compositor::run()
@@ -32,12 +37,17 @@ void Budgie::Compositor::run()
 
     // Set stuff in motion now
     m_compositor->create();
-    output->setCurrentMode(mode);
-    m_compositor->setDefaultOutput(output);
-
-    m_window->show();
 }
 
+void Budgie::Compositor::onCreated()
+{
+    // Again, just demo crap. Our compositor is created so set the default output
+    // and display mode, and make it active.
+    auto output = m_window->output();
+    output->setCurrentMode(output->modes()[0]);
+    m_compositor->setDefaultOutput(output);
+    m_window->show();
+}
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

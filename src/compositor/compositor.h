@@ -53,6 +53,9 @@ namespace Budgie
         /* TODO: Add v6 xdg shell when we have Qt 5.10
         QScopedPointer<QWaylandXdgShellV6> m_xdg_shell_v6;
         */
+
+    private slots:
+        void onCreated();
     };
 }
 /*
