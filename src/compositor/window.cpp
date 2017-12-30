@@ -17,6 +17,9 @@ Budgie::CompositorWindow::CompositorWindow(QWaylandOutput *output) : m_output(ou
 {
     m_compositor = m_output->compositor();
 
+    // Stupid but we're forced into demoMode right now
+    setTitle("Nested RD Compositor");
+
     // Make sure we know about mode changes
     connect(m_output.data(),
             &QWaylandOutput::currentModeChanged,
