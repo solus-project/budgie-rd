@@ -39,8 +39,9 @@ namespace Budgie
 
     /* Forward declare all our classes */
     class Compositor;
-    class CompositorWindow;
     class CompositorSurfaceItem;
+    class CompositorWindow;
+    class CompositorView;
 }
 
 /*

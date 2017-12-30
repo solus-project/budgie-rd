@@ -3,6 +3,7 @@ compositor_mocs = qt5.preprocess(
         'compositor-common.h',
         'compositor.h',
         'surface-item.h',
+        'view.h',
         'window.h',
     ],
     include_directories: interface_include_directories,
@@ -13,6 +14,7 @@ compositor_sources = [
     'compositor.cpp',
     'main.cpp',
     'surface-item.cpp',
+    'view.cpp',
     'window.cpp',
     compositor_mocs,
 ]
