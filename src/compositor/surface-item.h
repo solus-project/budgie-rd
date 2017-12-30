@@ -42,6 +42,11 @@ namespace Budgie
          */
         QWaylandCompositor *compositor();
 
+        /**
+         * Return title for this item
+         */
+        const QString &title();
+
         void setShellSurface(QWaylandWlShellSurface *surface);
         void setXdgSurfacev5(QWaylandXdgSurfaceV5 *surface);
 
@@ -52,6 +57,8 @@ namespace Budgie
     private:
         QWaylandWlShellSurface *m_shell_surface;
         QWaylandXdgSurfaceV5 *m_xdg_surface_v5;
+
+        QString m_windowTitle;
     };
 }
 /*

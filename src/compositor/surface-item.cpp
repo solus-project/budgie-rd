@@ -31,6 +31,12 @@ void Budgie::CompositorSurfaceItem::setShellSurface(QWaylandWlShellSurface *surf
 {
     m_shell_surface = surface;
 
+    // Track surface title
+    m_windowTitle = m_shell_surface->title();
+    connect(m_shell_surface, &QWaylandWlShellSurface::titleChanged, [this] {
+        m_windowTitle = m_shell_surface->title();
+    });
+
     // TODO: Hook up stuffs
 }
 
@@ -39,6 +45,12 @@ void Budgie::CompositorSurfaceItem::setXdgSurfacev5(QWaylandXdgSurfaceV5 *surfac
     m_xdg_surface_v5 = surface;
 
     // TODO: Hook up stuffs
+}
+
+/* Accessors */
+const QString &Budgie::CompositorSurfaceItem::title()
+{
+    return m_windowTitle;
 }
 
 /*
