@@ -14,6 +14,8 @@
 #include <QObject>
 #include <QSharedPointer>
 
+#include "server.h"
+
 namespace Budgie::Compositor
 {
     /**
@@ -41,6 +43,8 @@ namespace Budgie::Compositor
         bool start();
 
     private:
+        QScopedPointer<Server> m_server;
+
         void shutdown();
     };
 }

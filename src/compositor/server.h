@@ -9,38 +9,28 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QCoreApplication>
-#include <QDebug>
+#pragma once
 
-#include "manager.h"
+#include <QWaylandCompositor>
 
-using namespace Budgie::Compositor;
-
-Manager::Manager()
+namespace Budgie::Compositor
 {
-    qDebug() << "Do nothin.";
-}
+    /**
+     * This is the main Compositor implementation, responsible for managing
+     * the display(s) in a desktop-like fashion. Additionally it will access
+     * the rendering plugin from the Manager to provide visual output.
+     */
+    class Server : public QWaylandCompositor
+    {
+        Q_OBJECT
 
-bool Manager::init()
-{
-    qDebug() << "TODO: Load rendering plugins!";
-    m_server.reset(new Compositor::Server());
-    return true;
-}
+    public:
+        explicit Server();
 
-bool Manager::start()
-{
-    qDebug() << "TODO: Populate outputs..";
-    m_server->create();
-    return true;
+        // Allow explicit initialisation from the Manager
+        void create() override;
+    };
 }
-
-void Manager::shutdown()
-{
-    qDebug() << "Closing compositor";
-    QCoreApplication::quit();
-}
-
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

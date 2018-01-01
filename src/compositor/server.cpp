@@ -9,36 +9,18 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QCoreApplication>
-#include <QDebug>
-
-#include "manager.h"
+#include "server.h"
 
 using namespace Budgie::Compositor;
 
-Manager::Manager()
+Server::Server()
 {
-    qDebug() << "Do nothin.";
 }
 
-bool Manager::init()
+void Server::create()
 {
-    qDebug() << "TODO: Load rendering plugins!";
-    m_server.reset(new Compositor::Server());
-    return true;
-}
-
-bool Manager::start()
-{
-    qDebug() << "TODO: Populate outputs..";
-    m_server->create();
-    return true;
-}
-
-void Manager::shutdown()
-{
-    qDebug() << "Closing compositor";
-    QCoreApplication::quit();
+    // Just pass it back up for now.
+    QWaylandCompositor::create();
 }
 
 /*

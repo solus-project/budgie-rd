@@ -1,6 +1,7 @@
 compositor_mocs = qt5.preprocess(
     moc_headers: [
         'manager.h',
+        'server.h',
     ],
     include_directories: interface_include_directories,
 )
@@ -8,6 +9,7 @@ compositor_mocs = qt5.preprocess(
 compositor_sources = [
     'manager.cpp',
     'main.cpp',
+    'server.cpp',
     compositor_mocs,
 ]
 
