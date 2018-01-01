@@ -13,6 +13,8 @@
 
 #include <QObject>
 
+#include "base-interface.h"
+
 #define BudgieDisplayInterfaceIID "org.budgie-desktop.DisplayInterface"
 
 namespace Budgie

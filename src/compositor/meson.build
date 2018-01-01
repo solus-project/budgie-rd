@@ -7,6 +7,7 @@ compositor_mocs = qt5.preprocess(
 )
 
 compositor_sources = [
+    'display.cpp',
     'manager.cpp',
     'main.cpp',
     'server.cpp',
