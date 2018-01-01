@@ -24,6 +24,11 @@ namespace Budgie
     class ServiceInterface;
     class ShellInterface;
 
+    /* WM interfaces */
+    class DisplayInterface;
+    class WindowInterface;
+    class WindowManagerInterface;
+
     /**
      * All interfaces within Budgie derive from the BaseInterface.
      */
