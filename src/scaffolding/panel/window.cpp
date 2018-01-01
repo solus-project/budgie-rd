@@ -17,7 +17,9 @@
 
 #include "window.h"
 
-Budgie::PanelWindow::PanelWindow(ShellInterface *interface) : m_shell(interface)
+using namespace Budgie::Panel;
+
+Window::Window(ShellInterface *interface) : m_shell(interface)
 {
     move(0, 1080 - 30);
     setFixedSize(1920, 30);
@@ -45,14 +47,14 @@ Budgie::PanelWindow::PanelWindow(ShellInterface *interface) : m_shell(interface)
     rootWidget->layout()->setMargin(0);
 
     auto button = new QPushButton("Quit!", rootWidget);
-    connect(button, &QPushButton::clicked, this, &Budgie::PanelWindow::quitButtonClicked);
+    connect(button, &QPushButton::clicked, this, &Window::quitButtonClicked);
     tlayout->addWidget(button, 0, Qt::AlignRight);
     button->setFocusPolicy(Qt::NoFocus);
     button->setStyleSheet("color: white;");
     button->setFlat(true);
 
     button = new QPushButton("Ermagahd Raven", rootWidget);
-    connect(button, &QPushButton::clicked, this, &Budgie::PanelWindow::demoButtonClicked);
+    connect(button, &QPushButton::clicked, this, &Window::demoButtonClicked);
     tlayout->addWidget(button, 0, Qt::AlignRight);
     button->setFocusPolicy(Qt::NoFocus);
     button->setStyleSheet("color: white;");
@@ -61,11 +63,11 @@ Budgie::PanelWindow::PanelWindow(ShellInterface *interface) : m_shell(interface)
     ensurePolished();
 }
 
-Budgie::PanelWindow::~PanelWindow()
+Window::~Window()
 {
 }
 
-bool Budgie::PanelWindow::event(QEvent *event)
+bool Window::event(QEvent *event)
 {
     switch (event->type()) {
     case QEvent::WinIdChange:
@@ -77,14 +79,14 @@ bool Budgie::PanelWindow::event(QEvent *event)
     }
 }
 
-void Budgie::PanelWindow::updateWindow()
+void Window::updateWindow()
 {
     // TODO: Abstract this through a well known interface!
     // For now just set blur/etc, which will later be dock-specific controls..
     KWindowEffects::enableBlurBehind(m_winID);
 }
 
-void Budgie::PanelWindow::demoButtonClicked()
+void Window::demoButtonClicked()
 {
     auto raven = m_shell->getRaven();
     if (!raven) {
@@ -97,7 +99,7 @@ void Budgie::PanelWindow::demoButtonClicked()
 /**
  * Dumb dumb dumb but we need a way to bail
  */
-void Budgie::PanelWindow::quitButtonClicked()
+void Window::quitButtonClicked()
 {
     m_shell->shutdown();
 }

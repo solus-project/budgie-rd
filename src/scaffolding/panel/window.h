@@ -16,20 +16,20 @@
 #include "panel-manager-interface.h"
 #include "shell-interface.h"
 
-namespace Budgie
+namespace Budgie::Panel
 {
     /**
      * The basic lowlevel window part of the Panel implementation. Note this
      * is not the true Panel implementation, which must be subclassed from
      * the Window itself.
      */
-    class PanelWindow : public QWidget
+    class Window : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit PanelWindow(ShellInterface *interface);
-        ~PanelWindow();
+        explicit Window(ShellInterface *interface);
+        ~Window();
 
     private slots:
         void demoButtonClicked();

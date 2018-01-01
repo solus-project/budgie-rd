@@ -19,7 +19,7 @@ bool Budgie::DefaultFace::init(Budgie::ShellInterface *interface)
     qDebug() << "Init DefaultFace";
 
     // Ensure we can own the PanelManager interface
-    m_panelManager = new Budgie::PanelManager(m_shell, this);
+    m_panelManager = new Budgie::Panel::Manager(m_shell, this);
     if (!m_shell->registerInterface(m_panelManager)) {
         qWarning() << "Failed to register the panel manager. Aborting";
         return false;

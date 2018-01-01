@@ -19,25 +19,25 @@
 #include "shell-interface.h"
 #include "window.h"
 
-namespace Budgie
+namespace Budgie::Panel
 {
     /**
-     * A concrete implementation of the PanelManager using QtWidget based
+     * A concrete implementation of the Manager using QtWidget based
      * Panels
      */
-    class PanelManager : public QObject, public PanelManagerInterface
+    class Manager : public QObject, public PanelManagerInterface
     {
         Q_OBJECT
 
     public:
-        explicit PanelManager(ShellInterface *interface, QObject *parent = nullptr);
-        ~PanelManager();
+        explicit Manager(ShellInterface *interface, QObject *parent = nullptr);
+        ~Manager();
 
         /* We have go ahead to show content on screen now */
         void showPanels();
 
     private:
-        QScopedPointer<PanelWindow> m_dummyWindow;
+        QScopedPointer<Window> m_dummyWindow;
         ShellInterface *m_shell;
     };
 }

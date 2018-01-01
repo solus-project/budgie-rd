@@ -11,17 +11,19 @@
 
 #include "manager.h"
 
-Budgie::PanelManager::PanelManager(Budgie::ShellInterface *interface, QObject *parent)
+using namespace Budgie::Panel;
+
+Manager::Manager(Budgie::ShellInterface *interface, QObject *parent)
     : QObject(parent), m_shell(interface)
 {
-    m_dummyWindow.reset(new Budgie::PanelWindow(m_shell));
+    m_dummyWindow.reset(new Window(m_shell));
 }
 
-Budgie::PanelManager::~PanelManager()
+Manager::~Manager()
 {
 }
 
-void Budgie::PanelManager::showPanels()
+void Manager::showPanels()
 {
     m_dummyWindow->show();
 }
