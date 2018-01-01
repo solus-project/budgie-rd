@@ -110,7 +110,7 @@ in future to a split GPL-2.0/LGPL-2.1 model to match Budgie Desktop.
 Authors
 =======
 
-Copyright © 2017 Budgie Desktop Developers
+Copyright © 2017-2018 Budgie Desktop Developers
 
 Budgie Desktop is primarily authored by the [Solus](https://solus-project.com) project which oversees
 the development and leadership of the Budgie Desktop to ensure the delivery of a distribution agnostic
