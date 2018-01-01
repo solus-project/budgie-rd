@@ -12,6 +12,7 @@
 #pragma once
 
 #include <QWaylandOutput>
+#include <QWindow>
 
 #include "display-interface.h"
 
@@ -32,13 +33,13 @@ namespace Budgie::Compositor
         /**
          * Subclasses should chain the constructor appropriately.
          */
-        explicit Display(QWaylandOutput *output);
+        explicit Display(QWaylandOutput *output, QWindow *window);
 
         /**
          * Return the QWindow for this Display so that the output can be
          * correctly connected.
          */
-        virtual QWindow *window() = 0;
+        virtual QWindow *window();
 
         /**
          * Return the Display that was used to initialise this display
@@ -57,6 +58,7 @@ namespace Budgie::Compositor
 
     protected:
         QWaylandOutput *m_output;
+        QWindow *m_window;
     };
 }
 /*

@@ -13,7 +13,7 @@
 
 using namespace Budgie::Compositor;
 
-Display::Display(QWaylandOutput *output) : m_output(output)
+Display::Display(QWaylandOutput *output, QWindow *window) : m_output(output), m_window(window)
 {
 }
 
@@ -33,6 +33,11 @@ uint Display::index()
 QRect Display::geometry()
 {
     return m_output->geometry();
+}
+
+QWindow *Display::window()
+{
+    return m_window;
 }
 
 /*
