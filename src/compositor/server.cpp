@@ -14,13 +14,44 @@
 using namespace Budgie::Compositor;
 
 Server::Server()
+    : m_wl_shell(new QWaylandWlShell(this)), m_xdg_shell_v5(new QWaylandXdgShellV5(this))
 {
+    // Hook up basic compositor signals so we know whats going on when we ::create()
+    connect(this, &QWaylandCompositor::surfaceCreated, this, &Server::surfaceCreated);
+    connect(this, &QWaylandCompositor::surfaceAboutToBeDestroyed, this, &Server::surfaceDestroying);
+
+    // Now hook up each protocol
+    connect(m_wl_shell, &QWaylandWlShell::wlShellSurfaceCreated, this, &Server::wlShellCreated);
+    connect(m_xdg_shell_v5,
+            &QWaylandXdgShellV5::xdgSurfaceCreated,
+            this,
+            &Server::xdgShellv5Created);
 }
 
 void Server::create()
 {
     // Just pass it back up for now.
     QWaylandCompositor::create();
+}
+
+void Server::surfaceCreated(QWaylandSurface *surface)
+{
+    Q_UNUSED(surface);
+}
+
+void Server::surfaceDestroying(QWaylandSurface *surface)
+{
+    Q_UNUSED(surface);
+}
+
+void Server::wlShellCreated(QWaylandWlShellSurface *shell)
+{
+    Q_UNUSED(shell);
+}
+
+void Server::xdgShellv5Created(QWaylandXdgSurfaceV5 *shell)
+{
+    Q_UNUSED(shell);
 }
 
 /*

@@ -12,6 +12,11 @@
 #pragma once
 
 #include <QWaylandCompositor>
+#include <QWaylandSurface>
+#include <QWaylandWlShell>
+#include <QWaylandWlShellSurface>
+#include <QWaylandXdgShellV5>
+#include <QWaylandXdgSurfaceV5>
 
 namespace Budgie::Compositor
 {
@@ -29,6 +34,16 @@ namespace Budgie::Compositor
 
         // Allow explicit initialisation from the Manager
         void create() override;
+
+    private:
+        QWaylandWlShell *m_wl_shell;
+        QWaylandXdgShellV5 *m_xdg_shell_v5;
+
+    private slots:
+        void surfaceCreated(QWaylandSurface *surface);
+        void surfaceDestroying(QWaylandSurface *surface);
+        void wlShellCreated(QWaylandWlShellSurface *shell);
+        void xdgShellv5Created(QWaylandXdgSurfaceV5 *shell);
     };
 }
 /*
