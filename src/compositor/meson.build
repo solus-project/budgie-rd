@@ -1,3 +1,38 @@
+compositor_includes = [
+    config_h_dir,
+    include_directories('.'),
+    interface_include_directories,
+]
+
+libcompositor_sources = [
+    'display.cpp',
+]
+
+# Shared library contains various stub implementations to help in writing
+# our plugins. 
+libcompositor = shared_library(
+    'budgie-compositor-shared',
+    version: '0.0.0',
+    install: true,
+    sources: [
+        libcompositor_sources,
+    ],
+    include_directories: compositor_includes,
+    dependencies: [
+        dep_qtcore,
+        dep_qt_compositor,
+    ],
+)
+
+link_libcompositor = declare_dependency(
+    link_with: libcompositor,
+    include_directories: compositor_includes,
+    dependencies: [
+        dep_qtcore,
+        dep_qt_compositor,
+    ]
+)
+
 compositor_mocs = qt5.preprocess(
     moc_headers: [
         'manager.h',
@@ -7,20 +42,13 @@ compositor_mocs = qt5.preprocess(
 )
 
 compositor_sources = [
-    'display.cpp',
     'manager.cpp',
     'main.cpp',
     'server.cpp',
     compositor_mocs,
 ]
 
-compositor_includes = [
-    config_h_dir,
-    include_directories('.'),
-    interface_include_directories,
-]
-
-# Wayland compositor
+# Main compositor binary
 compositor = executable(
     'budgie-rd-compositor',
     install: true,
@@ -29,6 +57,7 @@ compositor = executable(
     ],
     include_directories: compositor_includes,
     dependencies: [
+        link_libcompositor,
         dep_qt_compositor,
         dep_qtcore,
     ],
