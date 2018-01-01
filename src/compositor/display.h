@@ -15,6 +15,7 @@
 #include <QWindow>
 
 #include "display-interface.h"
+#include "window.h"
 
 namespace Budgie::Compositor
 {
@@ -45,6 +46,18 @@ namespace Budgie::Compositor
          * Return the Display that was used to initialise this display
          */
         QWaylandOutput *output();
+
+        /**
+         * Implementations should construct a view for the given window
+         * and begin rendering it within their display.
+         */
+        virtual void mapWindow(Window *window) = 0;
+
+        /**
+         * Implementations should remove their view (if any) for the given
+         * window so that it no longer renders on their display.
+         */
+        virtual void unmapWindow(Window *window) = 0;
 
         /**
          * A Wayland display knows its index in Budgie

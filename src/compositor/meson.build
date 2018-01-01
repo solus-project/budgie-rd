@@ -4,8 +4,16 @@ compositor_includes = [
     interface_include_directories,
 ]
 
+libcompositor_mocs = qt5.preprocess(
+    moc_headers: [
+        'window.h',
+    ],
+    include_directories: interface_include_directories,
+)
+
 libcompositor_sources = [
     'display.cpp',
+    libcompositor_mocs,
 ]
 
 # Shared library contains various stub implementations to help in writing

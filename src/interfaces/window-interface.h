@@ -28,7 +28,7 @@ namespace Budgie
     class WindowInterface : public BaseInterface
     {
     public:
-        virtual ~WindowManagerInterface()
+        virtual ~WindowInterface()
         {
         }
 
