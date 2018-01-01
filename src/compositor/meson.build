@@ -39,3 +39,6 @@ compositor = executable(
         dep_qtwidgets,
     ],
 )
+
+# For now we only know OpenGL
+subdir('renderers')
