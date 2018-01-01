@@ -29,10 +29,8 @@ namespace Budgie
      * connection, whereas a server-side (compositor) implementation will
      * act entirely inside the compositor and relay the events *to* to clients.
      */
-    class WindowManagerInterface : public QObject, public BaseInterface
+    class WindowManagerInterface : public BaseInterface
     {
-        Q_OBJECT
-
     public:
         virtual ~WindowManager()
         {
@@ -46,39 +44,39 @@ namespace Budgie
         /**
          * Return the primary display
          */
-        virtual DisplayInterface *primaryDisplay();
+        virtual DisplayInterface *primaryDisplay() = 0;
 
         /**
          * Return all known displays
          */
-        virtual QList<DisplayInterface *> displays();
+        virtual QList<DisplayInterface *> displays() = 0;
 
     signals:
 
         /**
          * The primary display has been changed
          */
-        void primaryDisplayChanged();
+        virtual void primaryDisplayChanged() = 0;
 
         /**
          * A new display has been added
          */
-        void displayAdded(DisplayInterface *display);
+        virtual void displayAdded(DisplayInterface *display) = 0;
 
         /**
          * A display has been removed.
          */
-        void displayRemved(DisplayInterface *display);
+        virtual void displayRemved(DisplayInterface *display) = 0;
 
         /**
          * A new window has been made known to the manager.
          */
-        void windowAdded(WindowInterface *window);
+        virtual void windowAdded(WindowInterface *window) = 0;
 
         /*
          * The given window has been destroyed.
          */
-        void windowDestroyed(WindowInterface *window);
+        virtual void windowDestroyed(WindowInterface *window) = 0;
     };
 }
 

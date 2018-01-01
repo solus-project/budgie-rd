@@ -25,10 +25,8 @@ namespace Budgie
      * able to deal with top level Windows, whether they are client-side, i.e.
      * in the shell, or server-side in the compositor.
      */
-    class WindowInterface : public QObject, public BaseInterface
+    class WindowInterface : public BaseInterface
     {
-        Q_OBJECT
-
     public:
         virtual ~WindowManagerInterface()
         {
@@ -42,17 +40,17 @@ namespace Budgie
         /**
          * Return the title for the given window
          */
-        virtual const QString &title();
+        virtual const QString &title() = 0;
 
         /**
          * Return the primary display for this window
          */
-        virtual DisplayInterface *display();
+        virtual DisplayInterface *display() = 0;
 
         /**
          * Return the currently known geometry for this window.
          */
-        virtual QRect geometry();
+        virtual QRect geometry() = 0;
 
     signals:
 
@@ -60,12 +58,12 @@ namespace Budgie
          * The primary display was changed and this window is now considered
          * to belong to a different display.
          */
-        void displayChanged();
+        virtual void displayChanged() = 0;
 
         /**
          * The geometry of this window has been altered
          */
-        void geometryChanged();
+        virtual void geometryChanged() = 0;
     };
 }
 

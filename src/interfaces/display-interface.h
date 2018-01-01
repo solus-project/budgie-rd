@@ -21,10 +21,8 @@ namespace Budgie
      * The DisplayInterface abstracts away some of the core details of the
      * display management to encapsulate each Output as a Display
      */
-    class DisplayInterface : public QObject, public BaseInterface
+    class DisplayInterface : public BaseInterface
     {
-        Q_OBJECT
-
     public:
         virtual ~DisplayInterface()
         {
@@ -38,12 +36,12 @@ namespace Budgie
         /**
          * Return the index of this display in known set of displays
          */
-        virtual uint index();
+        virtual uint index() = 0;
 
         /**
          * Return the geometry for display
          */
-        virtual QRect geometry();
+        virtual QRect geometry() = 0;
     };
 }
 
