@@ -11,7 +11,9 @@
 
 #include "raven-window.h"
 
-Budgie::RavenWindow::RavenWindow(ShellInterface *interface) : m_shell(interface)
+using namespace Budgie::Raven;
+
+Window::Window(ShellInterface *interface) : m_shell(interface)
 {
     move(1920 - 400, 0);
     setFixedSize(400, 1080 - 30);
@@ -22,21 +24,21 @@ Budgie::RavenWindow::RavenWindow(ShellInterface *interface) : m_shell(interface)
     setFocusPolicy(Qt::NoFocus);
 }
 
-Budgie::RavenWindow::~RavenWindow()
+Window::~Window()
 {
 }
 
-void Budgie::RavenWindow::show()
+void Window::show()
 {
     QWidget::show();
 }
 
-void Budgie::RavenWindow::hide()
+void Window::hide()
 {
     QWidget::hide();
 }
 
-void Budgie::RavenWindow::toggle()
+void Window::toggle()
 {
     if (!isVisible()) {
         QWidget::show();

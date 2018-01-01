@@ -25,7 +25,7 @@ bool Budgie::DefaultFace::init(Budgie::ShellInterface *interface)
         return false;
     }
 
-    m_raven.reset(new Budgie::RavenWindow(m_shell));
+    m_raven.reset(new Budgie::Raven::Window(m_shell));
     if (!m_shell->registerInterface(m_raven.data())) {
         qWarning() << "Failed to register the Raven widget. Aborting";
         return false;

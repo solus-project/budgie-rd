@@ -15,20 +15,20 @@
 
 #include "raven-interface.h"
 
-namespace Budgie
+namespace Budgie::Raven
 {
     /**
      * The main window implements the RavenInterface and provides the
      * user with a sidebar style control that allows access to various
      * extensions, notifications, etc.
      */
-    class RavenWindow : public QWidget, public RavenInterface
+    class Window : public QWidget, public RavenInterface
     {
         Q_OBJECT
 
     public:
-        explicit RavenWindow(ShellInterface *interface);
-        ~RavenWindow();
+        explicit Window(ShellInterface *interface);
+        ~Window();
 
         /* Overrides */
         void show() override;

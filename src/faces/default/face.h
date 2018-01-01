@@ -37,7 +37,7 @@ namespace Budgie
     private:
         ShellInterface *m_shell;
         Panel::Manager *m_panelManager;
-        QScopedPointer<RavenWindow> m_raven;
+        QScopedPointer<Raven::Window> m_raven;
     };
 }
 
