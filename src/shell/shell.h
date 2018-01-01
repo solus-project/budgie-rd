@@ -17,18 +17,18 @@
 #include "shell-interface.h"
 #include "shell-registry.h"
 
-namespace Budgie
+namespace Budgie::Shell
 {
     /**
-     * The Budgie::Shell is the basic execution environment for Budgie
+     * The Shell::Manager is the basic execution environment for Budgie
      * and uses the PluginRegistry to create and maintain a desktop environment.
      */
-    class Shell : public QObject, public ShellInterface
+    class Manager : public QObject, public ShellInterface
     {
         Q_OBJECT
 
     public:
-        explicit Shell(const QString &name);
+        explicit Manager(const QString &name);
 
         /**
          * Get the name for this Shell environment
@@ -65,7 +65,7 @@ namespace Budgie
         void shutdownShell();
 
     private:
-        QSharedPointer<ShellRegistry> m_registry;
+        QSharedPointer<Registry> m_registry;
         QString m_sessionName;
 
         QString m_faceName;

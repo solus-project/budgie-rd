@@ -11,39 +11,41 @@
 
 #include "shell-registry.h"
 
-Budgie::ShellRegistry::ShellRegistry()
+using namespace Budgie::Shell;
+
+Registry::Registry()
 {
     // We only care about services/faces
     appendSearchPath(systemDirectory().filePath("services"));
     appendSearchPath(systemDirectory().filePath("faces"));
 }
 
-QSharedPointer<Budgie::ServiceInterface> Budgie::ShellRegistry::getService(const QString &name)
+QSharedPointer<Budgie::ServiceInterface> Registry::getService(const QString &name)
 {
     return getPlugin<Budgie::ServiceInterface>(QStringLiteral("services/") + name);
 }
 
-QSharedPointer<Budgie::FaceInterface> Budgie::ShellRegistry::getFace(const QString &name)
+QSharedPointer<Budgie::FaceInterface> Registry::getFace(const QString &name)
 {
     return getPlugin<Budgie::FaceInterface>(QStringLiteral("faces/") + name);
 }
 
-bool Budgie::ShellRegistry::hasServicePlugin(const QString &name)
+bool Registry::hasServicePlugin(const QString &name)
 {
     return hasPlugin(QStringLiteral("services/") + name);
 }
 
-bool Budgie::ShellRegistry::hasFacePlugin(const QString &name)
+bool Registry::hasFacePlugin(const QString &name)
 {
     return hasPlugin(QStringLiteral("faces/") + name);
 }
 
-void Budgie::ShellRegistry::unloadFace(const QString &face)
+void Registry::unloadFace(const QString &face)
 {
     unload("faces/" + face);
 }
 
-void Budgie::ShellRegistry::unloadService(const QString &service)
+void Registry::unloadService(const QString &service)
 {
     unload("services/" + service);
 }

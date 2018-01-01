@@ -19,8 +19,10 @@
 #include "shell-registry.h"
 #include "shell.h"
 
-Budgie::Shell::Shell(const QString &name)
-    : m_registry(new ShellRegistry()), m_sessionName(name),
+using namespace Budgie::Shell;
+
+Manager::Manager(const QString &name)
+    : m_registry(new Shell::Registry()), m_sessionName(name),
       m_faceName("org.budgie-desktop.faces.Default")
 {
     // For now we only need to know about Notifications
@@ -30,12 +32,12 @@ Budgie::Shell::Shell(const QString &name)
     registerInterface(this);
 }
 
-const QString &Budgie::Shell::sessionName()
+const QString &Manager::sessionName()
 {
     return m_sessionName;
 }
 
-bool Budgie::Shell::init()
+bool Manager::init()
 {
     // Discover all services
     m_registry->discover();
@@ -66,7 +68,7 @@ bool Budgie::Shell::init()
     return true;
 }
 
-bool Budgie::Shell::startServices()
+bool Manager::startServices()
 {
     for (const auto &serviceID : m_requiredServices) {
         auto service = m_registry->getService(serviceID);
@@ -83,7 +85,7 @@ bool Budgie::Shell::startServices()
     return true;
 }
 
-bool Budgie::Shell::startFace()
+bool Manager::startFace()
 {
     auto face = m_registry->getFace(m_faceName);
     if (face.isNull()) {
@@ -120,7 +122,7 @@ bool Budgie::Shell::startFace()
  * Store an internal reference to the object so that interface sharing
  * works.
  */
-bool Budgie::Shell::registerInterface(Budgie::BaseInterface *interface, const QString &id)
+bool Manager::registerInterface(Budgie::BaseInterface *interface, const QString &id)
 {
     const QString &lookup = !id.isEmpty() ? id : interface->interfaceName();
 
@@ -145,12 +147,12 @@ bool Budgie::Shell::registerInterface(Budgie::BaseInterface *interface, const QS
 /**
  * Return a pointer to the interface or null
  */
-Budgie::BaseInterface *Budgie::Shell::getInterface(const QString &id)
+Budgie::BaseInterface *Manager::getInterface(const QString &id)
 {
     return m_interfaces.value(id, nullptr);
 }
 
-bool Budgie::Shell::hasInterface(const QString &id)
+bool Manager::hasInterface(const QString &id)
 {
     return getInterface(id) == nullptr ? false : true;
 }
@@ -161,7 +163,7 @@ bool Budgie::Shell::hasInterface(const QString &id)
  * Trivial wrapper around getInterface and cast to the correct type, so that
  * we have safety.
  */
-Budgie::PanelManagerInterface *Budgie::Shell::getPanelManager()
+Budgie::PanelManagerInterface *Manager::getPanelManager()
 {
     return dynamic_cast<Budgie::PanelManagerInterface *>(
         getInterface(BudgiePanelManagerInterfaceIID));
@@ -170,7 +172,7 @@ Budgie::PanelManagerInterface *Budgie::Shell::getPanelManager()
 /**
  * Trivial wrapper around getInterface for RavenInterface
  */
-Budgie::RavenInterface *Budgie::Shell::getRaven()
+Budgie::RavenInterface *Manager::getRaven()
 {
     return dynamic_cast<Budgie::RavenInterface *>(getInterface(BudgieRavenInterfaceIID));
 }
@@ -178,7 +180,7 @@ Budgie::RavenInterface *Budgie::Shell::getRaven()
 /**
  * Handle the real shutdown which was ticked on the idle thread
  */
-void Budgie::Shell::shutdownShell()
+void Manager::shutdownShell()
 {
     // Shut down the face first.
     auto face = m_registry->getFace(m_faceName);
@@ -204,14 +206,14 @@ void Budgie::Shell::shutdownShell()
     QCoreApplication::quit();
 }
 
-void Budgie::Shell::shutdown()
+void Manager::shutdown()
 {
     if (m_shutdownRequested) {
         return;
     }
     qDebug() << "Scheduling shutdown of shell";
     m_shutdownRequested = true;
-    QTimer::singleShot(0, this, &Budgie::Shell::shutdownShell);
+    QTimer::singleShot(0, this, &Manager::shutdownShell);
 }
 
 /*

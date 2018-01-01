@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
     // Share refcount with timer singleShot
-    QSharedPointer<Budgie::Shell> shell;
+    QSharedPointer<Budgie::Shell::Manager> shell;
 
     QCoreApplication::setApplicationName("budgie-shell");
     QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 
     p.process(app);
 
-    shell.reset(new Budgie::Shell(p.value(optSession)));
+    shell.reset(new Budgie::Shell::Manager(p.value(optSession)));
 
     // Sanitize our setup, ensure all services are accounted for
     if (!shell->init()) {

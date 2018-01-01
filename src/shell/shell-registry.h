@@ -17,17 +17,17 @@
 #include "registry.h"
 #include "service-interface.h"
 
-namespace Budgie
+namespace Budgie::Shell
 {
     /**
      * Extend the core PluginRegistry to add shell specific functionality
      */
-    class ShellRegistry : public PluginRegistry
+    class Registry : public PluginRegistry
     {
         Q_OBJECT
 
     public:
-        explicit ShellRegistry();
+        explicit Registry();
 
         /**
          * Get a service from our known service providers by the given
