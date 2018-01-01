@@ -29,6 +29,13 @@ namespace Budgie
     class WindowInterface;
     class WindowManagerInterface;
 
+    /* Compositor interfaces */
+    namespace Compositor
+    {
+        class Display;
+        class RendererInterface;
+    }
+
     /**
      * All interfaces within Budgie derive from the BaseInterface.
      */
