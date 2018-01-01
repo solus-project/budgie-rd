@@ -11,24 +11,25 @@
 
 #include "session-registry.h"
 
-Budgie::SessionRegistry::SessionRegistry()
+using namespace Budgie::Session;
+
+Registry::Registry()
 {
     // We only care about session
     appendSearchPath(systemDirectory().filePath("session"));
 }
 
-QSharedPointer<Budgie::SessionModuleInterface> Budgie::SessionRegistry::getSessionModule(
-    const QString &name)
+QSharedPointer<Budgie::SessionModuleInterface> Registry::getSessionModule(const QString &name)
 {
     return getPlugin<Budgie::SessionModuleInterface>(QStringLiteral("session/") + name);
 }
 
-bool Budgie::SessionRegistry::hasSessionModule(const QString &name)
+bool Registry::hasSessionModule(const QString &name)
 {
     return hasPlugin(QStringLiteral("session/") + name);
 }
 
-void Budgie::SessionRegistry::unloadSessionModule(const QString &name)
+void Registry::unloadSessionModule(const QString &name)
 {
     unload("session/" + name);
 }

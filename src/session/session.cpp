@@ -14,8 +14,9 @@
 
 #include "session.h"
 
-Budgie::Session::Session(const QString &name)
-    : m_sessionName(name), m_registry(new SessionRegistry())
+using namespace Budgie::Session;
+
+Manager::Manager(const QString &name) : m_sessionName(name), m_registry(new Session::Registry())
 {
     // Start window manager first, very important. :P
     m_requiredServices << "org.budgie-desktop.session.WindowManager";
@@ -24,12 +25,12 @@ Budgie::Session::Session(const QString &name)
     m_requiredServices << "org.budgie-desktop.session.Shell";
 }
 
-const QString &Budgie::Session::sessionName()
+const QString &Manager::sessionName()
 {
     return m_sessionName;
 }
 
-bool Budgie::Session::init()
+bool Manager::init()
 {
     // Discover all modules
     m_registry->discover();
@@ -44,14 +45,14 @@ bool Budgie::Session::init()
     return true;
 }
 
-bool Budgie::Session::start()
+bool Manager::start()
 {
     for (const auto &serviceID : m_requiredServices) {
         auto service = m_registry->getSessionModule(serviceID);
         qDebug() << "Starting session module: " << serviceID;
         if (!service->start()) {
             qWarning() << "Failed to start session module: " << serviceID;
-            shutdownSession();
+            shutdown();
             return false;
         }
         m_activeServices << serviceID;
@@ -60,7 +61,7 @@ bool Budgie::Session::start()
     return true;
 }
 
-void Budgie::Session::shutdownSession()
+void Manager::shutdown()
 {
     std::reverse(std::begin(m_activeServices), std::end(m_activeServices));
 

@@ -16,19 +16,19 @@
 
 #include "session-registry.h"
 
-namespace Budgie
+namespace Budgie::Session
 {
     /**
-     * The Budgie::Session is the main entry into the Budgie Desktop, and
+     * The Session::Manager is the main entry into the Budgie Desktop, and
      * uses modules to construct an appropriate session to support the
      * primary shell and userland applications.
      */
-    class Session : public QObject
+    class Manager : public QObject
     {
         Q_OBJECT
 
     public:
-        explicit Session(const QString &name);
+        explicit Manager(const QString &name);
 
         /**
          * Return the session name that we will be using, to permit fallback
@@ -52,9 +52,9 @@ namespace Budgie
         QString m_sessionName;
         QStringList m_requiredServices;
         QStringList m_activeServices;
-        QSharedPointer<SessionRegistry> m_registry;
+        QSharedPointer<Registry> m_registry;
 
-        void shutdownSession();
+        void shutdown();
     };
 }
 /*

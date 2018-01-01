@@ -16,17 +16,17 @@
 #include "registry.h"
 #include "session-module-interface.h"
 
-namespace Budgie
+namespace Budgie::Session
 {
     /**
      * Extend the core PluginRegistry to add shell specific functionality
      */
-    class SessionRegistry : public PluginRegistry
+    class Registry : public PluginRegistry
     {
         Q_OBJECT
 
     public:
-        explicit SessionRegistry();
+        explicit Registry();
 
         /**
          * Get a service from our known service providers by the given

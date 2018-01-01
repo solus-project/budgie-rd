@@ -69,7 +69,8 @@ int main(int argc, char **argv)
     p.process(app);
 
     // Sanitize our setup, ensure all services are accounted for
-    QSharedPointer<Budgie::Session> session(new Budgie::Session(p.value(optSession)));
+    QSharedPointer<Budgie::Session::Manager> session(
+        new Budgie::Session::Manager(p.value(optSession)));
 
     if (!session->init()) {
         qWarning() << "init(): Failed";
