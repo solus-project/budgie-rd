@@ -25,6 +25,9 @@
  */
 int main(int argc, char **argv)
 {
+    // Causes massive leaks
+    qputenv("QT_NO_GLIB", "1");
+
     // Support NVIDIA.
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts, true);
     QGuiApplication app(argc, argv);
