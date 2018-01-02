@@ -13,10 +13,38 @@
 
 using namespace Budgie::Compositor;
 
-OpenGLView::OpenGLView(Compositor::Window *window) : m_window(window)
+OpenGLView::OpenGLView(Compositor::Window *window)
+    : m_window(window), m_texture(nullptr), m_textureOrigin(QOpenGLTextureBlitter::OriginBottomLeft)
 {
     auto surface = m_window->surface();
     setSurface(surface);
+}
+
+/**
+ * Lightly influenced by the QWayland demo + QOpenGLTextureBlitter docs.
+ */
+QOpenGLTexture *OpenGLView::texture()
+{
+    if (!advance()) {
+        return m_texture;
+    }
+
+    // Cache our texture reference + origin
+    auto buffer = currentBuffer();
+    m_texture = buffer.toOpenGLTexture();
+    auto origin = buffer.origin();
+    if (origin == QWaylandSurface::OriginTopLeft) {
+        m_textureOrigin = QOpenGLTextureBlitter::OriginTopLeft;
+    } else {
+        m_textureOrigin = QOpenGLTextureBlitter::OriginBottomLeft;
+    }
+
+    return m_texture;
+}
+
+QOpenGLTextureBlitter::Origin OpenGLView::textureOrigin()
+{
+    return m_textureOrigin;
 }
 
 /*

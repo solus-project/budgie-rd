@@ -12,6 +12,7 @@
 #pragma once
 
 #include <QObject>
+#include <QOpenGLTextureBlitter>
 #include <QWaylandView>
 
 #include "window.h"
@@ -32,8 +33,20 @@ namespace Budgie::Compositor
          */
         OpenGLView(Window *window);
 
+        /**
+         * Retrieve the current texture
+         */
+        QOpenGLTexture *texture();
+
+        /**
+         * Return the texture origin for rendering
+         */
+        QOpenGLTextureBlitter::Origin textureOrigin();
+
     private:
         Window *m_window;
+        QOpenGLTexture *m_texture;
+        QOpenGLTextureBlitter::Origin m_textureOrigin;
     };
 }
 /*
