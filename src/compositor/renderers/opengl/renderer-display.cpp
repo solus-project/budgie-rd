@@ -21,6 +21,13 @@ OpenGLDisplay::OpenGLDisplay(QWaylandOutput *output) : Display(output, this)
     connect(output, &QWaylandOutput::currentModeChanged, this, &OpenGLDisplay::currentModeChanged);
 }
 
+OpenGLDisplay::~OpenGLDisplay()
+{
+    // Destroy our resources on current GL context
+    makeCurrent();
+    m_blitter.destroy();
+}
+
 /**
  * A new window is being added to our display, so we'll need to create a view
  * capable of rendering it.
