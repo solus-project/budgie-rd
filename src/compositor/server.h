@@ -41,11 +41,11 @@ namespace Budgie::Compositor
         bool start();
 
         // Implement InputInterface
-        void setMouseFocus(Window *w) override;
-        void setKeyFocus(Window *w) override;
-        void dispatchMouseEvent(QMouseEvent *e) override;
-        void dispatchTouchEvent(QTouchEvent *e) override;
-        void dispatchKeyEvent(QKeyEvent *e) override;
+        void setMouseFocus(Display *origin, Window *w) override;
+        void setKeyFocus(Display *origin, Window *w) override;
+        void dispatchMouseEvent(Display *origin, QMouseEvent *e) override;
+        void dispatchTouchEvent(Display *origin, QTouchEvent *e) override;
+        void dispatchKeyEvent(Display *origin, QKeyEvent *e) override;
 
     private:
         RendererInterface *m_renderer;

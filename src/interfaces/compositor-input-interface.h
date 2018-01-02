@@ -14,6 +14,7 @@
 #include <QObject>
 
 #include "base-interface.h"
+#include "display.h"
 #include "window.h"
 
 #define BudgieCompositorInputInterfaceIID "org.budgie-desktop.CompositorInputInterface"
@@ -41,19 +42,19 @@ namespace Budgie::Compositor
         }
 
         /* Set the current window to have mouse focus */
-        virtual void setMouseFocus(Window *window) = 0;
+        virtual void setMouseFocus(Display *origin, Window *window) = 0;
 
-        /* Set the current window to have key focus */
-        virtual void setKeyFocus(Window *window) = 0;
+        /* Set this window to have key focus */
+        virtual void setKeyFocus(Display *origin, Window *window) = 0;
 
-        /* Send a mouse event for the given window */
-        virtual void dispatchMouseEvent(QMouseEvent *e) = 0;
+        /* Send a mouse event for the given display */
+        virtual void dispatchMouseEvent(Display *origin, QMouseEvent *e) = 0;
 
-        /* Send a touch event for the given window */
-        virtual void dispatchTouchEvent(QTouchEvent *e) = 0;
+        /* Send a touch event for the given display */
+        virtual void dispatchTouchEvent(Display *origin, QTouchEvent *e) = 0;
 
-        /* Send a key event for the given window */
-        virtual void dispatchKeyEvent(QKeyEvent *e) = 0;
+        /* Send a key event for the given display */
+        virtual void dispatchKeyEvent(Display *origin, QKeyEvent *e) = 0;
     };
 }
 
