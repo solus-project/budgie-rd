@@ -110,6 +110,10 @@ void OpenGLDisplay::render()
 
     m_blitter.bind();
 
+    // Enable alpha composite
+    funcs->glEnable(GL_BLEND);
+    funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     auto bindID = GL_TEXTURE_2D;
     auto ourSize = size();
 
@@ -139,6 +143,8 @@ void OpenGLDisplay::render()
         m_blitter.blit(texture->textureId(), target, origin);
         surface->sendFrameCallbacks();
     }
+
+    funcs->glDisable(GL_BLEND);
 
     m_blitter.release();
 }
