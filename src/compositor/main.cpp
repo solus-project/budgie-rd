@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     QGuiApplication app(argc, argv);
     QSharedPointer<Budgie::Compositor::Manager> comp;
 
-    QCoreApplication::setApplicationName("budgie-shell");
+    QCoreApplication::setApplicationName("budgie-compositor");
     QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
     QGuiApplication::setFallbackSessionManagementEnabled(false);
     // app.setQuitOnLastWindowClosed(false);
