@@ -41,8 +41,15 @@ namespace Budgie::Compositor
          */
         QWaylandSurface *surface();
 
+        QRect geometry() override;
+
+    private slots:
+        void sizeChanged();
+
     private:
         QWaylandSurface *m_surface;
+        QPoint m_position;
+        QSize m_size;
     };
 }
 /*

@@ -37,11 +37,12 @@ namespace Budgie
             return QStringLiteral(BudgieWindowInterfaceIID);
         }
 
+        virtual QRect geometry() = 0;
+
         /*
         virtual const QString &title() = 0;
         virtual DisplayInterface *display() = 0;
 
-        virtual QRect geometry() = 0;
 
     signals:
 

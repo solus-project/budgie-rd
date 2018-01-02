@@ -13,13 +13,34 @@
 
 using namespace Budgie::Compositor;
 
-Window::Window(QWaylandSurface *surface) : m_surface(surface)
+Window::Window(QWaylandSurface *surface) : m_surface(surface), m_position(0, 0), m_size(0, 0)
 {
+    // Precache
+    m_size = surface->size();
+
+    // Hook up signals
+    connect(surface, &QWaylandSurface::sizeChanged, this, &Window::sizeChanged);
 }
 
 QWaylandSurface *Window::surface()
 {
     return m_surface;
+}
+
+/**
+ * Return the full geometry.
+ */
+QRect Window::geometry()
+{
+    return QRect(m_position, m_size);
+}
+
+/**
+ * wl_surface changed size, update knowledge of it.
+ */
+void Window::sizeChanged()
+{
+    m_size = m_surface->size();
 }
 
 /*
