@@ -89,6 +89,7 @@ void Server::surfaceCreated(QWaylandSurface *surface)
     if (!view) {
         return;
     }
+    view->setOutput(m_displays[0]->output());
     view->setPrimary();
 }
 
