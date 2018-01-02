@@ -27,6 +27,8 @@ namespace Budgie::Compositor
     {
         Q_OBJECT
 
+        friend class Server;
+
     protected:
         /**
          * Construct a new Window object for the given Wayland surface

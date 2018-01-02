@@ -13,6 +13,7 @@ libcompositor_mocs = qt5.preprocess(
 
 libcompositor_sources = [
     'display.cpp',
+    'window.cpp',
     libcompositor_mocs,
 ]
 

@@ -9,8 +9,6 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#pragma once
-
 #include "window.h"
 
 using namespace Budgie::Compositor;
@@ -19,7 +17,7 @@ Window::Window(QWaylandSurface *surface) : m_surface(surface)
 {
 }
 
-QWaylandSurface Window::surface()
+QWaylandSurface *Window::surface()
 {
     return m_surface;
 }

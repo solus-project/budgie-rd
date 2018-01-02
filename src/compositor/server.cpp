@@ -73,12 +73,39 @@ bool Server::start()
 
 void Server::surfaceCreated(QWaylandSurface *surface)
 {
-    Q_UNUSED(surface);
+    if (m_surfaces.contains(surface)) {
+        qWarning() << "Accounting error: Already know about " << surface;
+        return;
+    }
+
+    auto window = new Compositor::Window(surface);
+    qDebug() << "Added surface:" << window;
+
+    // TODO: Decide which output we wanna put this guy on and map it there.
+    m_surfaces.insert(surface, QSharedPointer<Compositor::Window>(window));
 }
 
+/**
+ * The WaylandSurface is about to be destroyed, so we must remove knowledge
+ * of this from ourselves and all displays
+ */
 void Server::surfaceDestroying(QWaylandSurface *surface)
 {
-    Q_UNUSED(surface);
+    auto window = m_surfaces.value(surface, nullptr);
+    if (!window) {
+        qWarning() << "Accounting error: Don't know about " << surface;
+        return;
+    }
+
+    // Remove window from all displays
+    for (auto &display : m_displays) {
+        // TODO: If the display contains then unmap
+        display->unmapWindow(window.data());
+    }
+
+    qDebug() << "Removed surface:" << window.data();
+
+    m_surfaces.remove(surface);
 }
 
 void Server::wlShellCreated(QWaylandWlShellSurface *shell)

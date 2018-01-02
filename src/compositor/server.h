@@ -19,6 +19,7 @@
 #include <QWaylandXdgSurfaceV5>
 
 #include "display.h"
+#include "window.h"
 
 namespace Budgie::Compositor
 {
@@ -43,6 +44,8 @@ namespace Budgie::Compositor
         QWaylandWlShell *m_wl_shell;
         QWaylandXdgShellV5 *m_xdg_shell_v5;
         QList<QSharedPointer<Display>> m_displays;
+
+        QHash<QWaylandSurface *, QSharedPointer<Window>> m_surfaces;
 
     private slots:
         void surfaceCreated(QWaylandSurface *surface);
