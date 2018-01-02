@@ -12,8 +12,10 @@
 #pragma once
 
 #include <QObject>
+#include <QScopedPointer>
 #include <QSharedPointer>
 
+#include "compositor-registry.h"
 #include "server.h"
 
 namespace Budgie::Compositor
@@ -43,7 +45,9 @@ namespace Budgie::Compositor
         bool start();
 
     private:
+        QSharedPointer<Registry> m_registry;
         QScopedPointer<Server> m_server;
+        QString m_rendererID;
 
         void shutdown();
     };

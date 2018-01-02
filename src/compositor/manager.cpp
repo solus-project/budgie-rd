@@ -16,14 +16,22 @@
 
 using namespace Budgie::Compositor;
 
-Manager::Manager()
+Manager::Manager() : m_registry(new Compositor::Registry())
 {
-    qDebug() << "Do nothin.";
+    m_rendererID = QStringLiteral("org.budgie-desktop.compositor.OpenGLRenderer");
 }
 
 bool Manager::init()
 {
-    qDebug() << "TODO: Load rendering plugins!";
+    m_registry->discover();
+
+    // Ensure we have our main renderer first up
+    if (!m_registry->hasRenderPlugin(m_rendererID)) {
+        qWarning() << "Missing plugin for renderer: " << m_rendererID;
+        return false;
+    }
+
+    // Go ahead and construct our server
     m_server.reset(new Compositor::Server());
     return true;
 }

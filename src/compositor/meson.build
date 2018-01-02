@@ -43,6 +43,7 @@ link_libcompositor = declare_dependency(
 
 compositor_mocs = qt5.preprocess(
     moc_headers: [
+        'compositor-registry.h',
         'manager.h',
         'server.h',
     ],
@@ -50,6 +51,7 @@ compositor_mocs = qt5.preprocess(
 )
 
 compositor_sources = [
+    'compositor-registry.cpp',
     'manager.cpp',
     'main.cpp',
     'server.cpp',
@@ -65,6 +67,7 @@ compositor = executable(
     ],
     include_directories: compositor_includes,
     dependencies: [
+        link_libcommon,
         link_libcompositor,
         dep_qt_compositor,
         dep_qtcore,

@@ -14,6 +14,7 @@
 #include <QObject>
 
 #include "base-interface.h"
+#include "display.h"
 
 #define BudgieCompositorRendererInterfaceIID "org.budgie-desktop.CompositorRendererInterface"
 
@@ -30,7 +31,7 @@ namespace Budgie::Compositor
     class RendererInterface : public BaseInterface
     {
     public:
-        virtual ~CompositorRendererInterface()
+        virtual ~RendererInterface()
         {
         }
 
