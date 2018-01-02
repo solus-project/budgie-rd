@@ -17,6 +17,7 @@ using namespace Budgie::Compositor;
 
 OpenGLDisplay::OpenGLDisplay(QWaylandOutput *output) : Display(output, this)
 {
+    connect(output, &QWaylandOutput::currentModeChanged, this, &OpenGLDisplay::currentModeChanged);
 }
 
 void OpenGLDisplay::mapWindow(Compositor::Window *window)
@@ -27,6 +28,15 @@ void OpenGLDisplay::mapWindow(Compositor::Window *window)
 void OpenGLDisplay::unmapWindow(Compositor::Window *window)
 {
     qDebug() << "Unmapped: " << window;
+}
+
+void OpenGLDisplay::currentModeChanged()
+{
+    auto mode = output()->currentMode();
+    auto geom = mode.size();
+    resize(geom.width(), geom.height());
+    setPosition(output()->position());
+    qDebug() << "New mode:" << geom;
 }
 
 /*

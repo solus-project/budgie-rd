@@ -61,7 +61,9 @@ void Server::create()
         return;
     }
 
+    // Force connection and mode change now
     output->setWindow(window);
+    output->setCurrentMode(mode);
 
     // Store the display now
     m_displays << QSharedPointer<Display>(display);
