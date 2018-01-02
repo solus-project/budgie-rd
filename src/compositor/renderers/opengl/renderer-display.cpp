@@ -125,6 +125,8 @@ void OpenGLDisplay::render()
         }
 
         auto window = view->window();
+        auto surface = window->surface();
+
         // Rectangle for the whole texture size
         const QRect targetRect(QPoint(0, 0), window->size());
 
@@ -133,7 +135,9 @@ void OpenGLDisplay::render()
         const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(targetRect, positionRect);
 
         // Draw the texture
+        surface->frameStarted();
         m_blitter.blit(texture->textureId(), target, origin);
+        surface->sendFrameCallbacks();
     }
 
     m_blitter.release();
