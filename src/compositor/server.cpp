@@ -83,6 +83,9 @@ void Server::surfaceCreated(QWaylandSurface *surface)
 
     // TODO: Decide which output we wanna put this guy on and map it there.
     m_surfaces.insert(surface, QSharedPointer<Compositor::Window>(window));
+
+    // Le Hacky Demos
+    m_displays[0]->mapWindow(window);
 }
 
 /**
