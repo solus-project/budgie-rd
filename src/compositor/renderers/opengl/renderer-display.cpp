@@ -67,6 +67,7 @@ void OpenGLDisplay::currentModeChanged()
 void OpenGLDisplay::initializeGL()
 {
     qDebug() << "OpenGL initialized";
+    m_blitter.create();
 }
 
 /**
@@ -90,6 +91,12 @@ void OpenGLDisplay::render()
     auto funcs = context()->functions();
     funcs->glClearColor(0.3f, 0.5f, 0.8f, 1.0f);
     funcs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    m_blitter.bind();
+
+    // TODO: Render all textures here now.
+
+    m_blitter.release();
 }
 
 /*

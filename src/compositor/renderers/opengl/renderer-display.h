@@ -12,6 +12,7 @@
 #pragma once
 
 #include <QObject>
+#include <QOpenGLTextureBlitter>
 #include <QOpenGLWindow>
 
 #include "display.h"
@@ -40,6 +41,7 @@ namespace Budgie::Compositor
 
     private:
         QHash<Compositor::Window *, QSharedPointer<OpenGLView>> m_views;
+        QOpenGLTextureBlitter m_blitter;
 
         void initializeGL() override;
         void paintGL() override;
