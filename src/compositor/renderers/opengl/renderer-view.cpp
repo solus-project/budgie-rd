@@ -10,15 +10,19 @@
  */
 
 #include "renderer-view.h"
+#include "renderer-display.h"
 #include "window.h"
 
 using namespace Budgie::Compositor;
 
-OpenGLView::OpenGLView(Compositor::Window *window)
-    : m_window(window), m_texture(nullptr), m_textureOrigin(QOpenGLTextureBlitter::OriginBottomLeft)
+OpenGLView::OpenGLView(OpenGLDisplay *display, Compositor::Window *window)
+    : m_display(display), m_window(window), m_texture(nullptr),
+      m_textureOrigin(QOpenGLTextureBlitter::OriginBottomLeft)
 {
     auto surface = m_window->surface();
     setSurface(surface);
+
+    connect(surface, &QWaylandSurface::redraw, this, &OpenGLView::surfaceRedraw);
 }
 
 Window *OpenGLView::window()
@@ -51,6 +55,11 @@ QOpenGLTexture *OpenGLView::texture()
 QOpenGLTextureBlitter::Origin OpenGLView::textureOrigin()
 {
     return m_textureOrigin;
+}
+
+void OpenGLView::surfaceRedraw()
+{
+    m_display->requestUpdate();
 }
 
 /*

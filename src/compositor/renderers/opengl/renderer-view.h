@@ -20,6 +20,8 @@
 
 namespace Budgie::Compositor
 {
+    class OpenGLDisplay;
+
     /**
      * Our OpenGLView implements a basic View for OpenGL rendering of a
      * given surface.
@@ -34,7 +36,7 @@ namespace Budgie::Compositor
         /**
          * Construct a new OpenGLView for the given output.
          */
-        OpenGLView(Window *window);
+        OpenGLView(OpenGLDisplay *display, Window *window);
 
     protected:
         /**
@@ -52,7 +54,11 @@ namespace Budgie::Compositor
          */
         QOpenGLTextureBlitter::Origin textureOrigin();
 
+    private slots:
+        void surfaceRedraw();
+
     private:
+        OpenGLDisplay *m_display;
         Window *m_window;
         QOpenGLTexture *m_texture;
         QOpenGLTextureBlitter::Origin m_textureOrigin;

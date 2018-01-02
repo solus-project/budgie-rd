@@ -38,7 +38,7 @@ QWaylandView *OpenGLDisplay::mapWindow(Compositor::Window *window)
         qDebug() << "Accounting error: Already know about " << window;
         return nullptr;
     }
-    auto view = new OpenGLView(window);
+    auto view = new OpenGLView(this, window);
     m_views.insert(window, QSharedPointer<OpenGLView>(view));
     qDebug() << "Mapped:" << view;
 
