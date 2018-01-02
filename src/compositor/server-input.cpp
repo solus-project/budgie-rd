@@ -13,69 +13,21 @@
 
 using namespace Budgie::Compositor;
 
-/**
- * New display is added so hook up the relevant handlers
- */
-void Server::connectDisplay(Display *display)
+void Server::dispatchMouseEvent(Window *window, QMouseEvent *e)
 {
-    // Mouse events
-    connect(display, &Display::inputMouseMoved, this, &Server::inputMouseMoved);
-    connect(display, &Display::inputMousePressed, this, &Server::inputMousePressed);
-    connect(display, &Display::inputMouseReleased, this, &Server::inputMouseReleased);
-
-    // Keyboard events
-    connect(display, &Display::inputKeyPressed, this, &Server::inputKeyPressed);
-    connect(display, &Display::inputKeyReleased, this, &Server::inputKeyReleased);
-
-    // Touch events
-    connect(display, &Display::inputTouched, this, &Server::inputTouched);
-}
-
-/**
- * Dispatch mouse move to currently focused surface
- */
-void Server::inputMouseMoved(QMouseEvent *e)
-{
+    Q_UNUSED(window);
     Q_UNUSED(e);
 }
 
-/**
- * Dispatch mouse press to currently focused surface
- */
-void Server::inputMousePressed(QMouseEvent *e)
+void Server::dispatchTouchEvent(Window *window, QTouchEvent *e)
 {
+    Q_UNUSED(window);
     Q_UNUSED(e);
 }
 
-/**
- * Dispatch mouse release to currently focused surface
- */
-void Server::inputMouseReleased(QMouseEvent *e)
+void Server::dispatchKeyEvent(Window *window, QKeyEvent *e)
 {
-    Q_UNUSED(e);
-}
-
-/**
- * Dispatch key press to currently focused surface
- */
-void Server::inputKeyPressed(QKeyEvent *e)
-{
-    Q_UNUSED(e);
-}
-
-/**
- * Dispatch key release to currently focused surface
- */
-void Server::inputKeyReleased(QKeyEvent *e)
-{
-    Q_UNUSED(e);
-}
-
-/**
- * Dispatch touch event to currently focused surface
- */
-void Server::inputTouched(QTouchEvent *e)
-{
+    Q_UNUSED(window);
     Q_UNUSED(e);
 }
 

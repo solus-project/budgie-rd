@@ -34,6 +34,9 @@ Server::Server(RendererInterface *renderer)
 
     connect(this, &QWaylandCompositor::defaultSeatChanged, this, &Server::wlSeatChanged);
     connect(this, &QWaylandCompositor::createdChanged, this, &Server::wlCreated);
+
+    // Pass ourselves as an InputInterface to the renderer
+    m_renderer->init(this);
 }
 
 bool Server::start()

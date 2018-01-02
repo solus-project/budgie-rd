@@ -74,17 +74,6 @@ namespace Budgie::Compositor
          */
         QRect geometry() override;
 
-    signals:
-        /* Implementations must emit these signals for the compositor */
-        void inputMouseMoved(QMouseEvent *e);
-        void inputMousePressed(QMouseEvent *e);
-        void inputMouseReleased(QMouseEvent *e);
-
-        void inputKeyPressed(QKeyEvent *e);
-        void inputKeyReleased(QKeyEvent *e);
-
-        void inputTouched(QTouchEvent *e);
-
     protected:
         QScopedPointer<QWaylandOutput> m_output;
         QWindow *m_window;

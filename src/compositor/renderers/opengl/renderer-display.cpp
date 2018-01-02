@@ -16,7 +16,8 @@
 
 using namespace Budgie::Compositor;
 
-OpenGLDisplay::OpenGLDisplay(QWaylandOutput *output) : Display(output, this)
+OpenGLDisplay::OpenGLDisplay(Compositor::InputInterface *input, QWaylandOutput *output)
+    : Display(output, this), m_input(input)
 {
     connect(output, &QWaylandOutput::currentModeChanged, this, &OpenGLDisplay::currentModeChanged);
 }
@@ -157,32 +158,32 @@ void OpenGLDisplay::render()
 
 void OpenGLDisplay::mouseMoveEvent(QMouseEvent *e)
 {
-    emit inputMouseMoved(e);
+    Q_UNUSED(e);
 }
 
 void OpenGLDisplay::mousePressEvent(QMouseEvent *e)
 {
-    emit inputMousePressed(e);
+    Q_UNUSED(e);
 }
 
 void OpenGLDisplay::mouseReleaseEvent(QMouseEvent *e)
 {
-    emit inputMouseReleased(e);
+    Q_UNUSED(e);
 }
 
 void OpenGLDisplay::keyPressEvent(QKeyEvent *e)
 {
-    emit inputKeyPressed(e);
+    Q_UNUSED(e);
 }
 
 void OpenGLDisplay::keyReleaseEvent(QKeyEvent *e)
 {
-    emit inputKeyReleased(e);
+    Q_UNUSED(e);
 }
 
 void OpenGLDisplay::touchEvent(QTouchEvent *e)
 {
-    emit inputTouched(e);
+    Q_UNUSED(e);
 }
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

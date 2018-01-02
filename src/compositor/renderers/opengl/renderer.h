@@ -14,6 +14,7 @@
 #include <QObject>
 #include <QWaylandOutput>
 
+#include "compositor-input-interface.h"
 #include "compositor-renderer-interface.h"
 #include "display.h"
 
@@ -30,7 +31,11 @@ namespace Budgie::Compositor
         Q_INTERFACES(Budgie::Compositor::RendererInterface)
 
     public:
+        void init(Compositor::InputInterface *input) override;
         Display *createDisplay(QWaylandOutput *output) override;
+
+    private:
+        Compositor::InputInterface *m_input;
     };
 }
 

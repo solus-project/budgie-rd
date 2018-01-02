@@ -56,6 +56,7 @@ compositor_sources = [
     'manager.cpp',
     'main.cpp',
     'server.cpp',
+    'server-input.cpp',
     compositor_mocs,
 ]
 

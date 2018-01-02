@@ -14,6 +14,7 @@
 #include <QObject>
 
 #include "base-interface.h"
+#include "compositor-input-interface.h"
 #include "display.h"
 
 #define BudgieCompositorRendererInterfaceIID "org.budgie-desktop.CompositorRendererInterface"
@@ -39,6 +40,13 @@ namespace Budgie::Compositor
         {
             return QStringLiteral(BudgieCompositorRendererInterfaceIID);
         }
+
+        /**
+         * Initialise the Renderer with the given input interface
+         * Implementations should request the input interface dispatches
+         * the events.
+         */
+        virtual void init(Compositor::InputInterface *input) = 0;
 
         /**
          * Construct a new DisplayInterface for the given Wayland output.
