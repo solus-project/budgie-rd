@@ -34,6 +34,9 @@ QWaylandView *OpenGLDisplay::mapWindow(Compositor::Window *window)
     auto view = new OpenGLView(window);
     m_views.insert(window, QSharedPointer<OpenGLView>(view));
     qDebug() << "Mapped:" << view;
+
+    // Time to redraw
+    requestUpdate();
     return view;
 }
 
@@ -50,6 +53,9 @@ void OpenGLDisplay::unmapWindow(Compositor::Window *window)
     }
     qDebug() << "Unmapped: " << view.data();
     m_views.remove(window);
+
+    // Time to redraw
+    requestUpdate();
 }
 
 void OpenGLDisplay::currentModeChanged()
@@ -59,6 +65,9 @@ void OpenGLDisplay::currentModeChanged()
     resize(geom.width(), geom.height());
     setPosition(output()->position());
     qDebug() << "New mode:" << geom;
+
+    // Redraw.
+    requestUpdate();
 }
 
 /**
