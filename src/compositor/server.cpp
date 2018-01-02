@@ -33,10 +33,10 @@ Server::Server(RendererInterface *renderer)
             &Server::xdgShellv5Created);
 }
 
-void Server::create()
+bool Server::start()
 {
-    // Just pass it back up for now.
-    QWaylandCompositor::create();
+    // Ask that we get created.
+    create();
 
     // This is where we just fake the hell out of it for now.
     auto output = new QWaylandOutput(this, nullptr);
@@ -50,15 +50,13 @@ void Server::create()
     auto display = m_renderer->createDisplay(output);
     if (!display) {
         qWarning() << "Failed to construct a valid display for: " << output;
-        QCoreApplication::quit();
-        return;
+        return false;
     }
 
     auto window = display->window();
     if (window == nullptr) {
         qWarning() << "Broken Renderer is not returning the Window";
-        QCoreApplication::quit();
-        return;
+        return false;
     }
 
     // Force connection and mode change now
@@ -70,6 +68,7 @@ void Server::create()
 
     // Get it on screen
     window->show();
+    return true;
 }
 
 void Server::surfaceCreated(QWaylandSurface *surface)

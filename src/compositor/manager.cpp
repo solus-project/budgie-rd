@@ -40,8 +40,8 @@ bool Manager::start()
     // Go ahead and construct our server
     auto renderer = m_registry->getRenderPlugin(m_rendererID);
     m_server.reset(new Compositor::Server(renderer.data()));
-    m_server->create();
-    return true;
+
+    return m_server->start();
 }
 
 void Manager::shutdown()

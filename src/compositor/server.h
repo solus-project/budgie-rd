@@ -35,7 +35,7 @@ namespace Budgie::Compositor
         explicit Server(RendererInterface *renderer);
 
         // Allow explicit initialisation from the Manager
-        void create() override;
+        bool start();
 
     private:
         RendererInterface *m_renderer;
