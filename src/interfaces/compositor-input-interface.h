@@ -40,14 +40,20 @@ namespace Budgie::Compositor
             return QStringLiteral(BudgieCompositorInputInterfaceIID);
         }
 
+        /* Set the current window to have mouse focus */
+        virtual void setMouseFocus(Window *window) = 0;
+
+        /* Set the current window to have key focus */
+        virtual void setKeyFocus(Window *window) = 0;
+
         /* Send a mouse event for the given window */
-        virtual void dispatchMouseEvent(Window *window, QMouseEvent *e) = 0;
+        virtual void dispatchMouseEvent(QMouseEvent *e) = 0;
 
         /* Send a touch event for the given window */
-        virtual void dispatchTouchEvent(Window *window, QTouchEvent *e) = 0;
+        virtual void dispatchTouchEvent(QTouchEvent *e) = 0;
 
         /* Send a key event for the given window */
-        virtual void dispatchKeyEvent(Window *window, QKeyEvent *e) = 0;
+        virtual void dispatchKeyEvent(QKeyEvent *e) = 0;
     };
 }
 

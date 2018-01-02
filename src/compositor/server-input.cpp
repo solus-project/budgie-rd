@@ -13,21 +13,28 @@
 
 using namespace Budgie::Compositor;
 
-void Server::dispatchMouseEvent(Window *window, QMouseEvent *e)
+void Server::setMouseFocus(Window *window)
 {
     Q_UNUSED(window);
+}
+
+void Server::setKeyFocus(Window *window)
+{
+    Q_UNUSED(window);
+}
+
+void Server::dispatchMouseEvent(QMouseEvent *e)
+{
     Q_UNUSED(e);
 }
 
-void Server::dispatchTouchEvent(Window *window, QTouchEvent *e)
+void Server::dispatchTouchEvent(QTouchEvent *e)
 {
-    Q_UNUSED(window);
     Q_UNUSED(e);
 }
 
-void Server::dispatchKeyEvent(Window *window, QKeyEvent *e)
+void Server::dispatchKeyEvent(QKeyEvent *e)
 {
-    Q_UNUSED(window);
     Q_UNUSED(e);
 }
 
