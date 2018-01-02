@@ -150,6 +150,41 @@ void OpenGLDisplay::render()
 }
 
 /*
+ * Hook up window functions so that we emit signals for the compositor to
+ * hook up, this way we centralise the real input management within the
+ * compositor and not the renderers.
+ */
+
+void OpenGLDisplay::mouseMoveEvent(QMouseEvent *e)
+{
+    emit inputMouseMoved(e);
+}
+
+void OpenGLDisplay::mousePressEvent(QMouseEvent *e)
+{
+    emit inputMousePressed(e);
+}
+
+void OpenGLDisplay::mouseReleaseEvent(QMouseEvent *e)
+{
+    emit inputMouseReleased(e);
+}
+
+void OpenGLDisplay::keyPressEvent(QKeyEvent *e)
+{
+    emit inputKeyPressed(e);
+}
+
+void OpenGLDisplay::keyReleaseEvent(QKeyEvent *e)
+{
+    emit inputKeyReleased(e);
+}
+
+void OpenGLDisplay::touchEvent(QTouchEvent *e)
+{
+    emit inputTouched(e);
+}
+/*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *
  * Local variables:

@@ -48,6 +48,19 @@ namespace Budgie::Compositor
         void paintGL() override;
         void render();
 
+    protected:
+        /* inputMouse_ */
+        void mouseMoveEvent(QMouseEvent *e) override;
+        void mousePressEvent(QMouseEvent *e) override;
+        void mouseReleaseEvent(QMouseEvent *e) override;
+
+        /* inputKey_ */
+        void keyPressEvent(QKeyEvent *e) override;
+        void keyReleaseEvent(QKeyEvent *e) override;
+
+        /* inputTouched */
+        void touchEvent(QTouchEvent *e) override;
+
     private slots:
         void currentModeChanged();
     };
