@@ -12,41 +12,28 @@
 #pragma once
 
 #include <QObject>
-#include <QOpenGLWindow>
+#include <QWaylandView>
 
-#include "display.h"
 #include "window.h"
-
-#include "renderer-view.h"
 
 namespace Budgie::Compositor
 {
     /**
-     * Our OpenGLDisplay implements the basic Display type and adds specifics
-     * for handling OpenGL rendering.
+     * Our OpenGLView implements a basic View for OpenGL rendering of a
+     * given surface.
      */
-    class OpenGLDisplay : public QOpenGLWindow, public Display
+    class OpenGLView : public QWaylandView
     {
         Q_OBJECT
 
     public:
         /**
-         * Construct a new OpenGLDisplay for the given output.
+         * Construct a new OpenGLView for the given output.
          */
-        OpenGLDisplay(QWaylandOutput *output);
-
-        void mapWindow(Compositor::Window *window) override;
-        void unmapWindow(Compositor::Window *window) override;
+        OpenGLView(Window *window);
 
     private:
-        QHash<Compositor::Window *, QSharedPointer<OpenGLView>> m_views;
-
-        void initializeGL() override;
-        void paintGL() override;
-        void render();
-
-    private slots:
-        void currentModeChanged();
+        Window *m_window;
     };
 }
 /*

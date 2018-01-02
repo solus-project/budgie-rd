@@ -21,14 +21,34 @@ OpenGLDisplay::OpenGLDisplay(QWaylandOutput *output) : Display(output, this)
     connect(output, &QWaylandOutput::currentModeChanged, this, &OpenGLDisplay::currentModeChanged);
 }
 
+/**
+ * A new window is being added to our display, so we'll need to create a view
+ * capable of rendering it.
+ */
 void OpenGLDisplay::mapWindow(Compositor::Window *window)
 {
-    qDebug() << "Mapped:" << window;
+    if (m_views.contains(window)) {
+        qDebug() << "Accounting error: Already know about " << window;
+        return;
+    }
+    auto view = new OpenGLView(window);
+    m_views.insert(window, QSharedPointer<OpenGLView>(view));
+    qDebug() << "Mapped:" << view;
 }
 
+/**
+ * A window has been removed from our display, so we need to remove the corresponding
+ * View for it.
+ */
 void OpenGLDisplay::unmapWindow(Compositor::Window *window)
 {
-    qDebug() << "Unmapped: " << window;
+    auto view = m_views.value(window, nullptr);
+    if (!view) {
+        qDebug() << "Accounting error, unknown window: " << window;
+        return;
+    }
+    qDebug() << "Unmapped: " << view.data();
+    m_views.remove(window);
 }
 
 void OpenGLDisplay::currentModeChanged()
