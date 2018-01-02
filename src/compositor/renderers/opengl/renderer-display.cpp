@@ -39,6 +39,21 @@ void OpenGLDisplay::currentModeChanged()
     qDebug() << "New mode:" << geom;
 }
 
+/**
+ * TODO: Grab any thing we're going to need later, such as the texture blitter.
+ */
+void OpenGLDisplay::initializeGL()
+{
+    qDebug() << "OpenGL initialized";
+}
+
+/**
+ * TODO: Find all matching views for the known window list and, like, draw them.
+ */
+void OpenGLDisplay::paintGL()
+{
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

@@ -36,6 +36,10 @@ namespace Budgie::Compositor
         void mapWindow(Compositor::Window *window) override;
         void unmapWindow(Compositor::Window *window) override;
 
+    private:
+        void initializeGL() override;
+        void paintGL() override;
+
     private slots:
         void currentModeChanged();
     };
