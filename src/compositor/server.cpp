@@ -13,8 +13,9 @@
 
 using namespace Budgie::Compositor;
 
-Server::Server()
-    : m_wl_shell(new QWaylandWlShell(this)), m_xdg_shell_v5(new QWaylandXdgShellV5(this))
+Server::Server(RendererInterface *renderer)
+    : m_renderer(renderer), m_wl_shell(new QWaylandWlShell(this)),
+      m_xdg_shell_v5(new QWaylandXdgShellV5(this))
 {
     // Hook up basic compositor signals so we know whats going on when we ::create()
     connect(this, &QWaylandCompositor::surfaceCreated, this, &Server::surfaceCreated);

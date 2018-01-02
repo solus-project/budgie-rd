@@ -32,12 +32,14 @@ namespace Budgie::Compositor
         Q_OBJECT
 
     public:
-        explicit Server();
+        explicit Server(RendererInterface *renderer);
 
         // Allow explicit initialisation from the Manager
         void create() override;
 
     private:
+        RendererInterface *m_renderer;
+
         QWaylandWlShell *m_wl_shell;
         QWaylandXdgShellV5 *m_xdg_shell_v5;
         QList<QSharedPointer<Display>> m_displays;

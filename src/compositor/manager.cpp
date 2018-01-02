@@ -31,14 +31,15 @@ bool Manager::init()
         return false;
     }
 
-    // Go ahead and construct our server
-    m_server.reset(new Compositor::Server());
     return true;
 }
 
 bool Manager::start()
 {
     qDebug() << "TODO: Populate outputs..";
+    // Go ahead and construct our server
+    auto renderer = m_registry->getRenderPlugin(m_rendererID);
+    m_server.reset(new Compositor::Server(renderer.data()));
     m_server->create();
     return true;
 }
