@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     QCoreApplication::setApplicationName("budgie-shell");
     QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
     QGuiApplication::setFallbackSessionManagementEnabled(false);
-    app.setQuitOnLastWindowClosed(false);
+    // app.setQuitOnLastWindowClosed(false);
 
     // Set up parser
     QCommandLineParser p;

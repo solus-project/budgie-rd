@@ -65,6 +65,9 @@ void Server::create()
 
     // Store the display now
     m_displays << QSharedPointer<Display>(display);
+
+    // Get it on screen
+    window->show();
 }
 
 void Server::surfaceCreated(QWaylandSurface *surface)
