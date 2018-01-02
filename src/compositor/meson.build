@@ -73,3 +73,6 @@ compositor = executable(
         dep_qtcore,
     ],
 )
+
+# Move onto plugins now.
+subdir('renderers')
