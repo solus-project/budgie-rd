@@ -12,6 +12,7 @@
 #pragma once
 
 #include <QWaylandCompositor>
+#include <QWaylandSeat>
 #include <QWaylandSurface>
 #include <QWaylandWlShell>
 #include <QWaylandWlShellSurface>
@@ -44,6 +45,7 @@ namespace Budgie::Compositor
         QWaylandWlShell *m_wl_shell;
         QWaylandXdgShellV5 *m_xdg_shell_v5;
         QList<QSharedPointer<Display>> m_displays;
+        QWaylandSeat *m_seat;
 
         QHash<QWaylandSurface *, QSharedPointer<Window>> m_surfaces;
 
@@ -52,6 +54,9 @@ namespace Budgie::Compositor
         void surfaceDestroying(QWaylandSurface *surface);
         void wlShellCreated(QWaylandWlShellSurface *shell);
         void xdgShellv5Created(QWaylandXdgSurfaceV5 *shell);
+        void wlSeatChanged(QWaylandSeat *newSeat, QWaylandSeat *oldSeat);
+
+        void wlCreated();
     };
 }
 /*

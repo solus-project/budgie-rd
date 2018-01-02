@@ -19,7 +19,7 @@ using namespace Budgie::Compositor;
 
 Server::Server(RendererInterface *renderer)
     : m_renderer(renderer), m_wl_shell(new QWaylandWlShell(this)),
-      m_xdg_shell_v5(new QWaylandXdgShellV5(this))
+      m_xdg_shell_v5(new QWaylandXdgShellV5(this)), m_seat(nullptr)
 {
     // Hook up basic compositor signals so we know whats going on when we ::create()
     connect(this, &QWaylandCompositor::surfaceCreated, this, &Server::surfaceCreated);
@@ -31,6 +31,9 @@ Server::Server(RendererInterface *renderer)
             &QWaylandXdgShellV5::xdgSurfaceCreated,
             this,
             &Server::xdgShellv5Created);
+
+    connect(this, &QWaylandCompositor::defaultSeatChanged, this, &Server::wlSeatChanged);
+    connect(this, &QWaylandCompositor::createdChanged, this, &Server::wlCreated);
 }
 
 bool Server::start()
@@ -124,6 +127,30 @@ void Server::wlShellCreated(QWaylandWlShellSurface *shell)
 void Server::xdgShellv5Created(QWaylandXdgSurfaceV5 *shell)
 {
     Q_UNUSED(shell);
+}
+
+/**
+ * We've been created so we need to get ready to show stuff on screen.
+ */
+void Server::wlCreated()
+{
+    if (!isCreated()) {
+        return;
+    }
+    // Enforce some kind of seat knowledge.
+    wlSeatChanged(defaultSeat(), nullptr);
+}
+
+/**
+ * Handle seat changes. In future we'll need to rebind active focus and such
+ * and remove knowledge of the old seat from existing clients. For now, just
+ * stash the pointer.
+ */
+void Server::wlSeatChanged(QWaylandSeat *newSeat, QWaylandSeat *oldSeat)
+{
+    Q_UNUSED(oldSeat);
+    qDebug() << "Seat set to: " << newSeat;
+    m_seat = newSeat;
 }
 
 /*
