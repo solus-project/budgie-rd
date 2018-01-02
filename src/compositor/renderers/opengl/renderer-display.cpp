@@ -10,6 +10,7 @@
  */
 
 #include <QDebug>
+#include <QOpenGLFunctions>
 
 #include "renderer-display.h"
 
@@ -48,10 +49,26 @@ void OpenGLDisplay::initializeGL()
 }
 
 /**
- * TODO: Find all matching views for the known window list and, like, draw them.
+ * Set the ticks and do main draw loop
  */
 void OpenGLDisplay::paintGL()
 {
+    auto wl_output = output();
+    wl_output->frameStarted();
+    render();
+    wl_output->sendFrameCallbacks();
+}
+
+/**
+ * Our main render routine
+ *
+ * TODO: Suck less. Considerably.
+ */
+void OpenGLDisplay::render()
+{
+    auto funcs = context()->functions();
+    funcs->glClearColor(0.3f, 0.5f, 0.8f, 1.0f);
+    funcs->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 /*

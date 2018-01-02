@@ -40,6 +40,8 @@ namespace Budgie::Compositor
         void initializeGL() override;
         void paintGL() override;
 
+        void render();
+
     private slots:
         void currentModeChanged();
     };
