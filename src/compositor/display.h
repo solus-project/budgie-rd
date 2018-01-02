@@ -13,6 +13,7 @@
 
 #include <QScopedPointer>
 #include <QWaylandOutput>
+#include <QWaylandView>
 #include <QWindow>
 
 #include "display-interface.h"
@@ -51,8 +52,11 @@ namespace Budgie::Compositor
         /**
          * Implementations should construct a view for the given window
          * and begin rendering it within their display.
+         *
+         * The View should be returned so that the window manager is free
+         * to set the primary view if necessary.
          */
-        virtual void mapWindow(Window *window) = 0;
+        virtual QWaylandView *mapWindow(Window *window) = 0;
 
         /**
          * Implementations should remove their view (if any) for the given

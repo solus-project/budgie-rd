@@ -85,7 +85,11 @@ void Server::surfaceCreated(QWaylandSurface *surface)
     m_surfaces.insert(surface, QSharedPointer<Compositor::Window>(window));
 
     // Le Hacky Demos
-    m_displays[0]->mapWindow(window);
+    auto view = m_displays[0]->mapWindow(window);
+    if (!view) {
+        return;
+    }
+    view->setPrimary();
 }
 
 /**

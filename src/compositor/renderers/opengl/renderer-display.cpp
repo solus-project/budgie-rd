@@ -25,15 +25,16 @@ OpenGLDisplay::OpenGLDisplay(QWaylandOutput *output) : Display(output, this)
  * A new window is being added to our display, so we'll need to create a view
  * capable of rendering it.
  */
-void OpenGLDisplay::mapWindow(Compositor::Window *window)
+QWaylandView *OpenGLDisplay::mapWindow(Compositor::Window *window)
 {
     if (m_views.contains(window)) {
         qDebug() << "Accounting error: Already know about " << window;
-        return;
+        return nullptr;
     }
     auto view = new OpenGLView(window);
     m_views.insert(window, QSharedPointer<OpenGLView>(view));
     qDebug() << "Mapped:" << view;
+    return view;
 }
 
 /**
