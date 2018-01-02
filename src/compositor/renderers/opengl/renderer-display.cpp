@@ -131,7 +131,7 @@ void OpenGLDisplay::render()
         const QRect targetRect(QPoint(0, 0), window->size());
 
         // Position expected in our screen space
-        const QRect positionRect(window->position(), ourSize);
+        const QRect positionRect(-window->position(), ourSize);
         const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(targetRect, positionRect);
 
         // Draw the texture

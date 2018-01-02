@@ -13,7 +13,7 @@
 
 using namespace Budgie::Compositor;
 
-Window::Window(QWaylandSurface *surface) : m_surface(surface), m_position(0, 0), m_size(0, 0)
+Window::Window(QWaylandSurface *surface) : m_surface(surface), m_position(100, 300), m_size(0, 0)
 {
     // Precache
     m_size = surface->size();
