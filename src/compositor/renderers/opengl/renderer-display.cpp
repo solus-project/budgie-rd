@@ -158,32 +158,32 @@ void OpenGLDisplay::render()
 
 void OpenGLDisplay::mouseMoveEvent(QMouseEvent *e)
 {
-    Q_UNUSED(e);
+    m_input->dispatchMouseEvent(e);
 }
 
 void OpenGLDisplay::mousePressEvent(QMouseEvent *e)
 {
-    Q_UNUSED(e);
+    m_input->dispatchMouseEvent(e);
 }
 
 void OpenGLDisplay::mouseReleaseEvent(QMouseEvent *e)
 {
-    Q_UNUSED(e);
+    m_input->dispatchMouseEvent(e);
 }
 
 void OpenGLDisplay::keyPressEvent(QKeyEvent *e)
 {
-    Q_UNUSED(e);
+    m_input->dispatchKeyEvent(e);
 }
 
 void OpenGLDisplay::keyReleaseEvent(QKeyEvent *e)
 {
-    Q_UNUSED(e);
+    m_input->dispatchKeyEvent(e);
 }
 
 void OpenGLDisplay::touchEvent(QTouchEvent *e)
 {
-    Q_UNUSED(e);
+    m_input->dispatchTouchEvent(e);
 }
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
