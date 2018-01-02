@@ -37,33 +37,19 @@ namespace Budgie
             return QStringLiteral(BudgieWindowInterfaceIID);
         }
 
-        /**
-         * Return the title for the given window
-         */
+        /*
         virtual const QString &title() = 0;
-
-        /**
-         * Return the primary display for this window
-         */
         virtual DisplayInterface *display() = 0;
 
-        /**
-         * Return the currently known geometry for this window.
-         */
         virtual QRect geometry() = 0;
 
     signals:
 
-        /**
-         * The primary display was changed and this window is now considered
-         * to belong to a different display.
-         */
+
         virtual void displayChanged() = 0;
 
-        /**
-         * The geometry of this window has been altered
-         */
         virtual void geometryChanged() = 0;
+        */
     };
 }
 
