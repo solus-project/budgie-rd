@@ -9,22 +9,34 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QDebug>
+#pragma once
 
-#include "renderer-display.h"
-#include "renderer.h"
+#include <QObject>
+#include <QOpenGLWindow>
 
-using namespace Budgie::Compositor;
+#include "display.h"
+#include "window.h"
 
-/**
- * Super simple, just wrap an OpenGLDisplay around the output and return
- * that.
- */
-Display *OpenGLRenderer::createDisplay(QWaylandOutput *output)
+namespace Budgie::Compositor
 {
-    return new OpenGLDisplay(output);
-}
+    /**
+     * Our OpenGLDisplay implements the basic Display type and adds specifics
+     * for handling OpenGL rendering.
+     */
+    class OpenGLDisplay : public QOpenGLWindow, public Display
+    {
+        Q_OBJECT
 
+    public:
+        /**
+         * Construct a new OpenGLDisplay for the given output.
+         */
+        OpenGLDisplay(QWaylandOutput *output);
+
+        void mapWindow(Compositor::Window *window) override;
+        void unmapWindow(Compositor::Window *window) override;
+    };
+}
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

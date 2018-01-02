@@ -39,10 +39,10 @@ void Server::create()
     QWaylandCompositor::create();
 
     // This is where we just fake the hell out of it for now.
-    auto output = new QWaylandOutput();
+    auto output = new QWaylandOutput(this, nullptr);
     QWaylandOutputMode mode(QSize(1024, 768), 60000);
-    output->addMode(mode);
-    output->setCurrentMode(mode);
+    output->setPosition(QPoint(0, 0));
+    output->addMode(mode, true);
 
     // This is code we WOULD use, i.e. construct a display and store it.
     // We'll actually need to add sorting based on the index but in theory

@@ -12,17 +12,21 @@
 #include <QDebug>
 
 #include "renderer-display.h"
-#include "renderer.h"
 
 using namespace Budgie::Compositor;
 
-/**
- * Super simple, just wrap an OpenGLDisplay around the output and return
- * that.
- */
-Display *OpenGLRenderer::createDisplay(QWaylandOutput *output)
+OpenGLDisplay::OpenGLDisplay(QWaylandOutput *output) : Display(output, this)
 {
-    return new OpenGLDisplay(output);
+}
+
+void OpenGLDisplay::mapWindow(Compositor::Window *window)
+{
+    qDebug() << "Mapped:" << window;
+}
+
+void OpenGLDisplay::unmapWindow(Compositor::Window *window)
+{
+    qDebug() << "Unmapped: " << window;
 }
 
 /*
