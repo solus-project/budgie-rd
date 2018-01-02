@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <QScopedPointer>
 #include <QWaylandOutput>
 #include <QWindow>
 
@@ -70,7 +71,7 @@ namespace Budgie::Compositor
         QRect geometry() override;
 
     protected:
-        QWaylandOutput *m_output;
+        QScopedPointer<QWaylandOutput> m_output;
         QWindow *m_window;
     };
 }

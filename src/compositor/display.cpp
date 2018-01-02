@@ -15,11 +15,14 @@ using namespace Budgie::Compositor;
 
 Display::Display(QWaylandOutput *output, QWindow *window) : m_output(output), m_window(window)
 {
+    if (window != nullptr) {
+        output->setWindow(window);
+    }
 }
 
 QWaylandOutput *Display::output()
 {
-    return m_output;
+    return m_output.data();
 }
 
 /**

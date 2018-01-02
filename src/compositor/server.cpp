@@ -9,6 +9,10 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QCoreApplication>
+
+#include "compositor-renderer-interface.h"
+#include "display.h"
 #include "server.h"
 
 using namespace Budgie::Compositor;
@@ -33,6 +37,34 @@ void Server::create()
 {
     // Just pass it back up for now.
     QWaylandCompositor::create();
+
+    // This is where we just fake the hell out of it for now.
+    auto output = new QWaylandOutput();
+    QWaylandOutputMode mode(QSize(1024, 768), 60000);
+    output->addMode(mode);
+    output->setCurrentMode(mode);
+
+    // This is code we WOULD use, i.e. construct a display and store it.
+    // We'll actually need to add sorting based on the index but in theory
+    // we could swap to a map of index->display
+    auto display = m_renderer->createDisplay(output);
+    if (!display) {
+        qWarning() << "Failed to construct a valid display for: " << output;
+        QCoreApplication::quit();
+        return;
+    }
+
+    auto window = display->window();
+    if (window == nullptr) {
+        qWarning() << "Broken Renderer is not returning the Window";
+        QCoreApplication::quit();
+        return;
+    }
+
+    output->setWindow(window);
+
+    // Store the display now
+    m_displays << QSharedPointer<Display>(display);
 }
 
 void Server::surfaceCreated(QWaylandSurface *surface)
