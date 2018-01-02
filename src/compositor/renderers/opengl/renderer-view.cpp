@@ -10,6 +10,7 @@
  */
 
 #include "renderer-view.h"
+#include "window.h"
 
 using namespace Budgie::Compositor;
 
@@ -18,6 +19,11 @@ OpenGLView::OpenGLView(Compositor::Window *window)
 {
     auto surface = m_window->surface();
     setSurface(surface);
+}
+
+Window *OpenGLView::window()
+{
+    return m_window;
 }
 
 /**

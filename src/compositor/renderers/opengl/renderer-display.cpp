@@ -94,7 +94,31 @@ void OpenGLDisplay::render()
 
     m_blitter.bind();
 
+    auto bindID = GL_TEXTURE_2D;
+    auto ourSize = size();
+
     // TODO: Render all textures here now.
+    for (auto view : m_views) {
+        auto texture = view->texture();
+        if (!texture) {
+            continue;
+        }
+        auto origin = view->textureOrigin();
+        if (texture->format() != bindID) {
+            m_blitter.bind(bindID);
+        }
+
+        auto window = view->window();
+        // Rectangle for the whole texture size
+        const QRect targetRect(QPoint(0, 0), window->size());
+
+        // Position expected in our screen space
+        const QRect positionRect(window->position(), ourSize);
+        const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(targetRect, positionRect);
+
+        // Draw the texture
+        m_blitter.blit(texture->textureId(), target, origin);
+    }
 
     m_blitter.release();
 }

@@ -35,6 +35,16 @@ QRect Window::geometry()
     return QRect(m_position, m_size);
 }
 
+QPoint Window::position()
+{
+    return m_position;
+}
+
+QSize Window::size()
+{
+    return m_size;
+}
+
 /**
  * wl_surface changed size, update knowledge of it.
  */

@@ -37,7 +37,9 @@ namespace Budgie
             return QStringLiteral(BudgieWindowInterfaceIID);
         }
 
+        virtual QPoint position() = 0;
         virtual QRect geometry() = 0;
+        virtual QSize size() = 0;
 
         /*
         virtual const QString &title() = 0;

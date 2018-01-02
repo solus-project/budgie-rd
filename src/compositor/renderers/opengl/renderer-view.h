@@ -12,6 +12,7 @@
 #pragma once
 
 #include <QObject>
+#include <QOpenGLTexture>
 #include <QOpenGLTextureBlitter>
 #include <QWaylandView>
 
@@ -27,11 +28,19 @@ namespace Budgie::Compositor
     {
         Q_OBJECT
 
+        friend class OpenGLDisplay;
+
     public:
         /**
          * Construct a new OpenGLView for the given output.
          */
         OpenGLView(Window *window);
+
+    protected:
+        /**
+         * Return the associated Window
+         */
+        Window *window();
 
         /**
          * Retrieve the current texture

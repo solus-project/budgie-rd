@@ -41,7 +41,9 @@ namespace Budgie::Compositor
          */
         QWaylandSurface *surface();
 
+        QPoint position() override;
         QRect geometry() override;
+        QSize size() override;
 
     private slots:
         void sizeChanged();
