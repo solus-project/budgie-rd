@@ -88,6 +88,7 @@ void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
     // When clicking, update focus.
     if (e->buttons() != Qt::NoButton) {
         setMouseFocus(origin, window);
+        setKeyFocus(origin, window);
     }
 
     if (!window) {
