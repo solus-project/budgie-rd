@@ -78,6 +78,13 @@ namespace Budgie::Compositor
         virtual QList<Window *> inputWindows() = 0;
 
         /**
+         * Request that the window is raised in the visual/input hierarchy. It is
+         * possible we'll request raising for an unknown window. Implementations
+         * should silently ignore this.
+         */
+        virtual void raiseWindow(Window *window) = 0;
+
+        /**
          * A Wayland display knows its index in Budgie
          */
         uint index() override;

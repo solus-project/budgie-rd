@@ -257,6 +257,36 @@ void OpenGLDisplay::rebuildPresentables()
     m_inputWindows = input;
 }
 
+/**
+ * Our implementation simply moves the window to the end of its current
+ * rendering layer.
+ *
+ * TODO: Add locking!
+ */
+void OpenGLDisplay::raiseWindow(Budgie::Compositor::Window *window)
+{
+    auto view = this->view(window);
+    if (!view) {
+        return;
+    }
+
+    // No sense doing this for a small list
+    RenderLayer layer = window->layer();
+    if (m_layers[layer].size() < 2) {
+        return;
+    }
+
+    // Find out where we are
+    int position = m_layers[layer].indexOf(window);
+    if (position <= 0) {
+        return;
+    }
+
+    // Move us to the end of the render layer
+    m_layers[layer].move(position, m_layers[layer].size() - 1);
+    rebuildPresentables();
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

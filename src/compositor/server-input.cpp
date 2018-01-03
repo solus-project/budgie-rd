@@ -108,6 +108,9 @@ void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
     if (e->buttons() != Qt::NoButton) {
         setMouseFocus(origin, window);
         setKeyFocus(origin, window);
+        if (origin && window) {
+            origin->raiseWindow(window);
+        }
     }
 
     if (!window) {

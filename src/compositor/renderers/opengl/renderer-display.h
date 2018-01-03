@@ -44,6 +44,8 @@ namespace Budgie::Compositor
 
         QList<Compositor::Window *> inputWindows() override;
 
+        void raiseWindow(Compositor::Window *window) override;
+
     private:
         Compositor::ServerInterface *m_server;
         QHash<Compositor::Window *, QSharedPointer<OpenGLView>> m_views;
