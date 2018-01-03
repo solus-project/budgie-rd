@@ -6,6 +6,7 @@ compositor_includes = [
 
 libcompositor_mocs = qt5.preprocess(
     moc_headers: [
+        'compositor-common.h',
         'window.h',
     ],
     include_directories: interface_include_directories,
