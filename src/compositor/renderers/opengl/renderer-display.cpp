@@ -171,6 +171,9 @@ void OpenGLDisplay::render()
 
     // Render all textures here now.
     for (auto renderable : m_renderables) {
+        if (!renderable->renderable()) {
+            continue;
+        };
         auto view = m_views.value(renderable, nullptr);
         if (!view) {
             continue;
