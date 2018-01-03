@@ -17,7 +17,7 @@ using namespace Budgie::Compositor;
 
 SurfaceItem::SurfaceItem(QWaylandSurface *surface)
     : m_surface(surface), m_position(100, 150), m_size(0, 0), m_layer(RenderLayer::APPLICATION),
-      m_renderable(false)
+      m_roleConfirmed(false), m_renderable(false)
 {
     // Precache
     m_size = surface->size();
@@ -86,11 +86,22 @@ void SurfaceItem::sizeChanged()
 void SurfaceItem::hasContentChanged()
 {
     m_renderable = m_surface->hasContent();
+    if (!m_renderable) {
+        return;
+    }
+    if (m_roleConfirmed) {
+        qDebug() << "Should not be setting roles again! Suggest killing client";
+        return;
+    }
+    m_roleConfirmed = true;
 
     // Adjust our layer if we determine we're a cursor.
     if (cursor()) {
         setLayer(RenderLayer::CURSOR);
     }
+
+    // Let compositor know we're ready for prime time
+    emit roleConfirmed();
 }
 
 /*

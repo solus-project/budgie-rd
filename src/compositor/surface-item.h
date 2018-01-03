@@ -61,6 +61,14 @@ namespace Budgie::Compositor
         QRect geometry();
         QSize size();
 
+    signals:
+
+        /*
+         * Emitted so the compositor can finally get us drawn on screen, after
+         * our initial allocation of views.
+         */
+        void roleConfirmed();
+
     protected:
         /**
          * Used by the server to assign our new layer
@@ -76,6 +84,7 @@ namespace Budgie::Compositor
         QPoint m_position;
         QSize m_size;
         RenderLayer m_layer;
+        bool m_roleConfirmed;
         bool m_renderable;
     };
 }
