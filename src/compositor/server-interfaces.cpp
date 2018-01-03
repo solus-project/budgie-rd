@@ -69,14 +69,33 @@ void Server::surfaceDestroying(QWaylandSurface *surface)
     m_surfaces.remove(surface);
 }
 
+/**
+ * A new wl_shell window has been constructed.
+ * At this point we will associate it with a WaylandWindow and make it
+ * a candidate for rendering.
+ */
 void Server::wlShellCreated(QWaylandWlShellSurface *shell)
 {
-    Q_UNUSED(shell);
+    auto surface = m_surfaces.value(shell->surface(), nullptr);
+    if (!surface) {
+        qWarning() << "Shell surface for unknown client. Recommend you kill!";
+        return;
+    }
+    promoteWindow(WaylandWindow::create(surface.data(), shell));
 }
 
+/**
+ * New xdg surface has been constructed, do the same thing as we'd do
+ * for a normal wl_shell window.
+ */
 void Server::xdgShellv5Created(QWaylandXdgSurfaceV5 *shell)
 {
-    Q_UNUSED(shell);
+    auto surface = m_surfaces.value(shell->surface(), nullptr);
+    if (!surface) {
+        qWarning() << "XDG surface for unknown client. Recommend you kill!";
+        return;
+    }
+    promoteWindow(WaylandWindow::create(surface.data(), shell));
 }
 
 /**

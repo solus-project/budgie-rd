@@ -79,6 +79,17 @@ bool Server::start()
     return true;
 }
 
+/**
+ * The interfaces have encountered a case where a window is now required,
+ * so stash the window.
+ */
+void Server::promoteWindow(WaylandWindow *window)
+{
+    qDebug() << "Found Window: " << window;
+    qDebug() << "Doing nothing, sorry!";
+    delete window;
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

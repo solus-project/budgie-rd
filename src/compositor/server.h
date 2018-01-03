@@ -22,6 +22,7 @@
 #include "compositor-server-interface.h"
 #include "display.h"
 #include "surface-item.h"
+#include "windows/wayland-window.h"
 
 namespace Budgie::Compositor
 {
@@ -61,9 +62,11 @@ namespace Budgie::Compositor
         /* Current focus */
         SurfaceItem *m_keyFocus;
         SurfaceItem *m_mouseFocus;
+        QPoint m_mouseLast;
 
         SurfaceItem *findFocusableSurface(Display *origin, QPoint position);
-        QPoint m_mouseLast;
+
+        void promoteWindow(WaylandWindow *window);
 
     private slots:
         void surfaceCreated(QWaylandSurface *surface);
