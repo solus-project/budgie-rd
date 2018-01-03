@@ -40,13 +40,16 @@ namespace Budgie::Compositor
         // Allow explicit initialisation from the Manager
         bool start();
 
-        // Implement InputInterface
+        // Implement input portion of ServerInterface
         void setMouseFocus(Display *origin, Window *w) override;
         void setKeyFocus(Display *origin, Window *w) override;
         void dispatchMouseEvent(Display *origin, QMouseEvent *e) override;
         void dispatchTouchEvent(Display *origin, QTouchEvent *e) override;
         void dispatchKeyEvent(Display *origin, QKeyEvent *e) override;
         void dispatchWheelEvent(Display *origin, QWheelEvent *e) override;
+
+        /* Helper API for our renderer plugins */
+        QList<Window *> getRenderables(Display *origin) override;
 
     private:
         RendererInterface *m_renderer;

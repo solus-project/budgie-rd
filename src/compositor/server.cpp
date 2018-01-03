@@ -166,6 +166,18 @@ void Server::wlSeatChanged(QWaylandSeat *newSeat, QWaylandSeat *oldSeat)
     m_seat = newSeat;
 }
 
+/**
+ * We return a shallow copy pointer reference to our known windows that should
+ * appear on the given display to help the renderers know about rendering order.
+ */
+QList<Budgie::Compositor::Window *> Server::getRenderables(Compositor::Display *origin)
+{
+    QList<Window *> ret;
+
+    // TODO: Build a list from our known renderables
+    return ret;
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *
