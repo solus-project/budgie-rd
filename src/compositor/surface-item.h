@@ -70,7 +70,6 @@ namespace Budgie::Compositor
     private slots:
         void sizeChanged();
         void hasContentChanged();
-        void cursorSurfaceChanged();
 
     private:
         QWaylandSurface *m_surface;

@@ -27,11 +27,6 @@ SurfaceItem::SurfaceItem(QWaylandSurface *surface)
 
     // Effectively, role change, ready to do something.
     connect(surface, &QWaylandSurface::hasContentChanged, this, &SurfaceItem::hasContentChanged);
-
-    /* Qt 5.10....
-    connect(surface, &QWaylandSurface::cursorSurfaceChanged, this,
-    &SurfaceItem::cursorSurfaceChanged);
-    */
 }
 
 QWaylandSurface *SurfaceItem::surface()
@@ -90,17 +85,7 @@ void SurfaceItem::sizeChanged()
  */
 void SurfaceItem::hasContentChanged()
 {
-    m_renderable = true;
-
-    qDebug() << "Cursor? " << cursor();
-}
-
-/**
- * Cursor role changed, so we're now a renderable cursor.
- */
-void SurfaceItem::cursorSurfaceChanged()
-{
-    m_renderable = true;
+    m_renderable = m_surface->hasContent();
 }
 
 /*
