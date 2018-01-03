@@ -14,7 +14,7 @@
 #include <QOpenGLFunctions>
 
 #include "renderer-display.h"
-#include "window.h"
+#include "surface-item.h"
 
 using namespace Budgie::Compositor;
 
@@ -32,23 +32,23 @@ OpenGLDisplay::~OpenGLDisplay()
 }
 
 /**
- * A new window is being added to our display, so we'll need to create a view
+ * A new item is being added to our display, so we'll need to create a view
  * capable of rendering it.
  */
-QWaylandView *OpenGLDisplay::mapWindow(Compositor::Window *window)
+QWaylandView *OpenGLDisplay::mapSurfaceItem(Compositor::SurfaceItem *item)
 {
     std::lock_guard<std::mutex> lock(m_viewLock);
 
-    if (m_views.contains(window)) {
-        qDebug() << "Accounting error: Already know about " << window;
+    if (m_views.contains(item)) {
+        qDebug() << "Accounting error: Already know about " << item;
         return nullptr;
     }
-    auto view = new OpenGLView(this, window);
-    m_views.insert(window, QSharedPointer<OpenGLView>(view));
+    auto view = new OpenGLView(this, item);
+    m_views.insert(item, QSharedPointer<OpenGLView>(view));
     qDebug() << "Mapped:" << view;
 
     // Rebuild our input layers and such
-    presentWindow(window);
+    presentSurfaceItem(item);
     rebuildPresentables();
 
     // Time to redraw
@@ -57,60 +57,60 @@ QWaylandView *OpenGLDisplay::mapWindow(Compositor::Window *window)
 }
 
 /**
- * Push a window into the presentation layer
+ * Push a item into the presentation layer
  */
-void OpenGLDisplay::presentWindow(Compositor::Window *window)
+void OpenGLDisplay::presentSurfaceItem(Compositor::SurfaceItem *item)
 {
     std::lock_guard<std::mutex> lock(m_listLock);
 
-    m_layers[window->layer()] << window;
+    m_layers[item->layer()] << item;
 }
 
 /**
- * Remove the window from all presentation layers
+ * Remove the item from all presentation layers
  */
-void OpenGLDisplay::unpresentWindow(Compositor::Window *window)
+void OpenGLDisplay::unpresentSurfaceItem(Compositor::SurfaceItem *item)
 {
     std::lock_guard<std::mutex> lock(m_listLock);
 
     // Remove from input + rendering
-    m_renderables.removeAll(window);
-    m_inputWindows.removeAll(window);
-    m_layers[window->layer()].removeAll(window);
+    m_renderables.removeAll(item);
+    m_inputSurfaceItems.removeAll(item);
+    m_layers[item->layer()].removeAll(item);
 }
 
 /**
- * A window has been removed from our display, so we need to remove the corresponding
+ * A item has been removed from our display, so we need to remove the corresponding
  * View for it.
  */
-void OpenGLDisplay::unmapWindow(Compositor::Window *window)
+void OpenGLDisplay::unmapSurfaceItem(Compositor::SurfaceItem *item)
 {
     std::lock_guard<std::mutex> lock(m_viewLock);
 
-    auto view = m_views.value(window, nullptr);
+    auto view = m_views.value(item, nullptr);
     if (!view) {
-        qDebug() << "Accounting error, unknown window: " << window;
+        qDebug() << "Accounting error, unknown item: " << item;
         return;
     }
 
-    unpresentWindow(window);
+    unpresentSurfaceItem(item);
 
     qDebug() << "Unmapped: " << view.data();
-    m_views.remove(window);
+    m_views.remove(item);
 
     // Time to redraw
     requestUpdate();
 }
 
 /**
- * Grab the appropriate view for the given window.
+ * Grab the appropriate view for the given item.
  *
  * This is used by the compositor to find the display specific output for
  * any surface.
  */
-QWaylandView *OpenGLDisplay::view(Compositor::Window *window)
+QWaylandView *OpenGLDisplay::view(Compositor::SurfaceItem *item)
 {
-    auto view = m_views.value(window, nullptr);
+    auto view = m_views.value(item, nullptr);
     if (!view) {
         return nullptr;
     }
@@ -184,14 +184,14 @@ void OpenGLDisplay::render()
             m_blitter.bind(bindID);
         }
 
-        auto window = view->window();
-        auto surface = window->surface();
+        auto item = view->item();
+        auto surface = item->surface();
 
         // Rectangle for the whole texture size
-        const QRect targetRect(QPoint(0, 0), window->size());
+        const QRect targetRect(QPoint(0, 0), item->size());
 
         // Position expected in our screen space
-        const QRect positionRect(-window->position(), ourSize);
+        const QRect positionRect(-item->position(), ourSize);
         const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(targetRect, positionRect);
 
         // Draw the texture
@@ -206,7 +206,7 @@ void OpenGLDisplay::render()
 }
 
 /*
- * Hook up window functions so that we emit signals for the compositor to
+ * Hook up item functions so that we emit signals for the compositor to
  * hook up, this way we centralise the real input management within the
  * compositor and not the renderers.
  */
@@ -247,19 +247,19 @@ void OpenGLDisplay::wheelEvent(QWheelEvent *e)
 }
 
 /**
- * Return pointers to windows that we have mapped and care about input.
+ * Return pointers to items that we have mapped and care about input.
  */
-QList<Budgie::Compositor::Window *> OpenGLDisplay::inputWindows()
+QList<Budgie::Compositor::SurfaceItem *> OpenGLDisplay::inputSurfaceItems()
 {
-    return m_inputWindows;
+    return m_inputSurfaceItems;
 }
 
 void OpenGLDisplay::rebuildPresentables()
 {
     std::lock_guard<std::mutex> lock(m_listLock);
 
-    QList<Budgie::Compositor::Window *> drawables;
-    QList<Budgie::Compositor::Window *> input;
+    QList<Budgie::Compositor::SurfaceItem *> drawables;
+    QList<Budgie::Compositor::SurfaceItem *> input;
 
     static int minLayer = static_cast<int>(Compositor::MinLayer);
     static int maxLayer = static_cast<int>(Compositor::MaxLayer);
@@ -268,8 +268,8 @@ void OpenGLDisplay::rebuildPresentables()
     for (int i = minLayer; i < maxLayer; i++) {
         RenderLayer layer = static_cast<RenderLayer>(i);
 
-        for (auto window : m_layers[layer]) {
-            drawables << window;
+        for (auto item : m_layers[layer]) {
+            drawables << item;
         }
     }
 
@@ -280,15 +280,15 @@ void OpenGLDisplay::rebuildPresentables()
     }
 
     m_renderables = drawables;
-    m_inputWindows = input;
+    m_inputSurfaceItems = input;
 }
 
-void OpenGLDisplay::moveWindowToIndex(Budgie::Compositor::Window *window, int index)
+void OpenGLDisplay::moveSurfaceItemToIndex(Budgie::Compositor::SurfaceItem *item, int index)
 {
     std::lock_guard<std::mutex> lock(m_listLock);
 
     // No sense doing this for a small list
-    RenderLayer layer = window->layer();
+    RenderLayer layer = item->layer();
     int size = m_layers[layer].size();
 
     if (size < 2) {
@@ -296,7 +296,7 @@ void OpenGLDisplay::moveWindowToIndex(Budgie::Compositor::Window *window, int in
     }
 
     // Find out where we are
-    int position = m_layers[layer].indexOf(window);
+    int position = m_layers[layer].indexOf(item);
     if (position <= 0) {
         return;
     }
@@ -308,12 +308,12 @@ void OpenGLDisplay::moveWindowToIndex(Budgie::Compositor::Window *window, int in
     m_layers[layer].move(position, index);
 }
 /**
- * Our implementation simply moves the window to the end of its current
+ * Our implementation simply moves the item to the end of its current
  * rendering layer.
  */
-void OpenGLDisplay::raiseWindow(Budgie::Compositor::Window *window)
+void OpenGLDisplay::raiseSurfaceItem(Budgie::Compositor::SurfaceItem *item)
 {
-    moveWindowToIndex(window, -1);
+    moveSurfaceItemToIndex(item, -1);
     rebuildPresentables();
     requestUpdate();
 }

@@ -16,7 +16,7 @@
 #include <QOpenGLTextureBlitter>
 #include <QWaylandView>
 
-#include "window.h"
+#include "surface-item.h"
 
 namespace Budgie::Compositor
 {
@@ -36,13 +36,13 @@ namespace Budgie::Compositor
         /**
          * Construct a new OpenGLView for the given output.
          */
-        OpenGLView(OpenGLDisplay *display, Window *window);
+        OpenGLView(OpenGLDisplay *display, SurfaceItem *item);
 
     protected:
         /**
-         * Return the associated Window
+         * Return the associated SurfaceItem
          */
-        Window *window();
+        SurfaceItem *item();
 
         /**
          * Retrieve the current texture
@@ -59,7 +59,7 @@ namespace Budgie::Compositor
 
     private:
         OpenGLDisplay *m_display;
-        Window *m_window;
+        SurfaceItem *m_item;
         QOpenGLTexture *m_texture;
         QOpenGLTextureBlitter::Origin m_textureOrigin;
     };

@@ -11,23 +11,23 @@
 
 #include "renderer-view.h"
 #include "renderer-display.h"
-#include "window.h"
+#include "surface-item.h"
 
 using namespace Budgie::Compositor;
 
-OpenGLView::OpenGLView(OpenGLDisplay *display, Compositor::Window *window)
-    : m_display(display), m_window(window), m_texture(nullptr),
+OpenGLView::OpenGLView(OpenGLDisplay *display, Compositor::SurfaceItem *item)
+    : m_display(display), m_item(item), m_texture(nullptr),
       m_textureOrigin(QOpenGLTextureBlitter::OriginBottomLeft)
 {
-    auto surface = m_window->surface();
+    auto surface = m_item->surface();
     setSurface(surface);
 
     connect(surface, &QWaylandSurface::redraw, this, &OpenGLView::surfaceRedraw);
 }
 
-Window *OpenGLView::window()
+SurfaceItem *OpenGLView::item()
 {
-    return m_window;
+    return m_item;
 }
 
 /**

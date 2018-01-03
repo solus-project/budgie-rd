@@ -15,16 +15,16 @@
 #include <QWaylandSurface>
 
 #include "compositor-common.h"
-#include "window-interface.h"
 
 namespace Budgie::Compositor
 {
     /**
-     * Each display is a Wayland specific display implementation of the
-     * DisplayInterface, and needs further extending by the primary
-     * Renderer.
+     * Wrap each QWaylandSurface into a tree structure for rendering and
+     * input matching.
+     *
+     * A SurfaceItem may have child nodes which are always subsurfaces.
      */
-    class Window : public QObject, public WindowInterface
+    class SurfaceItem : public QObject
     {
         Q_OBJECT
 
@@ -32,9 +32,9 @@ namespace Budgie::Compositor
 
     protected:
         /**
-         * Construct a new Window object for the given Wayland surface
+         * Construct a new SurfaceItem object for the given Wayland surface
          */
-        Window(QWaylandSurface *surface);
+        SurfaceItem(QWaylandSurface *surface);
 
     public:
         /**
@@ -47,9 +47,9 @@ namespace Budgie::Compositor
          */
         RenderLayer layer();
 
-        QPoint position() override;
-        QRect geometry() override;
-        QSize size() override;
+        QPoint position();
+        QRect geometry();
+        QSize size();
 
     protected:
         /**

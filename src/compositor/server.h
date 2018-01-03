@@ -21,7 +21,7 @@
 
 #include "compositor-server-interface.h"
 #include "display.h"
-#include "window.h"
+#include "surface-item.h"
 
 namespace Budgie::Compositor
 {
@@ -41,8 +41,8 @@ namespace Budgie::Compositor
         bool start();
 
         // Implement input portion of ServerInterface
-        void setMouseFocus(Display *origin, Window *w) override;
-        void setKeyFocus(Display *origin, Window *w) override;
+        void setMouseFocus(Display *origin, SurfaceItem *w) override;
+        void setKeyFocus(Display *origin, SurfaceItem *w) override;
         void dispatchMouseEvent(Display *origin, QMouseEvent *e) override;
         void dispatchTouchEvent(Display *origin, QTouchEvent *e) override;
         void dispatchKeyEvent(Display *origin, QKeyEvent *e) override;
@@ -56,13 +56,13 @@ namespace Budgie::Compositor
         QList<QSharedPointer<Display>> m_displays;
         QWaylandSeat *m_seat;
 
-        QHash<QWaylandSurface *, QSharedPointer<Window>> m_surfaces;
+        QHash<QWaylandSurface *, QSharedPointer<SurfaceItem>> m_surfaces;
 
         /* Current focus */
-        Window *m_keyFocus;
-        Window *m_mouseFocus;
+        SurfaceItem *m_keyFocus;
+        SurfaceItem *m_mouseFocus;
 
-        Window *findFocusableSurface(Display *origin, QPoint position);
+        SurfaceItem *findFocusableSurface(Display *origin, QPoint position);
         QPoint m_mouseLast;
 
     private slots:

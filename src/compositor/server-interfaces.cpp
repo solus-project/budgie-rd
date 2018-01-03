@@ -20,17 +20,17 @@ void Server::surfaceCreated(QWaylandSurface *surface)
         return;
     }
 
-    auto window = new Compositor::Window(surface);
-    qDebug() << "Added surface:" << window;
+    auto item = new Compositor::SurfaceItem(surface);
+    qDebug() << "Added surface:" << item;
 
     // TODO: Decide which output we wanna put this guy on and map it there.
-    m_surfaces.insert(surface, QSharedPointer<Compositor::Window>(window));
+    m_surfaces.insert(surface, QSharedPointer<Compositor::SurfaceItem>(item));
 
     // TODO: Only allocate when we really need this..
-    window->setLayer(RenderLayer::APPLICATION);
+    item->setLayer(RenderLayer::APPLICATION);
 
     // Le Hacky Demos
-    auto view = m_displays[0]->mapWindow(window);
+    auto view = m_displays[0]->mapSurfaceItem(item);
     if (!view) {
         return;
     }
@@ -44,25 +44,25 @@ void Server::surfaceCreated(QWaylandSurface *surface)
  */
 void Server::surfaceDestroying(QWaylandSurface *surface)
 {
-    auto window = m_surfaces.value(surface, nullptr);
-    if (!window) {
+    auto item = m_surfaces.value(surface, nullptr);
+    if (!item) {
         qWarning() << "Accounting error: Don't know about " << surface;
         return;
     }
 
-    // Remove window from all displays
+    // Remove item from all displays
     for (auto &display : m_displays) {
         // TODO: If the display contains then unmap
-        display->unmapWindow(window.data());
+        display->unmapSurfaceItem(item.data());
     }
 
-    qDebug() << "Removed surface:" << window.data();
+    qDebug() << "Removed surface:" << item.data();
 
     // TODO: Cycle focus to the next available candidate instead.
-    if (window.data() == m_keyFocus) {
+    if (item.data() == m_keyFocus) {
         setKeyFocus(nullptr, nullptr);
     }
-    if (window.data() == m_mouseFocus) {
+    if (item.data() == m_mouseFocus) {
         setMouseFocus(nullptr, nullptr);
     }
 

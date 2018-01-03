@@ -63,7 +63,7 @@ bool Server::start()
 
     auto window = display->window();
     if (window == nullptr) {
-        qWarning() << "Broken Renderer is not returning the Window";
+        qWarning() << "Broken Renderer is not returning the SurfaceItem";
         return false;
     }
 

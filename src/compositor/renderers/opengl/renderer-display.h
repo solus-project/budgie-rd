@@ -17,7 +17,7 @@
 #include <mutex>
 
 #include "display.h"
-#include "window.h"
+#include "surface-item.h"
 
 #include "compositor-server-interface.h"
 #include "renderer-view.h"
@@ -39,23 +39,23 @@ namespace Budgie::Compositor
         OpenGLDisplay(Compositor::ServerInterface *server, QWaylandOutput *output);
         ~OpenGLDisplay();
 
-        QWaylandView *mapWindow(Compositor::Window *window) override;
-        void unmapWindow(Compositor::Window *window) override;
-        QWaylandView *view(Compositor::Window *window) override;
+        QWaylandView *mapSurfaceItem(Compositor::SurfaceItem *item) override;
+        void unmapSurfaceItem(Compositor::SurfaceItem *item) override;
+        QWaylandView *view(Compositor::SurfaceItem *item) override;
 
-        QList<Compositor::Window *> inputWindows() override;
+        QList<Compositor::SurfaceItem *> inputSurfaceItems() override;
 
-        void raiseWindow(Compositor::Window *window) override;
+        void raiseSurfaceItem(Compositor::SurfaceItem *item) override;
 
     private:
         Compositor::ServerInterface *m_server;
-        QHash<Compositor::Window *, QSharedPointer<OpenGLView>> m_views;
+        QHash<Compositor::SurfaceItem *, QSharedPointer<OpenGLView>> m_views;
         QOpenGLTextureBlitter m_blitter;
 
-        QHash<RenderLayer, QList<Compositor::Window *>> m_layers;
+        QHash<RenderLayer, QList<Compositor::SurfaceItem *>> m_layers;
 
-        QList<Compositor::Window *> m_renderables;
-        QList<Compositor::Window *> m_inputWindows;
+        QList<Compositor::SurfaceItem *> m_renderables;
+        QList<Compositor::SurfaceItem *> m_inputSurfaceItems;
 
         std::mutex m_listLock;
         std::mutex m_viewLock;
@@ -64,9 +64,9 @@ namespace Budgie::Compositor
         void paintGL() override;
         void render();
 
-        void moveWindowToIndex(Compositor::Window *window, int index = -1);
-        void presentWindow(Compositor::Window *window);
-        void unpresentWindow(Compositor::Window *window);
+        void moveSurfaceItemToIndex(Compositor::SurfaceItem *item, int index = -1);
+        void presentSurfaceItem(Compositor::SurfaceItem *item);
+        void unpresentSurfaceItem(Compositor::SurfaceItem *item);
         void rebuildPresentables();
 
     protected:

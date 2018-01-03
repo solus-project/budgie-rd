@@ -18,7 +18,7 @@
 #include <QWindow>
 
 #include "display-interface.h"
-#include "window.h"
+#include "surface-item.h"
 
 namespace Budgie::Compositor
 {
@@ -51,38 +51,38 @@ namespace Budgie::Compositor
         QWaylandOutput *output();
 
         /**
-         * Implementations should construct a view for the given window
+         * Implementations should construct a view for the given item
          * and begin rendering it within their display.
          *
          * The View should be returned so that the window manager is free
          * to set the primary view if necessary.
          */
-        virtual QWaylandView *mapWindow(Window *window) = 0;
+        virtual QWaylandView *mapSurfaceItem(SurfaceItem *item) = 0;
 
         /**
-         * Return the view that has been allocated for the given window instance.
+         * Return the view that has been allocated for the given item instance.
          * It is safe to return nullptr.
          */
-        virtual QWaylandView *view(Window *window) = 0;
+        virtual QWaylandView *view(SurfaceItem *item) = 0;
 
         /**
          * Implementations should remove their view (if any) for the given
-         * window so that it no longer renders on their display.
+         * item so that it no longer renders on their display.
          */
-        virtual void unmapWindow(Window *window) = 0;
+        virtual void unmapSurfaceItem(SurfaceItem *item) = 0;
 
         /**
          * Implementations should override this to return their list of
-         * candidate windows which are eligible for input region matching.
+         * candidate items which are eligible for input region matching.
          */
-        virtual QList<Window *> inputWindows() = 0;
+        virtual QList<SurfaceItem *> inputSurfaceItems() = 0;
 
         /**
-         * Request that the window is raised in the visual/input hierarchy. It is
-         * possible we'll request raising for an unknown window. Implementations
+         * Request that the item is raised in the visual/input hierarchy. It is
+         * possible we'll request raising for an unknown item. Implementations
          * should silently ignore this.
          */
-        virtual void raiseWindow(Window *window) = 0;
+        virtual void raiseSurfaceItem(SurfaceItem *item) = 0;
 
         /**
          * A Wayland display knows its index in Budgie

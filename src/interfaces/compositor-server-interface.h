@@ -20,7 +20,7 @@
 
 #include "base-interface.h"
 #include "display.h"
-#include "window.h"
+#include "surface-item.h"
 
 #define BudgieCompositorServerInterfaceIID "org.budgie-desktop.CompositorServerInterface"
 
@@ -46,11 +46,11 @@ namespace Budgie::Compositor
             return QStringLiteral(BudgieCompositorServerInterfaceIID);
         }
 
-        /* Set the current window to have mouse focus */
-        virtual void setMouseFocus(Display *origin, Window *window) = 0;
+        /* Set the current item to have mouse focus */
+        virtual void setMouseFocus(Display *origin, SurfaceItem *item) = 0;
 
-        /* Set this window to have key focus */
-        virtual void setKeyFocus(Display *origin, Window *window) = 0;
+        /* Set this item to have key focus */
+        virtual void setKeyFocus(Display *origin, SurfaceItem *item) = 0;
 
         /* Send a mouse event for the given display */
         virtual void dispatchMouseEvent(Display *origin, QMouseEvent *e) = 0;
@@ -61,7 +61,7 @@ namespace Budgie::Compositor
         /* Send a key event for the given display */
         virtual void dispatchKeyEvent(Display *origin, QKeyEvent *e) = 0;
 
-        /* Send a wheel event to the currently focused window */
+        /* Send a wheel event to the currently focused item */
         virtual void dispatchWheelEvent(Display *origin, QWheelEvent *e) = 0;
     };
 }

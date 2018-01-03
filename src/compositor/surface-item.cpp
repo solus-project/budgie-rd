@@ -9,31 +9,31 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include "window.h"
+#include "surface-item.h"
 
 using namespace Budgie::Compositor;
 
-Window::Window(QWaylandSurface *surface)
+SurfaceItem::SurfaceItem(QWaylandSurface *surface)
     : m_surface(surface), m_position(100, 150), m_size(0, 0), m_layer(RenderLayer::APPLICATION)
 {
     // Precache
     m_size = surface->size();
 
     // Hook up signals
-    connect(surface, &QWaylandSurface::sizeChanged, this, &Window::sizeChanged);
+    connect(surface, &QWaylandSurface::sizeChanged, this, &SurfaceItem::sizeChanged);
 }
 
-QWaylandSurface *Window::surface()
+QWaylandSurface *SurfaceItem::surface()
 {
     return m_surface;
 }
 
-RenderLayer Window::layer()
+RenderLayer SurfaceItem::layer()
 {
     return m_layer;
 }
 
-void Window::setLayer(RenderLayer layer)
+void SurfaceItem::setLayer(RenderLayer layer)
 {
     m_layer = layer;
 }
@@ -41,17 +41,17 @@ void Window::setLayer(RenderLayer layer)
 /**
  * Return the full geometry.
  */
-QRect Window::geometry()
+QRect SurfaceItem::geometry()
 {
     return QRect(m_position, m_size);
 }
 
-QPoint Window::position()
+QPoint SurfaceItem::position()
 {
     return m_position;
 }
 
-QSize Window::size()
+QSize SurfaceItem::size()
 {
     return m_size;
 }
@@ -59,7 +59,7 @@ QSize Window::size()
 /**
  * wl_surface changed size, update knowledge of it.
  */
-void Window::sizeChanged()
+void SurfaceItem::sizeChanged()
 {
     m_size = m_surface->size();
 }
