@@ -33,8 +33,8 @@ namespace Budgie
     namespace Compositor
     {
         class Display;
-        class InputInterface;
         class RendererInterface;
+        class ServerInterface;
     }
 
     /**

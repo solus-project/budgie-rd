@@ -16,18 +16,13 @@
 
 using namespace Budgie::Compositor;
 
-void OpenGLRenderer::init(Compositor::InputInterface *input)
-{
-    m_input = input;
-}
-
 /**
  * Super simple, just wrap an OpenGLDisplay around the output and return
  * that.
  */
-Display *OpenGLRenderer::createDisplay(QWaylandOutput *output)
+Display *OpenGLRenderer::createDisplay(Compositor::ServerInterface *server, QWaylandOutput *output)
 {
-    return new OpenGLDisplay(m_input, output);
+    return new OpenGLDisplay(server, output);
 }
 
 /*

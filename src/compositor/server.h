@@ -19,7 +19,7 @@
 #include <QWaylandXdgShellV5>
 #include <QWaylandXdgSurfaceV5>
 
-#include "compositor-input-interface.h"
+#include "compositor-server-interface.h"
 #include "display.h"
 #include "window.h"
 
@@ -30,7 +30,7 @@ namespace Budgie::Compositor
      * the display(s) in a desktop-like fashion. Additionally it will access
      * the rendering plugin from the Manager to provide visual output.
      */
-    class Server : public QWaylandCompositor, public InputInterface
+    class Server : public QWaylandCompositor, public ServerInterface
     {
         Q_OBJECT
 

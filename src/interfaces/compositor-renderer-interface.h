@@ -14,7 +14,7 @@
 #include <QObject>
 
 #include "base-interface.h"
-#include "compositor-input-interface.h"
+#include "compositor-server-interface.h"
 #include "display.h"
 
 #define BudgieCompositorRendererInterfaceIID "org.budgie-desktop.CompositorRendererInterface"
@@ -42,13 +42,6 @@ namespace Budgie::Compositor
         }
 
         /**
-         * Initialise the Renderer with the given input interface
-         * Implementations should request the input interface dispatches
-         * the events.
-         */
-        virtual void init(Compositor::InputInterface *input) = 0;
-
-        /**
          * Construct a new DisplayInterface for the given Wayland output.
          * The process will terminate if it is not possible to construct
          * a display here.
@@ -56,7 +49,8 @@ namespace Budgie::Compositor
          * Note this API is specialist to the Compositor and requires end
          * users to link against libbudgie-compositor-shared.
          */
-        virtual Display *createDisplay(QWaylandOutput *output) = 0;
+        virtual Display *createDisplay(Compositor::ServerInterface *server,
+                                       QWaylandOutput *output) = 0;
     };
 }
 

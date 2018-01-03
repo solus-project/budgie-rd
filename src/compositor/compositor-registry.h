@@ -13,8 +13,8 @@
 
 #include <QSharedPointer>
 
-#include "compositor-input-interface.h"
 #include "compositor-renderer-interface.h"
+#include "compositor-server-interface.h"
 #include "display.h"
 #include "registry.h"
 

@@ -21,28 +21,28 @@
 #include "display.h"
 #include "window.h"
 
-#define BudgieCompositorInputInterfaceIID "org.budgie-desktop.CompositorInputInterface"
+#define BudgieCompositorServerInterfaceIID "org.budgie-desktop.CompositorServerInterface"
 
 namespace Budgie::Compositor
 {
     /**
-     * The CompositorInputInterface is specific to the Compositor implementation,
+     * The CompositorServerInterface is specific to the Compositor implementation,
      * and is used by plugins to provide specialist capabilities, such as OpenGL
      * rendering of the compositor.
      *
      * The compositor process will only have a single active renderer provider
      * at any given time, and will not provide any kind of hotswap capabilities.
      */
-    class InputInterface : public BaseInterface
+    class ServerInterface : public BaseInterface
     {
     public:
-        virtual ~InputInterface()
+        virtual ~ServerInterface()
         {
         }
 
         inline const QString interfaceName() override
         {
-            return QStringLiteral(BudgieCompositorInputInterfaceIID);
+            return QStringLiteral(BudgieCompositorServerInterfaceIID);
         }
 
         /* Set the current window to have mouse focus */
@@ -65,7 +65,7 @@ namespace Budgie::Compositor
     };
 }
 
-Q_DECLARE_INTERFACE(Budgie::Compositor::InputInterface, BudgieCompositorInputInterfaceIID)
+Q_DECLARE_INTERFACE(Budgie::Compositor::ServerInterface, BudgieCompositorServerInterfaceIID)
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

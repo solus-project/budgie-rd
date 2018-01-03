@@ -18,7 +18,7 @@
 #include "display.h"
 #include "window.h"
 
-#include "compositor-input-interface.h"
+#include "compositor-server-interface.h"
 #include "renderer-view.h"
 
 namespace Budgie::Compositor
@@ -35,7 +35,7 @@ namespace Budgie::Compositor
         /**
          * Construct a new OpenGLDisplay for the given output.
          */
-        OpenGLDisplay(Compositor::InputInterface *input, QWaylandOutput *output);
+        OpenGLDisplay(Compositor::ServerInterface *server, QWaylandOutput *output);
         ~OpenGLDisplay();
 
         QWaylandView *mapWindow(Compositor::Window *window) override;
@@ -45,7 +45,7 @@ namespace Budgie::Compositor
         QList<Compositor::Window *> inputWindows() override;
 
     private:
-        Compositor::InputInterface *m_input;
+        Compositor::ServerInterface *m_server;
         QHash<Compositor::Window *, QSharedPointer<OpenGLView>> m_views;
         QOpenGLTextureBlitter m_blitter;
 

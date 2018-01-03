@@ -18,8 +18,8 @@
 
 using namespace Budgie::Compositor;
 
-OpenGLDisplay::OpenGLDisplay(Compositor::InputInterface *input, QWaylandOutput *output)
-    : Display(output, this), m_input(input)
+OpenGLDisplay::OpenGLDisplay(Compositor::ServerInterface *server, QWaylandOutput *output)
+    : Display(output, this), m_server(server)
 {
     connect(output, &QWaylandOutput::currentModeChanged, this, &OpenGLDisplay::currentModeChanged);
 }
@@ -175,37 +175,37 @@ void OpenGLDisplay::render()
 
 void OpenGLDisplay::mouseMoveEvent(QMouseEvent *e)
 {
-    m_input->dispatchMouseEvent(this, e);
+    m_server->dispatchMouseEvent(this, e);
 }
 
 void OpenGLDisplay::mousePressEvent(QMouseEvent *e)
 {
-    m_input->dispatchMouseEvent(this, e);
+    m_server->dispatchMouseEvent(this, e);
 }
 
 void OpenGLDisplay::mouseReleaseEvent(QMouseEvent *e)
 {
-    m_input->dispatchMouseEvent(this, e);
+    m_server->dispatchMouseEvent(this, e);
 }
 
 void OpenGLDisplay::keyPressEvent(QKeyEvent *e)
 {
-    m_input->dispatchKeyEvent(this, e);
+    m_server->dispatchKeyEvent(this, e);
 }
 
 void OpenGLDisplay::keyReleaseEvent(QKeyEvent *e)
 {
-    m_input->dispatchKeyEvent(this, e);
+    m_server->dispatchKeyEvent(this, e);
 }
 
 void OpenGLDisplay::touchEvent(QTouchEvent *e)
 {
-    m_input->dispatchTouchEvent(this, e);
+    m_server->dispatchTouchEvent(this, e);
 }
 
 void OpenGLDisplay::wheelEvent(QWheelEvent *e)
 {
-    m_input->dispatchWheelEvent(this, e);
+    m_server->dispatchWheelEvent(this, e);
 }
 
 /**

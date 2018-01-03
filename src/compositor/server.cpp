@@ -39,9 +39,6 @@ Server::Server(RendererInterface *renderer)
 
     connect(this, &QWaylandCompositor::defaultSeatChanged, this, &Server::wlSeatChanged);
     connect(this, &QWaylandCompositor::createdChanged, this, &Server::wlCreated);
-
-    // Pass ourselves as an InputInterface to the renderer
-    m_renderer->init(this);
 }
 
 bool Server::start()
@@ -58,7 +55,7 @@ bool Server::start()
     // This is code we WOULD use, i.e. construct a display and store it.
     // We'll actually need to add sorting based on the index but in theory
     // we could swap to a map of index->display
-    auto display = m_renderer->createDisplay(output);
+    auto display = m_renderer->createDisplay(this, output);
     if (!display) {
         qWarning() << "Failed to construct a valid display for: " << output;
         return false;
