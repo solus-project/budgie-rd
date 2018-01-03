@@ -47,6 +47,16 @@ namespace Budgie::Compositor
          */
         RenderLayer layer();
 
+        /**
+         * Are we actually renderable?
+         */
+        bool renderable();
+
+        /**
+         * Are we a cursor?
+         */
+        bool cursor();
+
         QPoint position();
         QRect geometry();
         QSize size();
@@ -59,12 +69,15 @@ namespace Budgie::Compositor
 
     private slots:
         void sizeChanged();
+        void hasContentChanged();
+        void cursorSurfaceChanged();
 
     private:
         QWaylandSurface *m_surface;
         QPoint m_position;
         QSize m_size;
         RenderLayer m_layer;
+        bool m_renderable;
     };
 }
 /*

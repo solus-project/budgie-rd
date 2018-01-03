@@ -9,18 +9,29 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QDebug>
+
 #include "surface-item.h"
 
 using namespace Budgie::Compositor;
 
 SurfaceItem::SurfaceItem(QWaylandSurface *surface)
-    : m_surface(surface), m_position(100, 150), m_size(0, 0), m_layer(RenderLayer::APPLICATION)
+    : m_surface(surface), m_position(100, 150), m_size(0, 0), m_layer(RenderLayer::APPLICATION),
+      m_renderable(false)
 {
     // Precache
     m_size = surface->size();
 
     // Hook up signals
     connect(surface, &QWaylandSurface::sizeChanged, this, &SurfaceItem::sizeChanged);
+
+    // Effectively, role change, ready to do something.
+    connect(surface, &QWaylandSurface::hasContentChanged, this, &SurfaceItem::hasContentChanged);
+
+    /* Qt 5.10....
+    connect(surface, &QWaylandSurface::cursorSurfaceChanged, this,
+    &SurfaceItem::cursorSurfaceChanged);
+    */
 }
 
 QWaylandSurface *SurfaceItem::surface()
@@ -56,12 +67,40 @@ QSize SurfaceItem::size()
     return m_size;
 }
 
+bool SurfaceItem::renderable()
+{
+    return m_renderable;
+}
+
+bool SurfaceItem::cursor()
+{
+    return m_surface->isCursorSurface();
+}
+
 /**
  * wl_surface changed size, update knowledge of it.
  */
 void SurfaceItem::sizeChanged()
 {
     m_size = m_surface->size();
+}
+
+/**
+ * Content role now available, so we're renderable
+ */
+void SurfaceItem::hasContentChanged()
+{
+    m_renderable = true;
+
+    qDebug() << "Cursor? " << cursor();
+}
+
+/**
+ * Cursor role changed, so we're now a renderable cursor.
+ */
+void SurfaceItem::cursorSurfaceChanged()
+{
+    m_renderable = true;
 }
 
 /*
