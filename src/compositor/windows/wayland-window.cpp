@@ -43,6 +43,39 @@ WaylandWindow *WaylandWindow::create(SurfaceItem *surface, QWaylandXdgSurfaceV5 
     return new WaylandWindowXdgShellV5(surface, xdg_shell);
 }
 
+/**
+ * Return the position of this WaylandWindow within the virtual coordinate
+ * system.
+ *
+ * TODO: Split the rootSurface coordinates from our own.
+ */
+QPoint WaylandWindow::position()
+{
+    return m_rootSurface->position();
+}
+
+/**
+ * Return the geometry of this WaylandWindow within the virtual coordinate
+ * system.
+ *
+ * TODO: Split the rootSurface coordinates from our own.
+ */
+QRect WaylandWindow::geometry()
+{
+    return m_rootSurface->geometry();
+}
+
+/**
+ * Return the geometry of this WaylandWindow within the virtual coordinate
+ * system.
+ *
+ * TODO: Split the rootSurface coordinates from our own.
+ */
+QSize WaylandWindow::size()
+{
+    return m_rootSurface->size();
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

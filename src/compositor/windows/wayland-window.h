@@ -18,6 +18,7 @@
 
 #include "compositor-common.h"
 #include "surface-item.h"
+#include "window-interface.h"
 
 namespace Budgie::Compositor
 {
@@ -31,7 +32,7 @@ namespace Budgie::Compositor
      * Any non window surface will not be rendered unless it is a child surface
      * of the windows root surface.
      */
-    class WaylandWindow : public QObject
+    class WaylandWindow : public QObject, public WindowInterface
     {
         Q_OBJECT
 
@@ -39,6 +40,11 @@ namespace Budgie::Compositor
 
     public:
         SurfaceItem *rootSurface();
+
+        /* Override some basic WindowInterface APIs */
+        QPoint position() override;
+        QRect geometry() override;
+        QSize size() override;
 
     protected:
         /**
