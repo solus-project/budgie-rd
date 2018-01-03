@@ -9,6 +9,8 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QEvent>
+
 #include "server.h"
 
 using namespace Budgie::Compositor;
@@ -81,9 +83,26 @@ Window *Server::findFocusableSurface(Display *origin, QPoint position)
     return nullptr;
 }
 
+/**
+ * Take the input event and rewrite the positions to be relative to the display.
+ */
+static inline void rewriteMousePosition(Display *origin, Window *window, QMouseEvent *event,
+                                        QPointF &local, QPointF &global)
+{
+    const QRect geom = origin->geometry();
+    const QPointF topLeft = geom.topLeft();
+
+    // The position is always offset from the start geometry
+    global = event->localPos() + topLeft;
+
+    // The local is deducted from window position
+    local = global - window->position();
+}
+
 void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
 {
     auto window = findFocusableSurface(origin, e->pos());
+    QPointF local, global;
 
     // When clicking, update focus.
     if (e->buttons() != Qt::NoButton) {
@@ -95,7 +114,24 @@ void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
         return;
     }
 
-    // TODO: Forward the input event to the active surface.
+    // Dispatch the event to the client
+    switch (e->type()) {
+    case QEvent::MouseButtonPress:
+        m_seat->sendMousePressEvent(e->button());
+        break;
+    case QEvent::MouseButtonRelease:
+        m_seat->sendMouseReleaseEvent(e->button());
+        break;
+    case QEvent::MouseMove: {
+        rewriteMousePosition(origin, window, e, local, global);
+        auto view = origin->view(window);
+        if (view) {
+            m_seat->sendMouseMoveEvent(view, local, global);
+        }
+    } break;
+    default:
+        break;
+    }
 }
 
 void Server::dispatchTouchEvent(Display *origin, QTouchEvent *e)
