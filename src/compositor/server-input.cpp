@@ -107,13 +107,14 @@ void Server::dispatchTouchEvent(Display *origin, QTouchEvent *e)
 
 void Server::dispatchKeyEvent(Display *origin, QKeyEvent *e)
 {
+    Q_UNUSED(origin);
+
     // Eventually we'll handle global shortcuts.
     if (!m_keyFocus) {
         return;
     }
 
-    Q_UNUSED(origin);
-    Q_UNUSED(e);
+    m_seat->sendFullKeyEvent(e);
 }
 
 /*
