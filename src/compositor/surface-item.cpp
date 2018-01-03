@@ -86,6 +86,11 @@ void SurfaceItem::sizeChanged()
 void SurfaceItem::hasContentChanged()
 {
     m_renderable = m_surface->hasContent();
+
+    // Adjust our layer if we determine we're a cursor.
+    if (cursor()) {
+        setLayer(RenderLayer::CURSOR);
+    }
 }
 
 /*
