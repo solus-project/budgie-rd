@@ -57,7 +57,11 @@ namespace Budgie::Compositor
         QList<QSharedPointer<Display>> m_displays;
         QWaylandSeat *m_seat;
 
+        // We map each wayland surface to our own SurfaceItem to make it intelligent.
         QHash<QWaylandSurface *, QSharedPointer<SurfaceItem>> m_surfaces;
+
+        // We map **some** surfaces to WaylandWindow for presentation.
+        QHash<SurfaceItem *, QSharedPointer<WaylandWindow>> m_windows;
 
         /* Current focus */
         SurfaceItem *m_keyFocus;
@@ -65,6 +69,8 @@ namespace Budgie::Compositor
         QPoint m_mouseLast;
 
         SurfaceItem *findFocusableSurface(Display *origin, QPoint position);
+
+        Display *initialDisplay(SurfaceItem *item);
 
         void promoteWindow(WaylandWindow *window);
 

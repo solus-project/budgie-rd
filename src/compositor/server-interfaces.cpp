@@ -29,15 +29,19 @@ void Server::surfaceCreated(QWaylandSurface *surface)
     // TODO: Decide which output we wanna put this guy on and map it there.
     m_surfaces.insert(surface, QSharedPointer<Compositor::SurfaceItem>(item));
 
-    // TODO: Only allocate when we really need this..
+    // TODO: Only set the render layer on a Window not a Surface!
     item->setLayer(RenderLayer::APPLICATION);
 
-    // Le Hacky Demos
-    auto view = m_displays[0]->mapSurfaceItem(item);
+    // Find the right display to map the new surface to and ensure it gets
+    // mapped there.
+    // TODO: Consider leaving the mapping until we know this is some kind of
+    // child, cursor, or toplevel, so that we map an entire window in one go.
+    auto display = initialDisplay(item);
+    auto view = display->mapSurfaceItem(item);
     if (!view) {
         return;
     }
-    view->setOutput(m_displays[0]->output());
+    view->setOutput(display->output());
     view->setPrimary();
 }
 
@@ -75,6 +79,10 @@ void Server::surfaceDestroying(QWaylandSurface *surface)
         setMouseFocus(nullptr, nullptr);
     }
 
+    // Remove from the window first (if we have it.)
+    m_windows.remove(item.data());
+
+    // Remove from the surface cache
     m_surfaces.remove(surface);
 }
 

@@ -80,14 +80,28 @@ bool Server::start()
 }
 
 /**
+ * Return the initial display to map the new SurfaceItem to.
+ *
+ * For now we're just going to return our primary display but in future this
+ * will be the one with the current mouse focus.
+ */
+Display *Server::initialDisplay(SurfaceItem *item)
+{
+    Q_UNUSED(item);
+    // TODO: Something not sucky :')
+    return m_displays[0].data();
+}
+
+/**
  * The interfaces have encountered a case where a window is now required,
  * so stash the window.
  */
 void Server::promoteWindow(WaylandWindow *window)
 {
     qDebug() << "Found Window: " << window;
-    qDebug() << "Doing nothing, sorry!";
-    delete window;
+
+    // Store this guy so its deleted later.
+    m_windows.insert(window->rootSurface(), QSharedPointer<WaylandWindow>(window));
 }
 
 /*
