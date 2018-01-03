@@ -315,6 +315,7 @@ void OpenGLDisplay::raiseWindow(Budgie::Compositor::Window *window)
 {
     moveWindowToIndex(window, -1);
     rebuildPresentables();
+    requestUpdate();
 }
 
 /*
