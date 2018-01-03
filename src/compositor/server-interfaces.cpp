@@ -23,6 +23,9 @@ void Server::surfaceCreated(QWaylandSurface *surface)
     auto item = new Compositor::SurfaceItem(surface);
     qDebug() << "Added surface:" << item;
 
+    connect(surface, &QWaylandSurface::childAdded, this, &Server::surfaceChildAdded);
+    connect(surface, &QWaylandSurface::parentChanged, this, &Server::surfaceParentChanged);
+
     // TODO: Decide which output we wanna put this guy on and map it there.
     m_surfaces.insert(surface, QSharedPointer<Compositor::SurfaceItem>(item));
 
@@ -48,6 +51,12 @@ void Server::surfaceDestroying(QWaylandSurface *surface)
     if (!item) {
         qWarning() << "Accounting error: Don't know about " << surface;
         return;
+    }
+
+    // Might be a subsurface being destroyed, so remove it from the parent.
+    auto parent = item->parentItem();
+    if (parent) {
+        parent->removeChild(item.data());
     }
 
     // Remove item from all displays
@@ -120,6 +129,39 @@ void Server::wlSeatChanged(QWaylandSeat *newSeat, QWaylandSeat *oldSeat)
     Q_UNUSED(oldSeat);
     qDebug() << "Seat set to: " << newSeat;
     m_seat = newSeat;
+}
+
+/* Subsurfaces */
+void Server::surfaceChildAdded(QWaylandSurface *childSurface)
+{
+    QWaylandSurface *parent = qobject_cast<QWaylandSurface *>(sender());
+    auto parentItem = m_surfaces.value(parent, nullptr);
+    auto childItem = m_surfaces.value(childSurface, nullptr);
+
+    if (!parentItem || !childItem) {
+        qDebug() << "Accounting error in surfaceChildAdded!";
+        return;
+    }
+
+    // Add the child to the given parent
+    parentItem->addChild(childItem.data());
+}
+
+void Server::surfaceParentChanged(QWaylandSurface *oldParent, QWaylandSurface *newParent)
+{
+    Q_UNUSED(newParent);
+
+    QWaylandSurface *child = qobject_cast<QWaylandSurface *>(sender());
+    auto childItem = m_surfaces.value(child, nullptr);
+    auto oldItem = m_surfaces.value(oldParent, nullptr);
+
+    if (!childItem || !oldItem) {
+        qDebug() << "Accounting error in surfaceParentChanged!";
+        return;
+    }
+
+    // Remove the child from the old parent
+    oldItem->removeChild(childItem.data());
 }
 
 /*

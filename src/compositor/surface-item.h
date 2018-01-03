@@ -75,6 +75,21 @@ namespace Budgie::Compositor
          */
         void setLayer(RenderLayer layer);
 
+        /**
+         * Add the SurfaceItem as a known child of ours
+         */
+        void addChild(SurfaceItem *child);
+
+        /**
+         * Remove the SurfaceItem from the list of known children.
+         */
+        void removeChild(SurfaceItem *child);
+
+        /**
+         * Return the parent (if we have one)
+         */
+        SurfaceItem *parentItem();
+
     private slots:
         void sizeChanged();
         void hasContentChanged();
@@ -86,6 +101,9 @@ namespace Budgie::Compositor
         RenderLayer m_layer;
         bool m_roleConfirmed;
         bool m_renderable;
+
+        QList<SurfaceItem *> m_children;
+        SurfaceItem *m_parentItem;
     };
 }
 /*

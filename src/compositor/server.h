@@ -71,6 +71,11 @@ namespace Budgie::Compositor
     private slots:
         void surfaceCreated(QWaylandSurface *surface);
         void surfaceDestroying(QWaylandSurface *surface);
+
+        /* Toplevel subsurface management */
+        void surfaceParentChanged(QWaylandSurface *oldParent, QWaylandSurface *newParent);
+        void surfaceChildAdded(QWaylandSurface *child);
+
         void wlShellCreated(QWaylandWlShellSurface *shell);
         void xdgShellv5Created(QWaylandXdgSurfaceV5 *shell);
         void wlSeatChanged(QWaylandSeat *newSeat, QWaylandSeat *oldSeat);

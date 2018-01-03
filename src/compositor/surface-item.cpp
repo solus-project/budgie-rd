@@ -17,7 +17,7 @@ using namespace Budgie::Compositor;
 
 SurfaceItem::SurfaceItem(QWaylandSurface *surface)
     : m_surface(surface), m_position(100, 150), m_size(0, 0), m_layer(RenderLayer::APPLICATION),
-      m_roleConfirmed(false), m_renderable(false)
+      m_roleConfirmed(false), m_renderable(false), m_parentItem(nullptr)
 {
     // Precache
     m_size = surface->size();
@@ -102,6 +102,30 @@ void SurfaceItem::hasContentChanged()
 
     // Let compositor know we're ready for prime time
     emit roleConfirmed();
+}
+
+void SurfaceItem::addChild(SurfaceItem *child)
+{
+    qDebug() << "I now have a child :O " << child;
+    child->m_parentItem = this;
+    m_children << child;
+}
+
+void SurfaceItem::removeChild(SurfaceItem *child)
+{
+    qDebug() << "They stole my child!" << child;
+    if (child->m_parentItem == this) {
+        child->m_parentItem = nullptr;
+    }
+    m_children.removeAll(child);
+}
+
+/**
+ * May well be nullptr.
+ */
+SurfaceItem *SurfaceItem::parentItem()
+{
+    return m_parentItem;
 }
 
 /*
