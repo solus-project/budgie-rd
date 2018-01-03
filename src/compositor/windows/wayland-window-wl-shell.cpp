@@ -18,7 +18,22 @@ using namespace Budgie::Compositor;
 WaylandWindowWlShell::WaylandWindowWlShell(SurfaceItem *surface, QWaylandWlShellSurface *wl_shell)
     : WaylandWindow(surface), m_shell(wl_shell)
 {
-    // TODO: Hook up connections to the root surface
+    // Ensure we know about titles and such.
+    connect(m_shell,
+            &QWaylandWlShellSurface::titleChanged,
+            this,
+            &WaylandWindowWlShell::wlTitleChanged);
+    wlTitleChanged();
+}
+
+void WaylandWindowWlShell::wlTitleChanged()
+{
+    m_title = m_shell->title();
+}
+
+const QString &WaylandWindowWlShell::title()
+{
+    return m_title;
 }
 
 /*

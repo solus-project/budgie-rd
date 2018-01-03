@@ -26,11 +26,19 @@ namespace Budgie::Compositor
 
         friend class WaylandWindow;
 
+    public:
+        /* WindowInterface APIs */
+        const QString &title() override;
+
     protected:
         explicit WaylandWindowXdgShellV5(SurfaceItem *surface, QWaylandXdgSurfaceV5 *wl_xdg);
 
     private:
         QWaylandXdgSurfaceV5 *m_xdg;
+        QString m_title;
+
+    private slots:
+        void xdgTitleChanged();
     };
 }
 /*

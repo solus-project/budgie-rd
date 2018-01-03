@@ -18,7 +18,22 @@ using namespace Budgie::Compositor;
 WaylandWindowXdgShellV5::WaylandWindowXdgShellV5(SurfaceItem *surface, QWaylandXdgSurfaceV5 *wl_xdg)
     : WaylandWindow(surface), m_xdg(wl_xdg)
 {
+    connect(m_xdg,
+            &QWaylandXdgSurfaceV5::titleChanged,
+            this,
+            &WaylandWindowXdgShellV5::xdgTitleChanged);
+    xdgTitleChanged();
     // TODO: Hook up connections to the root surface
+}
+
+void WaylandWindowXdgShellV5::xdgTitleChanged()
+{
+    m_title = m_xdg->title();
+}
+
+const QString &WaylandWindowXdgShellV5::title()
+{
+    return m_title;
 }
 
 /*
