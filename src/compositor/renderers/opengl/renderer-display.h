@@ -40,6 +40,9 @@ namespace Budgie::Compositor
 
         QWaylandView *mapWindow(Compositor::Window *window) override;
         void unmapWindow(Compositor::Window *window) override;
+        QWaylandView *view(Compositor::Window *window) override;
+
+        QList<Compositor::Window *> inputWindows() override;
 
     private:
         Compositor::InputInterface *m_input;

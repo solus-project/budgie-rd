@@ -10,9 +10,11 @@
  */
 
 #include <QDebug>
+#include <QList>
 #include <QOpenGLFunctions>
 
 #include "renderer-display.h"
+#include "window.h"
 
 using namespace Budgie::Compositor;
 
@@ -64,6 +66,21 @@ void OpenGLDisplay::unmapWindow(Compositor::Window *window)
 
     // Time to redraw
     requestUpdate();
+}
+
+/**
+ * Grab the appropriate view for the given window.
+ *
+ * This is used by the compositor to find the display specific output for
+ * any surface.
+ */
+QWaylandView *OpenGLDisplay::view(Compositor::Window *window)
+{
+    auto view = m_views.value(window, nullptr);
+    if (!view) {
+        return nullptr;
+    }
+    return view.data();
 }
 
 void OpenGLDisplay::currentModeChanged()
@@ -185,6 +202,22 @@ void OpenGLDisplay::touchEvent(QTouchEvent *e)
 {
     m_input->dispatchTouchEvent(this, e);
 }
+
+/**
+ * Return pointers to windows that we have mapped and care about input.
+ */
+QList<Budgie::Compositor::Window *> OpenGLDisplay::inputWindows()
+{
+    QList<Budgie::Compositor::Window *> ret;
+
+    // TODO: Use caching and only send back real windows, not just plain surfaces.
+    for (const auto view : m_views) {
+        ret << view->window();
+    }
+
+    return ret;
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

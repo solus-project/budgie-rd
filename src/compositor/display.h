@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <QList>
 #include <QScopedPointer>
 #include <QWaylandOutput>
 #include <QWaylandView>
@@ -59,10 +60,22 @@ namespace Budgie::Compositor
         virtual QWaylandView *mapWindow(Window *window) = 0;
 
         /**
+         * Return the view that has been allocated for the given window instance.
+         * It is safe to return nullptr.
+         */
+        virtual QWaylandView *view(Window *window) = 0;
+
+        /**
          * Implementations should remove their view (if any) for the given
          * window so that it no longer renders on their display.
          */
         virtual void unmapWindow(Window *window) = 0;
+
+        /**
+         * Implementations should override this to return their list of
+         * candidate windows which are eligible for input region matching.
+         */
+        virtual QList<Window *> inputWindows() = 0;
 
         /**
          * A Wayland display knows its index in Budgie

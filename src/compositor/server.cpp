@@ -21,6 +21,11 @@ Server::Server(RendererInterface *renderer)
     : m_renderer(renderer), m_wl_shell(new QWaylandWlShell(this)),
       m_xdg_shell_v5(new QWaylandXdgShellV5(this)), m_seat(nullptr)
 {
+    // Start with zero focus
+    m_keyFocus = nullptr;
+    m_mouseFocus = nullptr;
+    m_mouseLast = QPoint(0, 0);
+
     // Hook up basic compositor signals so we know whats going on when we ::create()
     connect(this, &QWaylandCompositor::surfaceCreated, this, &Server::surfaceCreated);
     connect(this, &QWaylandCompositor::surfaceAboutToBeDestroyed, this, &Server::surfaceDestroying);
@@ -118,6 +123,14 @@ void Server::surfaceDestroying(QWaylandSurface *surface)
     }
 
     qDebug() << "Removed surface:" << window.data();
+
+    // TODO: Cycle focus to the next available candidate instead.
+    if (window.data() == m_keyFocus) {
+        setKeyFocus(nullptr, nullptr);
+    }
+    if (window.data() == m_mouseFocus) {
+        setMouseFocus(nullptr, nullptr);
+    }
 
     m_surfaces.remove(surface);
 }

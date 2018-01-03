@@ -11,7 +11,10 @@
 
 #pragma once
 
+#include <QKeyEvent>
+#include <QMouseEvent>
 #include <QObject>
+#include <QTouchEvent>
 
 #include "base-interface.h"
 #include "display.h"

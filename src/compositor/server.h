@@ -57,6 +57,13 @@ namespace Budgie::Compositor
 
         QHash<QWaylandSurface *, QSharedPointer<Window>> m_surfaces;
 
+        /* Current focus */
+        Window *m_keyFocus;
+        Window *m_mouseFocus;
+
+        Window *findFocusableSurface(Display *origin, QPoint position);
+        QPoint m_mouseLast;
+
     private slots:
         void surfaceCreated(QWaylandSurface *surface);
         void surfaceDestroying(QWaylandSurface *surface);
