@@ -135,8 +135,12 @@ void OpenGLDisplay::render()
     auto bindID = GL_TEXTURE_2D;
     auto ourSize = size();
 
-    // TODO: Render all textures here now.
-    for (auto view : m_views) {
+    // Render all textures here now.
+    for (auto renderable : m_server->getRenderables(this)) {
+        auto view = m_views.value(renderable, nullptr);
+        if (!view) {
+            continue;
+        }
         auto texture = view->texture();
         if (!texture) {
             continue;

@@ -33,6 +33,10 @@ void Server::surfaceCreated(QWaylandSurface *surface)
     }
     view->setOutput(m_displays[0]->output());
     view->setPrimary();
+
+    // TODO: Only allocate when we really need this..
+    window->setLayer(RenderLayer::APPLICATION);
+    m_renderables[window->layer()] << window;
 }
 
 /**
@@ -63,6 +67,8 @@ void Server::surfaceDestroying(QWaylandSurface *surface)
         setMouseFocus(nullptr, nullptr);
     }
 
+    // Drop from the renderables
+    m_renderables[window->layer()].removeAll(window.data());
     m_surfaces.remove(surface);
 }
 
