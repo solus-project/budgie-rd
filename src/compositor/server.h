@@ -68,6 +68,8 @@ namespace Budgie::Compositor
         Window *findFocusableSurface(Display *origin, QPoint position);
         QPoint m_mouseLast;
 
+        QHash<RenderLayer, QList<Window *>> m_renderables;
+
     private slots:
         void surfaceCreated(QWaylandSurface *surface);
         void surfaceDestroying(QWaylandSurface *surface);

@@ -87,7 +87,17 @@ QList<Budgie::Compositor::Window *> Server::getRenderables(Compositor::Display *
 {
     QList<Window *> ret;
 
-    // TODO: Build a list from our known renderables
+    // Traverse renderable layers. In future optimize this when we have full screen windows.
+    for (int i = static_cast<int>(Compositor::MinLayer); i < static_cast<int>(Compositor::MaxLayer);
+         i++) {
+        RenderLayer eLayer = static_cast<RenderLayer>(i);
+
+        for (const auto window : m_renderables[eLayer]) {
+            // TODO: If the window is on the target display ..
+            ret << window;
+        }
+    }
+
     return ret;
 }
 
