@@ -58,6 +58,7 @@ compositor_sources = [
     'main.cpp',
     'server.cpp',
     'server-input.cpp',
+    'server-interfaces.cpp',
     compositor_mocs,
 ]
 
