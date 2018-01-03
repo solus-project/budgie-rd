@@ -14,6 +14,7 @@
 #include <QObject>
 #include <QWaylandSurface>
 
+#include "compositor-common.h"
 #include "window-interface.h"
 
 namespace Budgie::Compositor
@@ -41,9 +42,20 @@ namespace Budgie::Compositor
          */
         QWaylandSurface *surface();
 
+        /**
+         * Return the render layer we've been assigned
+         */
+        RenderLayer layer();
+
         QPoint position() override;
         QRect geometry() override;
         QSize size() override;
+
+    protected:
+        /**
+         * Used by the server to assign our new layer
+         */
+        void setLayer(RenderLayer layer);
 
     private slots:
         void sizeChanged();
@@ -52,6 +64,7 @@ namespace Budgie::Compositor
         QWaylandSurface *m_surface;
         QPoint m_position;
         QSize m_size;
+        RenderLayer m_layer;
     };
 }
 /*

@@ -13,7 +13,8 @@
 
 using namespace Budgie::Compositor;
 
-Window::Window(QWaylandSurface *surface) : m_surface(surface), m_position(100, 150), m_size(0, 0)
+Window::Window(QWaylandSurface *surface)
+    : m_surface(surface), m_position(100, 150), m_size(0, 0), m_layer(RenderLayer::APPLICATION)
 {
     // Precache
     m_size = surface->size();
@@ -25,6 +26,16 @@ Window::Window(QWaylandSurface *surface) : m_surface(surface), m_position(100, 1
 QWaylandSurface *Window::surface()
 {
     return m_surface;
+}
+
+RenderLayer Window::layer()
+{
+    return m_layer;
+}
+
+void Window::setLayer(RenderLayer layer)
+{
+    m_layer = layer;
 }
 
 /**
