@@ -203,6 +203,11 @@ void OpenGLDisplay::touchEvent(QTouchEvent *e)
     m_input->dispatchTouchEvent(this, e);
 }
 
+void OpenGLDisplay::wheelEvent(QWheelEvent *e)
+{
+    m_input->dispatchWheelEvent(this, e);
+}
+
 /**
  * Return pointers to windows that we have mapped and care about input.
  */

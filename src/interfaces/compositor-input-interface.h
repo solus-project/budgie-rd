@@ -15,6 +15,7 @@
 #include <QMouseEvent>
 #include <QObject>
 #include <QTouchEvent>
+#include <QWheelEvent>
 
 #include "base-interface.h"
 #include "display.h"
@@ -58,6 +59,9 @@ namespace Budgie::Compositor
 
         /* Send a key event for the given display */
         virtual void dispatchKeyEvent(Display *origin, QKeyEvent *e) = 0;
+
+        /* Send a wheel event to the currently focused window */
+        virtual void dispatchWheelEvent(Display *origin, QWheelEvent *e) = 0;
     };
 }
 

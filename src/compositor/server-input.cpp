@@ -86,14 +86,14 @@ Window *Server::findFocusableSurface(Display *origin, QPoint position)
 /**
  * Take the input event and rewrite the positions to be relative to the display.
  */
-static inline void rewriteMousePosition(Display *origin, Window *window, QMouseEvent *event,
+static inline void rewriteMousePosition(Display *origin, Window *window, QPointF localPos,
                                         QPointF &local, QPointF &global)
 {
     const QRect geom = origin->geometry();
     const QPointF topLeft = geom.topLeft();
 
     // The position is always offset from the start geometry
-    global = event->localPos() + topLeft;
+    global = localPos + topLeft;
 
     // The local is deducted from window position
     local = global - window->position();
@@ -123,7 +123,7 @@ void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
         m_seat->sendMouseReleaseEvent(e->button());
         break;
     case QEvent::MouseMove: {
-        rewriteMousePosition(origin, window, e, local, global);
+        rewriteMousePosition(origin, window, e->localPos(), local, global);
         auto view = origin->view(window);
         if (view) {
             m_seat->sendMouseMoveEvent(view, local, global);
@@ -132,6 +132,28 @@ void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
     default:
         break;
     }
+}
+
+/**
+ * Send a wheel event to the currently mouse-focusable window.
+ * Note, this will not actually give the window focus.
+ */
+void Server::dispatchWheelEvent(Display *origin, QWheelEvent *e)
+{
+    auto window = findFocusableSurface(origin, e->globalPos());
+    QPointF local, global;
+
+    if (!window) {
+        return;
+    }
+
+    auto angleDelta = e->angleDelta();
+    int delta = 0;
+
+    Qt::Orientation orient = angleDelta.x() == 0 ? Qt::Vertical : Qt::Horizontal;
+    delta = ((orient == Qt::Vertical ? angleDelta.y() : angleDelta.x()));
+    rewriteMousePosition(origin, window, e->globalPos(), local, global);
+    m_seat->sendMouseWheelEvent(orient, delta);
 }
 
 void Server::dispatchTouchEvent(Display *origin, QTouchEvent *e)
