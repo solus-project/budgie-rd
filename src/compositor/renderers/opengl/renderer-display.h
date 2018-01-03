@@ -49,9 +49,16 @@ namespace Budgie::Compositor
         QHash<Compositor::Window *, QSharedPointer<OpenGLView>> m_views;
         QOpenGLTextureBlitter m_blitter;
 
+        QHash<RenderLayer, QList<Compositor::Window *>> m_layers;
+
+        QList<Compositor::Window *> m_renderables;
+        QList<Compositor::Window *> m_inputWindows;
+
         void initializeGL() override;
         void paintGL() override;
         void render();
+
+        void rebuildPresentables();
 
     protected:
         void mouseMoveEvent(QMouseEvent *e) override;

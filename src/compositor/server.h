@@ -48,9 +48,6 @@ namespace Budgie::Compositor
         void dispatchKeyEvent(Display *origin, QKeyEvent *e) override;
         void dispatchWheelEvent(Display *origin, QWheelEvent *e) override;
 
-        /* Helper API for our renderer plugins */
-        QList<Window *> getRenderables(Display *origin) override;
-
     private:
         RendererInterface *m_renderer;
 
@@ -67,8 +64,6 @@ namespace Budgie::Compositor
 
         Window *findFocusableSurface(Display *origin, QPoint position);
         QPoint m_mouseLast;
-
-        QHash<RenderLayer, QList<Window *>> m_renderables;
 
     private slots:
         void surfaceCreated(QWaylandSurface *surface);

@@ -46,12 +46,6 @@ namespace Budgie::Compositor
             return QStringLiteral(BudgieCompositorServerInterfaceIID);
         }
 
-        /**
-         * Return a set of renderable windows for the current draw call
-         * for windows mapped to the given display.
-         */
-        virtual QList<Window *> getRenderables(Display *origin) = 0;
-
         /* Set the current window to have mouse focus */
         virtual void setMouseFocus(Display *origin, Window *window) = 0;
 

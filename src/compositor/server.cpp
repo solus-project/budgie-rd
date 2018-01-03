@@ -79,28 +79,6 @@ bool Server::start()
     return true;
 }
 
-/**
- * We return a shallow copy pointer reference to our known windows that should
- * appear on the given display to help the renderers know about rendering order.
- */
-QList<Budgie::Compositor::Window *> Server::getRenderables(Compositor::Display *origin)
-{
-    QList<Window *> ret;
-
-    // Traverse renderable layers. In future optimize this when we have full screen windows.
-    for (int i = static_cast<int>(Compositor::MinLayer); i < static_cast<int>(Compositor::MaxLayer);
-         i++) {
-        RenderLayer eLayer = static_cast<RenderLayer>(i);
-
-        for (const auto window : m_renderables[eLayer]) {
-            // TODO: If the window is on the target display ..
-            ret << window;
-        }
-    }
-
-    return ret;
-}
-
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

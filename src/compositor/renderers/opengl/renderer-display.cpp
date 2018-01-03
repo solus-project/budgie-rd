@@ -45,6 +45,10 @@ QWaylandView *OpenGLDisplay::mapWindow(Compositor::Window *window)
     m_views.insert(window, QSharedPointer<OpenGLView>(view));
     qDebug() << "Mapped:" << view;
 
+    // Rebuild our input layers and such
+    m_layers[window->layer()] << window;
+    rebuildPresentables();
+
     // Time to redraw
     requestUpdate();
     return view;
@@ -61,6 +65,12 @@ void OpenGLDisplay::unmapWindow(Compositor::Window *window)
         qDebug() << "Accounting error, unknown window: " << window;
         return;
     }
+
+    // Remove from input + rendering
+    m_renderables.removeAll(window);
+    m_inputWindows.removeAll(window);
+    m_layers[window->layer()].removeAll(window);
+
     qDebug() << "Unmapped: " << view.data();
     m_views.remove(window);
 
@@ -136,7 +146,7 @@ void OpenGLDisplay::render()
     auto ourSize = size();
 
     // Render all textures here now.
-    for (auto renderable : m_server->getRenderables(this)) {
+    for (auto renderable : m_renderables) {
         auto view = m_views.value(renderable, nullptr);
         if (!view) {
             continue;
@@ -217,14 +227,34 @@ void OpenGLDisplay::wheelEvent(QWheelEvent *e)
  */
 QList<Budgie::Compositor::Window *> OpenGLDisplay::inputWindows()
 {
-    QList<Budgie::Compositor::Window *> ret;
+    return m_inputWindows;
+}
 
-    // TODO: Use caching and only send back real windows, not just plain surfaces.
-    for (const auto view : m_views) {
-        ret << view->window();
+void OpenGLDisplay::rebuildPresentables()
+{
+    QList<Budgie::Compositor::Window *> drawables;
+    QList<Budgie::Compositor::Window *> input;
+
+    static int minLayer = static_cast<int>(Compositor::MinLayer);
+    static int maxLayer = static_cast<int>(Compositor::MaxLayer);
+
+    // Render layer is back to front along z-index + layer
+    for (int i = minLayer; i < maxLayer; i++) {
+        RenderLayer layer = static_cast<RenderLayer>(i);
+
+        for (auto window : m_layers[layer]) {
+            drawables << window;
+        }
     }
 
-    return ret;
+    // Input matching is front to back
+    for (auto it = drawables.rbegin(); it != drawables.rend(); ++it) {
+        // TODO: Check if this is an input candidate!
+        input << *it;
+    }
+
+    m_renderables = drawables;
+    m_inputWindows = input;
 }
 
 /*
