@@ -13,6 +13,9 @@
 
 #include <QObject>
 
+#include <QWaylandWlShellSurface>
+#include <QWaylandXdgSurfaceV5>
+
 #include "compositor-common.h"
 #include "surface-item.h"
 
@@ -38,6 +41,16 @@ namespace Budgie::Compositor
         SurfaceItem *rootSurface();
 
     protected:
+        /**
+         * Construct a new WaylandWindow instance for the given WlShellSurface
+         */
+        static WaylandWindow *create(SurfaceItem *surface, QWaylandWlShellSurface *wl_shell);
+
+        /**
+         * Construct a new WaylandWindow instance for given XDG Shell Surface
+         */
+        static WaylandWindow *create(SurfaceItem *surface, QWaylandXdgSurfaceV5 *xdg_shell);
+
         /**
          * Construct a new SurfaceItem object for the given Wayland surface
          */

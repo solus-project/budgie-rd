@@ -11,6 +11,8 @@
 
 #include <QDebug>
 
+#include "wayland-window-wl-shell.h"
+#include "wayland-window-xdg-shell-v5.h"
 #include "wayland-window.h"
 
 using namespace Budgie::Compositor;
@@ -29,6 +31,16 @@ WaylandWindow::WaylandWindow(SurfaceItem *rootSurface) : m_rootSurface(rootSurfa
 SurfaceItem *WaylandWindow::rootSurface()
 {
     return m_rootSurface;
+}
+
+WaylandWindow *WaylandWindow::create(SurfaceItem *surface, QWaylandWlShellSurface *wl_shell)
+{
+    return new WaylandWindowWlShell(surface, wl_shell);
+}
+
+WaylandWindow *WaylandWindow::create(SurfaceItem *surface, QWaylandXdgSurfaceV5 *xdg_shell)
+{
+    return new WaylandWindowXdgShellV5(surface, xdg_shell);
 }
 
 /*

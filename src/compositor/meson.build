@@ -8,7 +8,9 @@ libcompositor_mocs = qt5.preprocess(
     moc_headers: [
         'compositor-common.h',
         'surface-item.h',
-        'wayland-window.h',
+        'windows/wayland-window.h',
+        'windows/wayland-window-wl-shell.h',
+        'windows/wayland-window-xdg-shell-v5.h',
     ],
     include_directories: interface_include_directories,
 )
@@ -16,7 +18,9 @@ libcompositor_mocs = qt5.preprocess(
 libcompositor_sources = [
     'display.cpp',
     'surface-item.cpp',
-    'wayland-window.cpp',
+    'windows/wayland-window.cpp',
+    'windows/wayland-window-wl-shell.cpp',
+    'windows/wayland-window-xdg-shell-v5.cpp',
     libcompositor_mocs,
 ]
 
