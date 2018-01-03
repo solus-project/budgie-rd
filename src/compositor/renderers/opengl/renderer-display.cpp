@@ -37,6 +37,8 @@ OpenGLDisplay::~OpenGLDisplay()
  */
 QWaylandView *OpenGLDisplay::mapWindow(Compositor::Window *window)
 {
+    std::lock_guard<std::mutex> lock(m_viewLock);
+
     if (m_views.contains(window)) {
         qDebug() << "Accounting error: Already know about " << window;
         return nullptr;
@@ -46,7 +48,7 @@ QWaylandView *OpenGLDisplay::mapWindow(Compositor::Window *window)
     qDebug() << "Mapped:" << view;
 
     // Rebuild our input layers and such
-    m_layers[window->layer()] << window;
+    presentWindow(window);
     rebuildPresentables();
 
     // Time to redraw
@@ -55,21 +57,43 @@ QWaylandView *OpenGLDisplay::mapWindow(Compositor::Window *window)
 }
 
 /**
+ * Push a window into the presentation layer
+ */
+void OpenGLDisplay::presentWindow(Compositor::Window *window)
+{
+    std::lock_guard<std::mutex> lock(m_listLock);
+
+    m_layers[window->layer()] << window;
+}
+
+/**
+ * Remove the window from all presentation layers
+ */
+void OpenGLDisplay::unpresentWindow(Compositor::Window *window)
+{
+    std::lock_guard<std::mutex> lock(m_listLock);
+
+    // Remove from input + rendering
+    m_renderables.removeAll(window);
+    m_inputWindows.removeAll(window);
+    m_layers[window->layer()].removeAll(window);
+}
+
+/**
  * A window has been removed from our display, so we need to remove the corresponding
  * View for it.
  */
 void OpenGLDisplay::unmapWindow(Compositor::Window *window)
 {
+    std::lock_guard<std::mutex> lock(m_viewLock);
+
     auto view = m_views.value(window, nullptr);
     if (!view) {
         qDebug() << "Accounting error, unknown window: " << window;
         return;
     }
 
-    // Remove from input + rendering
-    m_renderables.removeAll(window);
-    m_inputWindows.removeAll(window);
-    m_layers[window->layer()].removeAll(window);
+    unpresentWindow(window);
 
     qDebug() << "Unmapped: " << view.data();
     m_views.remove(window);
@@ -232,6 +256,8 @@ QList<Budgie::Compositor::Window *> OpenGLDisplay::inputWindows()
 
 void OpenGLDisplay::rebuildPresentables()
 {
+    std::lock_guard<std::mutex> lock(m_listLock);
+
     QList<Budgie::Compositor::Window *> drawables;
     QList<Budgie::Compositor::Window *> input;
 
@@ -257,22 +283,15 @@ void OpenGLDisplay::rebuildPresentables()
     m_inputWindows = input;
 }
 
-/**
- * Our implementation simply moves the window to the end of its current
- * rendering layer.
- *
- * TODO: Add locking!
- */
-void OpenGLDisplay::raiseWindow(Budgie::Compositor::Window *window)
+void OpenGLDisplay::moveWindowToIndex(Budgie::Compositor::Window *window, int index)
 {
-    auto view = this->view(window);
-    if (!view) {
-        return;
-    }
+    std::lock_guard<std::mutex> lock(m_listLock);
 
     // No sense doing this for a small list
     RenderLayer layer = window->layer();
-    if (m_layers[layer].size() < 2) {
+    int size = m_layers[layer].size();
+
+    if (size < 2) {
         return;
     }
 
@@ -282,8 +301,19 @@ void OpenGLDisplay::raiseWindow(Budgie::Compositor::Window *window)
         return;
     }
 
-    // Move us to the end of the render layer
-    m_layers[layer].move(position, m_layers[layer].size() - 1);
+    if (index < 1) {
+        index = size - 1;
+    }
+
+    m_layers[layer].move(position, index);
+}
+/**
+ * Our implementation simply moves the window to the end of its current
+ * rendering layer.
+ */
+void OpenGLDisplay::raiseWindow(Budgie::Compositor::Window *window)
+{
+    moveWindowToIndex(window, -1);
     rebuildPresentables();
 }
 

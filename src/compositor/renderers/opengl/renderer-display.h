@@ -14,6 +14,7 @@
 #include <QObject>
 #include <QOpenGLTextureBlitter>
 #include <QOpenGLWindow>
+#include <mutex>
 
 #include "display.h"
 #include "window.h"
@@ -56,10 +57,16 @@ namespace Budgie::Compositor
         QList<Compositor::Window *> m_renderables;
         QList<Compositor::Window *> m_inputWindows;
 
+        std::mutex m_listLock;
+        std::mutex m_viewLock;
+
         void initializeGL() override;
         void paintGL() override;
         void render();
 
+        void moveWindowToIndex(Compositor::Window *window, int index = -1);
+        void presentWindow(Compositor::Window *window);
+        void unpresentWindow(Compositor::Window *window);
         void rebuildPresentables();
 
     protected:
