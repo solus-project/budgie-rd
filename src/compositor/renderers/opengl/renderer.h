@@ -31,8 +31,8 @@ namespace Budgie::Compositor
         Q_INTERFACES(Budgie::Compositor::RendererInterface)
 
     public:
-        Display *createDisplay(Compositor::ServerInterface *server,
-                               QWaylandOutput *output) override;
+        Display *createDisplay(Compositor::ServerInterface *server, QWaylandOutput *output,
+                               uint index) override;
     };
 }
 

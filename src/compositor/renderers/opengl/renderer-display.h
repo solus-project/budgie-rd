@@ -36,7 +36,7 @@ namespace Budgie::Compositor
         /**
          * Construct a new OpenGLDisplay for the given output.
          */
-        OpenGLDisplay(Compositor::ServerInterface *server, QWaylandOutput *output);
+        OpenGLDisplay(Compositor::ServerInterface *server, QWaylandOutput *output, uint index);
         ~OpenGLDisplay();
 
         QWaylandView *mapSurfaceItem(Compositor::SurfaceItem *item) override;

@@ -49,8 +49,8 @@ namespace Budgie::Compositor
          * Note this API is specialist to the Compositor and requires end
          * users to link against libbudgie-compositor-shared.
          */
-        virtual Display *createDisplay(Compositor::ServerInterface *server,
-                                       QWaylandOutput *output) = 0;
+        virtual Display *createDisplay(Compositor::ServerInterface *server, QWaylandOutput *output,
+                                       uint index) = 0;
     };
 }
 

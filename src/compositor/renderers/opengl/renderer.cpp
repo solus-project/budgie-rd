@@ -20,9 +20,10 @@ using namespace Budgie::Compositor;
  * Super simple, just wrap an OpenGLDisplay around the output and return
  * that.
  */
-Display *OpenGLRenderer::createDisplay(Compositor::ServerInterface *server, QWaylandOutput *output)
+Display *OpenGLRenderer::createDisplay(Compositor::ServerInterface *server, QWaylandOutput *output,
+                                       uint index)
 {
-    return new OpenGLDisplay(server, output);
+    return new OpenGLDisplay(server, output, index);
 }
 
 /*

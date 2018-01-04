@@ -55,7 +55,7 @@ bool Server::start()
     // This is code we WOULD use, i.e. construct a display and store it.
     // We'll actually need to add sorting based on the index but in theory
     // we could swap to a map of index->display
-    auto display = m_renderer->createDisplay(this, output);
+    auto display = m_renderer->createDisplay(this, output, 0);
     if (!display) {
         qWarning() << "Failed to construct a valid display for: " << output;
         return false;

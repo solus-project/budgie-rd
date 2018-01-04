@@ -20,10 +20,28 @@
 
 using namespace Budgie::Compositor;
 
-OpenGLDisplay::OpenGLDisplay(Compositor::ServerInterface *server, QWaylandOutput *output)
-    : Display(output, this), m_server(server)
+OpenGLDisplay::OpenGLDisplay(Compositor::ServerInterface *server, QWaylandOutput *output,
+                             uint index)
+    : QOpenGLWindow(QOpenGLWindow::PartialUpdateBlit), Display(output, this, index),
+      m_server(server)
 {
     connect(output, &QWaylandOutput::currentModeChanged, this, &OpenGLDisplay::currentModeChanged);
+
+    // Qt OpenGL on Linux has vsync issues. If we set the primary display as synced
+    // then the next displays will operate at the correct rate. However we will need
+    // to test this in future with multiple native displays and different refresh
+    // rates to verify the impact.
+    QSurfaceFormat format;
+    if (index == 0) {
+        format.setSwapInterval(1);
+    } else {
+        format.setSwapInterval(0);
+    }
+
+    // We want double buffering.
+    format.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
+
+    setFormat(format);
 }
 
 OpenGLDisplay::~OpenGLDisplay()
@@ -50,7 +68,7 @@ QWaylandView *OpenGLDisplay::mapSurfaceItem(Compositor::SurfaceItem *item)
     qDebug() << "Mapped:" << view;
 
     // Time to redraw
-    requestUpdate();
+    update();
     return view;
 }
 
@@ -69,7 +87,7 @@ void OpenGLDisplay::mapWindow(WaylandWindow *window)
 
     auto animation = new QPropertyAnimation(window, "opacity");
     animation->setDuration(250);
-    connect(animation, &QVariantAnimation::valueChanged, [this] { requestUpdate(); });
+    connect(animation, &QVariantAnimation::valueChanged, [this] { update(); });
     animation->setStartValue(0.0);
     animation->setEndValue(1.0);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
@@ -78,7 +96,7 @@ void OpenGLDisplay::mapWindow(WaylandWindow *window)
     animation = new QPropertyAnimation(window, "scale");
     animation->setEasingCurve(QEasingCurve::OutElastic);
     animation->setDuration(900);
-    connect(animation, &QVariantAnimation::valueChanged, [this] { requestUpdate(); });
+    connect(animation, &QVariantAnimation::valueChanged, [this] { update(); });
     animation->setStartValue(QVector2D(0.3, 0.3));
     animation->setEndValue(QVector2D(1.0, 1.0));
     animation->start(QAbstractAnimation::DeleteWhenStopped);
@@ -87,7 +105,7 @@ void OpenGLDisplay::mapWindow(WaylandWindow *window)
     rebuildPresentables();
 
     // Now redraw.
-    requestUpdate();
+    update();
 }
 
 /**
@@ -121,7 +139,7 @@ void OpenGLDisplay::unmapSurfaceItem(Compositor::SurfaceItem *item)
     m_views.remove(item);
 
     // Time to redraw
-    requestUpdate();
+    update();
 }
 
 /**
@@ -148,7 +166,7 @@ void OpenGLDisplay::currentModeChanged()
     qDebug() << "New mode:" << geom;
 
     // Redraw.
-    requestUpdate();
+    update();
 }
 
 /**
@@ -354,7 +372,7 @@ void OpenGLDisplay::raiseWindow(WaylandWindow *window)
 {
     moveWindowToIndex(window, -1);
     rebuildPresentables();
-    requestUpdate();
+    update();
 }
 
 /*

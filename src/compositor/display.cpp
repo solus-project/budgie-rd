@@ -13,7 +13,8 @@
 
 using namespace Budgie::Compositor;
 
-Display::Display(QWaylandOutput *output, QWindow *window) : m_output(output), m_window(window)
+Display::Display(QWaylandOutput *output, QWindow *window, uint index)
+    : m_output(output), m_window(window), m_index(index)
 {
     if (window != nullptr) {
         output->setWindow(window);
@@ -26,11 +27,11 @@ QWaylandOutput *Display::output()
 }
 
 /**
- * Ok so the header file lies, we'll update this to have a real index in time.
+ * Return the index as set at construction time.
  */
 uint Display::index()
 {
-    return 0;
+    return m_index;
 }
 
 QRect Display::geometry()

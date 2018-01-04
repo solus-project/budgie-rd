@@ -37,8 +37,10 @@ namespace Budgie::Compositor
 
         /**
          * Subclasses should chain the constructor appropriately.
+         *
+         * The index may be important to certain implementations.
          */
-        explicit Display(QWaylandOutput *output, QWindow *window);
+        explicit Display(QWaylandOutput *output, QWindow *window, uint index);
 
         /**
          * Return the QWindow for this Display so that the output can be
@@ -115,6 +117,7 @@ namespace Budgie::Compositor
     protected:
         QScopedPointer<QWaylandOutput> m_output;
         QWindow *m_window;
+        uint m_index;
     };
 }
 /*
