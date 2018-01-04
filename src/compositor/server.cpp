@@ -11,6 +11,7 @@
 
 #include <QAbstractAnimation>
 #include <QCoreApplication>
+#include <QParallelAnimationGroup>
 #include <QPropertyAnimation>
 
 #include "compositor-renderer-interface.h"
@@ -114,22 +115,24 @@ void Server::promoteWindow(WaylandWindow *window)
     // We'll need to store each Display in the window structure..
     initialDisplay(window->rootSurface())->mapWindow(window);
 
+    auto group = new QParallelAnimationGroup();
     // This is just a super basic example to show we can do animations too.
     // The rendering is done with the shader
-    auto animation1 = new QPropertyAnimation(window, "opacity");
-    animation1->setDuration(250);
-    animation1->setStartValue(0.0);
-    animation1->setEndValue(1.0);
+    auto animation = new QPropertyAnimation(window, "opacity");
+    animation->setDuration(250);
+    animation->setStartValue(0.0);
+    animation->setEndValue(1.0);
+    group->addAnimation(animation);
 
     // Incredibly childish animation, couldn't help it
-    auto animation2 = new QPropertyAnimation(window, "scale");
-    animation2->setEasingCurve(QEasingCurve::OutElastic);
-    animation2->setDuration(900);
-    animation2->setStartValue(QVector2D(0.3, 0.3));
-    animation2->setEndValue(QVector2D(1.0, 1.0));
+    animation = new QPropertyAnimation(window, "scale");
+    animation->setEasingCurve(QEasingCurve::OutElastic);
+    animation->setDuration(900);
+    animation->setStartValue(QVector2D(0.3, 0.3));
+    animation->setEndValue(QVector2D(1.0, 1.0));
+    group->addAnimation(animation);
 
-    animation1->start(QAbstractAnimation::DeleteWhenStopped);
-    animation2->start(QAbstractAnimation::DeleteWhenStopped);
+    group->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 /*
