@@ -9,9 +9,11 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QAbstractAnimation>
 #include <QDebug>
 #include <QList>
 #include <QOpenGLFunctions>
+#include <QPropertyAnimation>
 
 #include "renderer-display.h"
 #include "surface-item.h"
@@ -61,6 +63,15 @@ void OpenGLDisplay::mapWindow(WaylandWindow *window)
         std::lock_guard<std::mutex> lock(m_listLock);
         m_layers[window->layer()] << window;
     }
+
+    // This is just a super basic example to show we can do animations too.
+    // The rendering is done with the shader
+    auto animation = new QPropertyAnimation(window, "opacity");
+    animation->setDuration(350);
+    connect(animation, &QVariantAnimation::valueChanged, [this] { requestUpdate(); });
+    animation->setStartValue(0.0);
+    animation->setEndValue(1.0);
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 
     // Rebuild our input layers and such
     rebuildPresentables();
@@ -189,6 +200,7 @@ void OpenGLDisplay::renderSurface(WaylandWindow *rootWindow, SurfaceItem *item)
 
     // Draw the texture
     surface->frameStarted();
+    m_blitter.setOpacity(float(rootWindow->opacity()));
     m_blitter.blit(texture->textureId(), target, origin);
     surface->sendFrameCallbacks();
 }

@@ -23,6 +23,8 @@ using namespace Budgie::Compositor;
 WaylandWindow::WaylandWindow(SurfaceItem *rootSurface)
     : m_rootSurface(rootSurface), m_layer(RenderLayer::APPLICATION), m_position(150, 100)
 {
+    // Initial opacity
+    m_opacity = 1.0;
 }
 
 /**
@@ -104,6 +106,21 @@ void WaylandWindow::surfaceForeach(QObject *instance, SurfaceFunctor f)
 
     // For now we're just going to pass the rootSurface
     (instance->*f)(this, rootSurface());
+}
+
+double WaylandWindow::opacity()
+{
+    return m_opacity;
+}
+
+void WaylandWindow::setOpacity(double opacity)
+{
+    if (opacity == m_opacity) {
+        return;
+    }
+    qDebug() << "Opacity now" << m_opacity;
+    m_opacity = opacity;
+    emit opacityChanged();
 }
 
 /*

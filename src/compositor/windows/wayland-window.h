@@ -39,6 +39,7 @@ namespace Budgie::Compositor
     class WaylandWindow : public QObject, public WindowInterface
     {
         Q_OBJECT
+        Q_PROPERTY(double opacity READ opacity WRITE setOpacity NOTIFY opacityChanged)
 
         friend class Server;
 
@@ -51,6 +52,11 @@ namespace Budgie::Compositor
         QSize size() override;
 
         /**
+         * Return the currently set window opacity.
+         */
+        double opacity();
+
+        /**
          * Return the current rendering layer for this window.
          */
         RenderLayer layer();
@@ -59,6 +65,10 @@ namespace Budgie::Compositor
          * Call the following function with the correct rendering order
          */
         void surfaceForeach(QObject *instance, SurfaceFunctor f);
+
+    signals:
+
+        void opacityChanged();
 
     protected:
         /**
@@ -86,10 +96,16 @@ namespace Budgie::Compositor
          */
         void setPosition(QPoint position);
 
+        /**
+         * Update the opacity
+         */
+        void setOpacity(double opacity);
+
     private:
         SurfaceItem *m_rootSurface;
         RenderLayer m_layer;
         QPoint m_position;
+        double m_opacity;
     };
 }
 /*
