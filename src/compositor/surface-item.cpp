@@ -16,7 +16,7 @@
 using namespace Budgie::Compositor;
 
 SurfaceItem::SurfaceItem(QWaylandSurface *surface)
-    : m_surface(surface), m_position(100, 150), m_size(0, 0), m_roleConfirmed(false),
+    : m_surface(surface), m_position(0, 0), m_size(0, 0), m_roleConfirmed(false),
       m_parentItem(nullptr)
 {
     // Precache

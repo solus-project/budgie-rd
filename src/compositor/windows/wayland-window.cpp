@@ -21,7 +21,7 @@ using namespace Budgie::Compositor;
  * Default constructor.
  */
 WaylandWindow::WaylandWindow(SurfaceItem *rootSurface)
-    : m_rootSurface(rootSurface), m_layer(RenderLayer::APPLICATION)
+    : m_rootSurface(rootSurface), m_layer(RenderLayer::APPLICATION), m_position(150, 100)
 {
 }
 
@@ -48,11 +48,15 @@ WaylandWindow *WaylandWindow::create(SurfaceItem *surface, QWaylandXdgSurfaceV5 
  * Return the position of this WaylandWindow within the virtual coordinate
  * system.
  *
- * TODO: Split the rootSurface coordinates from our own.
  */
 QPoint WaylandWindow::position()
 {
-    return m_rootSurface->position();
+    return m_position;
+}
+
+void WaylandWindow::setPosition(QPoint position)
+{
+    m_position = position;
 }
 
 /**
@@ -63,7 +67,7 @@ QPoint WaylandWindow::position()
  */
 QRect WaylandWindow::geometry()
 {
-    return m_rootSurface->geometry();
+    return QRect(m_position, size());
 }
 
 /**

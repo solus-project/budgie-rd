@@ -94,8 +94,9 @@ WaylandWindow *Server::findFocusableWindow(Display *origin, QPoint position,
 /**
  * Take the input event and rewrite the positions to be relative to the display.
  */
-static inline void rewriteMousePosition(Display *origin, SurfaceItem *item, QPointF localPos,
-                                        QPointF &local, QPointF &global)
+static inline void rewriteMousePosition(Display *origin, WaylandWindow *rootWindow,
+                                        SurfaceItem *item, QPointF localPos, QPointF &local,
+                                        QPointF &global)
 {
     const QRect geom = origin->geometry();
     const QPointF topLeft = geom.topLeft();
@@ -104,7 +105,7 @@ static inline void rewriteMousePosition(Display *origin, SurfaceItem *item, QPoi
     global = localPos + topLeft;
 
     // The local is deducted from item position
-    local = global - item->position();
+    local = global - (rootWindow->position() - item->position());
 }
 
 void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
@@ -137,7 +138,7 @@ void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
         m_seat->sendMouseReleaseEvent(e->button());
         break;
     case QEvent::MouseMove: {
-        rewriteMousePosition(origin, focusSurface, e->localPos(), local, global);
+        rewriteMousePosition(origin, window, focusSurface, e->localPos(), local, global);
         auto view = origin->view(focusSurface);
         if (view) {
             m_seat->sendMouseMoveEvent(view, local, global);
@@ -169,7 +170,7 @@ void Server::dispatchWheelEvent(Display *origin, QWheelEvent *e)
 
     Qt::Orientation orient = angleDelta.x() == 0 ? Qt::Vertical : Qt::Horizontal;
     delta = ((orient == Qt::Vertical ? angleDelta.y() : angleDelta.x()));
-    rewriteMousePosition(origin, focusSurface, e->globalPos(), local, global);
+    rewriteMousePosition(origin, window, focusSurface, e->globalPos(), local, global);
     m_seat->sendMouseWheelEvent(orient, delta);
 }
 

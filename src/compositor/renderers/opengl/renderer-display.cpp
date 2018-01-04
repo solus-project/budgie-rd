@@ -183,7 +183,8 @@ void OpenGLDisplay::renderSurface(WaylandWindow *rootWindow, SurfaceItem *item)
     const QRect targetRect(QPoint(0, 0), item->size());
 
     // Position expected in our screen space
-    const QRect positionRect(-item->position(), ourSize);
+    QPoint position = rootWindow->position() + item->position();
+    const QRect positionRect(-position, ourSize);
     const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(targetRect, positionRect);
 
     // Draw the texture

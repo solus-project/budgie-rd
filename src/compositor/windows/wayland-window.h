@@ -81,9 +81,15 @@ namespace Budgie::Compositor
          */
         void setLayer(RenderLayer layer);
 
+        /**
+         * Set the new position for this window
+         */
+        void setPosition(QPoint position);
+
     private:
         SurfaceItem *m_rootSurface;
         RenderLayer m_layer;
+        QPoint m_position;
     };
 }
 /*
