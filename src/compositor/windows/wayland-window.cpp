@@ -118,7 +118,6 @@ void WaylandWindow::setOpacity(double opacity)
     if (opacity == m_opacity) {
         return;
     }
-    qDebug() << "Opacity now" << m_opacity;
     m_opacity = opacity;
     emit opacityChanged();
 }
