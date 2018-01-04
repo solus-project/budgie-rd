@@ -66,11 +66,21 @@ void OpenGLDisplay::mapWindow(WaylandWindow *window)
 
     // This is just a super basic example to show we can do animations too.
     // The rendering is done with the shader
+
     auto animation = new QPropertyAnimation(window, "opacity");
     animation->setDuration(250);
     connect(animation, &QVariantAnimation::valueChanged, [this] { requestUpdate(); });
     animation->setStartValue(0.0);
     animation->setEndValue(1.0);
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+    // Incredibly childish animation, couldn't help it
+    animation = new QPropertyAnimation(window, "scale");
+    animation->setEasingCurve(QEasingCurve::OutElastic);
+    animation->setDuration(900);
+    connect(animation, &QVariantAnimation::valueChanged, [this] { requestUpdate(); });
+    animation->setStartValue(QVector2D(0.3, 0.3));
+    animation->setEndValue(QVector2D(1.0, 1.0));
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 
     // Rebuild our input layers and such
@@ -196,7 +206,9 @@ void OpenGLDisplay::renderSurface(WaylandWindow *rootWindow, SurfaceItem *item)
     // Position expected in our screen space
     QPoint position = rootWindow->position() + item->position();
     const QRect positionRect(-position, ourSize);
-    const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(targetRect, positionRect);
+    QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(targetRect, positionRect);
+    auto scale = rootWindow->scale();
+    target.scale(scale.x(), scale.y());
 
     // Draw the texture
     surface->frameStarted();

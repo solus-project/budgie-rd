@@ -16,6 +16,8 @@
 #include <QWaylandWlShellSurface>
 #include <QWaylandXdgSurfaceV5>
 
+#include <QVector2D>
+
 #include "compositor-common.h"
 #include "surface-item.h"
 #include "window-interface.h"
@@ -40,6 +42,7 @@ namespace Budgie::Compositor
     {
         Q_OBJECT
         Q_PROPERTY(double opacity READ opacity WRITE setOpacity NOTIFY opacityChanged)
+        Q_PROPERTY(QVector2D scale READ scale WRITE setScale NOTIFY scaleChanged)
 
         friend class Server;
 
@@ -56,6 +59,8 @@ namespace Budgie::Compositor
          */
         double opacity();
 
+        QVector2D scale();
+
         /**
          * Return the current rendering layer for this window.
          */
@@ -69,6 +74,7 @@ namespace Budgie::Compositor
     signals:
 
         void opacityChanged();
+        void scaleChanged();
 
     protected:
         /**
@@ -101,11 +107,14 @@ namespace Budgie::Compositor
          */
         void setOpacity(double opacity);
 
+        void setScale(QVector2D scale);
+
     private:
         SurfaceItem *m_rootSurface;
         RenderLayer m_layer;
         QPoint m_position;
         double m_opacity;
+        QVector2D m_scale;
     };
 }
 /*

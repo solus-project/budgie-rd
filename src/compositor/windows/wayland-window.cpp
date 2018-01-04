@@ -25,6 +25,7 @@ WaylandWindow::WaylandWindow(SurfaceItem *rootSurface)
 {
     // Initial opacity
     m_opacity = 1.0;
+    m_scale = QVector2D(1.0, 1.0);
 }
 
 /**
@@ -120,6 +121,20 @@ void WaylandWindow::setOpacity(double opacity)
     }
     m_opacity = opacity;
     emit opacityChanged();
+}
+
+QVector2D WaylandWindow::scale()
+{
+    return m_scale;
+}
+
+void WaylandWindow::setScale(QVector2D scale)
+{
+    if (scale == m_scale) {
+        return;
+    }
+    m_scale = scale;
+    emit scaleChanged();
 }
 
 /*
