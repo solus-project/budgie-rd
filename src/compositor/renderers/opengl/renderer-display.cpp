@@ -67,7 +67,7 @@ void OpenGLDisplay::mapWindow(WaylandWindow *window)
     // This is just a super basic example to show we can do animations too.
     // The rendering is done with the shader
     auto animation = new QPropertyAnimation(window, "opacity");
-    animation->setDuration(350);
+    animation->setDuration(250);
     connect(animation, &QVariantAnimation::valueChanged, [this] { requestUpdate(); });
     animation->setStartValue(0.0);
     animation->setEndValue(1.0);
