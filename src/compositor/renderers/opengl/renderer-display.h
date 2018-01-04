@@ -43,19 +43,21 @@ namespace Budgie::Compositor
         void unmapSurfaceItem(Compositor::SurfaceItem *item) override;
         QWaylandView *view(Compositor::SurfaceItem *item) override;
 
-        QList<Compositor::SurfaceItem *> inputSurfaceItems() override;
+        QList<WaylandWindow *> inputWindows() override;
 
-        void raiseSurfaceItem(Compositor::SurfaceItem *item) override;
+        void raiseWindow(WaylandWindow *window) override;
+        void mapWindow(WaylandWindow *window) override;
+        void unmapWindow(WaylandWindow *window) override;
 
     private:
         Compositor::ServerInterface *m_server;
         QHash<Compositor::SurfaceItem *, QSharedPointer<OpenGLView>> m_views;
         QOpenGLTextureBlitter m_blitter;
 
-        QHash<RenderLayer, QList<Compositor::SurfaceItem *>> m_layers;
+        QHash<RenderLayer, QList<Compositor::WaylandWindow *>> m_layers;
 
-        QList<Compositor::SurfaceItem *> m_renderables;
-        QList<Compositor::SurfaceItem *> m_inputSurfaceItems;
+        QList<Compositor::WaylandWindow *> m_renderables;
+        QList<Compositor::WaylandWindow *> m_inputSurfaceItems;
 
         std::mutex m_listLock;
         std::mutex m_viewLock;
@@ -64,9 +66,7 @@ namespace Budgie::Compositor
         void paintGL() override;
         void render();
 
-        void moveSurfaceItemToIndex(Compositor::SurfaceItem *item, int index = -1);
-        void presentSurfaceItem(Compositor::SurfaceItem *item);
-        void unpresentSurfaceItem(Compositor::SurfaceItem *item);
+        void moveWindowToIndex(WaylandWindow *window, int index = -1);
         void rebuildPresentables();
 
     protected:

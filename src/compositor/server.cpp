@@ -102,6 +102,10 @@ void Server::promoteWindow(WaylandWindow *window)
 
     // Store this guy so its deleted later.
     m_windows.insert(window->rootSurface(), QSharedPointer<WaylandWindow>(window));
+
+    // TODO: Find out where the feck this thing is meant to be showing.
+    // We'll need to store each Display in the window structure..
+    initialDisplay(window->rootSurface())->mapWindow(window);
 }
 
 /*

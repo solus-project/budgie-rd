@@ -19,6 +19,7 @@
 
 #include "display-interface.h"
 #include "surface-item.h"
+#include "windows/wayland-window.h"
 
 namespace Budgie::Compositor
 {
@@ -51,11 +52,9 @@ namespace Budgie::Compositor
         QWaylandOutput *output();
 
         /**
-         * Implementations should construct a view for the given item
-         * and begin rendering it within their display.
-         *
-         * The View should be returned so that the window manager is free
-         * to set the primary view if necessary.
+         * Implementations should map the surface to their output, but not
+         * begin rendering it. This just ensures we connect the outputs so
+         * that it is *possible* to render the surface.
          */
         virtual QWaylandView *mapSurfaceItem(SurfaceItem *item) = 0;
 
@@ -72,17 +71,36 @@ namespace Budgie::Compositor
         virtual void unmapSurfaceItem(SurfaceItem *item) = 0;
 
         /**
-         * Implementations should override this to return their list of
-         * candidate items which are eligible for input region matching.
+         * Implementations should override this function to return their
+         * (well-ordered) list of windows that will allow input matching.
          */
-        virtual QList<SurfaceItem *> inputSurfaceItems() = 0;
+        virtual QList<WaylandWindow *> inputWindows() = 0;
 
         /**
-         * Request that the item is raised in the visual/input hierarchy. It is
+         * Request that the window is raised in the visual/input hierarchy. It is
          * possible we'll request raising for an unknown item. Implementations
          * should silently ignore this.
          */
-        virtual void raiseSurfaceItem(SurfaceItem *item) = 0;
+        virtual void raiseWindow(WaylandWindow *window) = 0;
+
+        /**
+         * Request that the given Window is mapped and displayed on screen,
+         * adding it to both the input and render lists.
+         *
+         * The window's root surface will already have been mapped earlier
+         * through a call to mapSurfaceItem.
+         *
+         * The Window may be composed of child surfaces that should be painted
+         * relative to the window's virtual coordinates.
+         */
+        virtual void mapWindow(WaylandWindow *window) = 0;
+
+        /**
+         * The unmap window routine will be called before destroying the
+         * resources (via unmapSurfaceItem) so that the window can safely
+         * be removed from the render and input lists.
+         */
+        virtual void unmapWindow(WaylandWindow *window) = 0;
 
         /**
          * A Wayland display knows its index in Budgie

@@ -46,6 +46,11 @@ namespace Budgie::Compositor
         QRect geometry() override;
         QSize size() override;
 
+        /**
+         * Return the current rendering layer for this window.
+         */
+        RenderLayer layer();
+
     protected:
         /**
          * Construct a new WaylandWindow instance for the given WlShellSurface
@@ -62,8 +67,14 @@ namespace Budgie::Compositor
          */
         explicit WaylandWindow(SurfaceItem *rootSurface);
 
+        /**
+         * Set the rendering layer for this window.
+         */
+        void setLayer(RenderLayer layer);
+
     private:
         SurfaceItem *m_rootSurface;
+        RenderLayer m_layer;
     };
 }
 /*

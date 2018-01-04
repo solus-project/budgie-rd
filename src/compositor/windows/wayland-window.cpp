@@ -20,7 +20,8 @@ using namespace Budgie::Compositor;
 /**
  * Default constructor.
  */
-WaylandWindow::WaylandWindow(SurfaceItem *rootSurface) : m_rootSurface(rootSurface)
+WaylandWindow::WaylandWindow(SurfaceItem *rootSurface)
+    : m_rootSurface(rootSurface), m_layer(RenderLayer::APPLICATION)
 {
 }
 
@@ -74,6 +75,16 @@ QRect WaylandWindow::geometry()
 QSize WaylandWindow::size()
 {
     return m_rootSurface->size();
+}
+
+void WaylandWindow::setLayer(RenderLayer layer)
+{
+    m_layer = layer;
+}
+
+RenderLayer WaylandWindow::layer()
+{
+    return m_layer;
 }
 
 /*

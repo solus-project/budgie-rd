@@ -47,10 +47,6 @@ QWaylandView *OpenGLDisplay::mapSurfaceItem(Compositor::SurfaceItem *item)
     m_views.insert(item, QSharedPointer<OpenGLView>(view));
     qDebug() << "Mapped:" << view;
 
-    // Rebuild our input layers and such
-    presentSurfaceItem(item);
-    rebuildPresentables();
-
     // Time to redraw
     requestUpdate();
     return view;
@@ -59,24 +55,31 @@ QWaylandView *OpenGLDisplay::mapSurfaceItem(Compositor::SurfaceItem *item)
 /**
  * Push a item into the presentation layer
  */
-void OpenGLDisplay::presentSurfaceItem(Compositor::SurfaceItem *item)
+void OpenGLDisplay::mapWindow(WaylandWindow *window)
 {
-    std::lock_guard<std::mutex> lock(m_listLock);
+    {
+        std::lock_guard<std::mutex> lock(m_listLock);
+        m_layers[window->layer()] << window;
+    }
 
-    m_layers[item->layer()] << item;
+    // Rebuild our input layers and such
+    rebuildPresentables();
+
+    // Now redraw.
+    requestUpdate();
 }
 
 /**
- * Remove the item from all presentation layers
+ * Remove the window from all presentation layers.
  */
-void OpenGLDisplay::unpresentSurfaceItem(Compositor::SurfaceItem *item)
+void OpenGLDisplay::unmapWindow(WaylandWindow *window)
 {
     std::lock_guard<std::mutex> lock(m_listLock);
 
     // Remove from input + rendering
-    m_renderables.removeAll(item);
-    m_inputSurfaceItems.removeAll(item);
-    m_layers[item->layer()].removeAll(item);
+    m_renderables.removeAll(window);
+    m_inputSurfaceItems.removeAll(window);
+    m_layers[window->layer()].removeAll(window);
 }
 
 /**
@@ -92,8 +95,6 @@ void OpenGLDisplay::unmapSurfaceItem(Compositor::SurfaceItem *item)
         qDebug() << "Accounting error, unknown item: " << item;
         return;
     }
-
-    unpresentSurfaceItem(item);
 
     qDebug() << "Unmapped: " << view.data();
     m_views.remove(item);
@@ -171,10 +172,8 @@ void OpenGLDisplay::render()
 
     // Render all textures here now.
     for (auto renderable : m_renderables) {
-        if (!renderable->renderable()) {
-            continue;
-        };
-        auto view = m_views.value(renderable, nullptr);
+        // TODO: Handle subsurfaces!
+        auto view = m_views.value(renderable->rootSurface(), nullptr);
         if (!view) {
             continue;
         }
@@ -250,9 +249,9 @@ void OpenGLDisplay::wheelEvent(QWheelEvent *e)
 }
 
 /**
- * Return pointers to items that we have mapped and care about input.
+ * Return pointers to windows that we have mapped and care about input.
  */
-QList<Budgie::Compositor::SurfaceItem *> OpenGLDisplay::inputSurfaceItems()
+QList<WaylandWindow *> OpenGLDisplay::inputWindows()
 {
     return m_inputSurfaceItems;
 }
@@ -261,8 +260,8 @@ void OpenGLDisplay::rebuildPresentables()
 {
     std::lock_guard<std::mutex> lock(m_listLock);
 
-    QList<Budgie::Compositor::SurfaceItem *> drawables;
-    QList<Budgie::Compositor::SurfaceItem *> input;
+    QList<WaylandWindow *> drawables;
+    QList<WaylandWindow *> input;
 
     static int minLayer = static_cast<int>(Compositor::MinLayer);
     static int maxLayer = static_cast<int>(Compositor::MaxLayer);
@@ -286,12 +285,12 @@ void OpenGLDisplay::rebuildPresentables()
     m_inputSurfaceItems = input;
 }
 
-void OpenGLDisplay::moveSurfaceItemToIndex(Budgie::Compositor::SurfaceItem *item, int index)
+void OpenGLDisplay::moveWindowToIndex(WaylandWindow *window, int index)
 {
     std::lock_guard<std::mutex> lock(m_listLock);
 
     // No sense doing this for a small list
-    RenderLayer layer = item->layer();
+    RenderLayer layer = window->layer();
     int size = m_layers[layer].size();
 
     if (size < 2) {
@@ -299,8 +298,8 @@ void OpenGLDisplay::moveSurfaceItemToIndex(Budgie::Compositor::SurfaceItem *item
     }
 
     // Find out where we are
-    int position = m_layers[layer].indexOf(item);
-    if (position <= 0) {
+    int position = m_layers[layer].indexOf(window);
+    if (position < 0) {
         return;
     }
 
@@ -311,12 +310,12 @@ void OpenGLDisplay::moveSurfaceItemToIndex(Budgie::Compositor::SurfaceItem *item
     m_layers[layer].move(position, index);
 }
 /**
- * Our implementation simply moves the item to the end of its current
+ * Our implementation simply moves the window to the end of its current
  * rendering layer.
  */
-void OpenGLDisplay::raiseSurfaceItem(Budgie::Compositor::SurfaceItem *item)
+void OpenGLDisplay::raiseWindow(WaylandWindow *window)
 {
-    moveSurfaceItemToIndex(item, -1);
+    moveWindowToIndex(window, -1);
     rebuildPresentables();
     requestUpdate();
 }

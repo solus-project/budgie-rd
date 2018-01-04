@@ -16,8 +16,8 @@
 using namespace Budgie::Compositor;
 
 SurfaceItem::SurfaceItem(QWaylandSurface *surface)
-    : m_surface(surface), m_position(100, 150), m_size(0, 0), m_layer(RenderLayer::APPLICATION),
-      m_roleConfirmed(false), m_renderable(false), m_parentItem(nullptr)
+    : m_surface(surface), m_position(100, 150), m_size(0, 0), m_roleConfirmed(false),
+      m_parentItem(nullptr)
 {
     // Precache
     m_size = surface->size();
@@ -32,16 +32,6 @@ SurfaceItem::SurfaceItem(QWaylandSurface *surface)
 QWaylandSurface *SurfaceItem::surface()
 {
     return m_surface;
-}
-
-RenderLayer SurfaceItem::layer()
-{
-    return m_layer;
-}
-
-void SurfaceItem::setLayer(RenderLayer layer)
-{
-    m_layer = layer;
 }
 
 /**
@@ -62,11 +52,6 @@ QSize SurfaceItem::size()
     return m_size;
 }
 
-bool SurfaceItem::renderable()
-{
-    return m_renderable;
-}
-
 bool SurfaceItem::cursor()
 {
     return m_surface->isCursorSurface();
@@ -85,8 +70,7 @@ void SurfaceItem::sizeChanged()
  */
 void SurfaceItem::hasContentChanged()
 {
-    m_renderable = m_surface->hasContent();
-    if (!m_renderable) {
+    if (!m_surface->hasContent()) {
         return;
     }
     if (m_roleConfirmed) {
@@ -94,11 +78,6 @@ void SurfaceItem::hasContentChanged()
         return;
     }
     m_roleConfirmed = true;
-
-    // Adjust our layer if we determine we're a cursor.
-    if (cursor()) {
-        setLayer(RenderLayer::CURSOR);
-    }
 
     // Let compositor know we're ready for prime time
     emit roleConfirmed();

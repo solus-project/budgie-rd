@@ -23,14 +23,10 @@ void Server::surfaceCreated(QWaylandSurface *surface)
     auto item = new Compositor::SurfaceItem(surface);
     qDebug() << "Added surface:" << item;
 
+    // Cache the new surface
+    m_surfaces.insert(surface, QSharedPointer<Compositor::SurfaceItem>(item));
     connect(surface, &QWaylandSurface::childAdded, this, &Server::surfaceChildAdded);
     connect(surface, &QWaylandSurface::parentChanged, this, &Server::surfaceParentChanged);
-
-    // TODO: Decide which output we wanna put this guy on and map it there.
-    m_surfaces.insert(surface, QSharedPointer<Compositor::SurfaceItem>(item));
-
-    // TODO: Only set the render layer on a Window not a Surface!
-    item->setLayer(RenderLayer::APPLICATION);
 
     // Find the right display to map the new surface to and ensure it gets
     // mapped there.
@@ -63,9 +59,15 @@ void Server::surfaceDestroying(QWaylandSurface *surface)
         parent->removeChild(item.data());
     }
 
+    // We may or may not have a window for this
+    auto window = m_windows.value(item.data(), nullptr);
+
     // Remove item from all displays
     for (auto &display : m_displays) {
-        // TODO: If the display contains then unmap
+        // Ask it be unmapped first.
+        if (window) {
+            display->unmapWindow(window.data());
+        }
         display->unmapSurfaceItem(item.data());
     }
 

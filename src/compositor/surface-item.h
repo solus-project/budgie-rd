@@ -43,16 +43,6 @@ namespace Budgie::Compositor
         QWaylandSurface *surface();
 
         /**
-         * Return the render layer we've been assigned
-         */
-        RenderLayer layer();
-
-        /**
-         * Are we actually renderable?
-         */
-        bool renderable();
-
-        /**
          * Are we a cursor?
          */
         bool cursor();
@@ -70,11 +60,6 @@ namespace Budgie::Compositor
         void roleConfirmed();
 
     protected:
-        /**
-         * Used by the server to assign our new layer
-         */
-        void setLayer(RenderLayer layer);
-
         /**
          * Add the SurfaceItem as a known child of ours
          */
@@ -98,9 +83,7 @@ namespace Budgie::Compositor
         QWaylandSurface *m_surface;
         QPoint m_position;
         QSize m_size;
-        RenderLayer m_layer;
         bool m_roleConfirmed;
-        bool m_renderable;
 
         QList<SurfaceItem *> m_children;
         SurfaceItem *m_parentItem;

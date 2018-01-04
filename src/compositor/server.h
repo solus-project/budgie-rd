@@ -68,7 +68,8 @@ namespace Budgie::Compositor
         SurfaceItem *m_mouseFocus;
         QPoint m_mouseLast;
 
-        SurfaceItem *findFocusableSurface(Display *origin, QPoint position);
+        WaylandWindow *findFocusableWindow(Display *origin, QPoint position,
+                                           SurfaceItem **outSurface);
 
         Display *initialDisplay(SurfaceItem *item);
 

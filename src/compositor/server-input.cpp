@@ -70,16 +70,24 @@ void Server::setKeyFocus(Display *origin, SurfaceItem *item)
 }
 
 /**
- * Search for one of our items at the given position on the
- * specified display.
+ * Find the focusable Window for the given X,Y coordinates, and if it is found,
+ * set the appropriate focusable surface.
  */
-SurfaceItem *Server::findFocusableSurface(Display *origin, QPoint position)
+WaylandWindow *Server::findFocusableWindow(Display *origin, QPoint position,
+                                           SurfaceItem **outSurface)
 {
-    for (auto item : origin->inputSurfaceItems()) {
-        if (item->geometry().contains(position)) {
-            return item;
+    *outSurface = nullptr;
+
+    for (auto window : origin->inputWindows()) {
+        if (!window->geometry().contains(position)) {
+            continue;
         }
+
+        // TODO: Ask the window to select the correct surface for us.
+        *outSurface = window->rootSurface();
+        return window;
     }
+
     return nullptr;
 }
 
@@ -101,19 +109,22 @@ static inline void rewriteMousePosition(Display *origin, SurfaceItem *item, QPoi
 
 void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
 {
-    auto item = findFocusableSurface(origin, e->pos());
+    SurfaceItem *focusSurface = nullptr;
+    WaylandWindow *window = nullptr;
+
+    window = findFocusableWindow(origin, e->pos(), &focusSurface);
     QPointF local, global;
 
     // When clicking, update focus.
     if (e->buttons() != Qt::NoButton) {
-        setMouseFocus(origin, item);
-        setKeyFocus(origin, item);
-        if (origin && item) {
-            origin->raiseSurfaceItem(item);
+        setMouseFocus(origin, focusSurface);
+        setKeyFocus(origin, focusSurface);
+        if (origin && window) {
+            origin->raiseWindow(window);
         }
     }
 
-    if (!item) {
+    if (!window) {
         return;
     }
 
@@ -126,8 +137,8 @@ void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
         m_seat->sendMouseReleaseEvent(e->button());
         break;
     case QEvent::MouseMove: {
-        rewriteMousePosition(origin, item, e->localPos(), local, global);
-        auto view = origin->view(item);
+        rewriteMousePosition(origin, focusSurface, e->localPos(), local, global);
+        auto view = origin->view(focusSurface);
         if (view) {
             m_seat->sendMouseMoveEvent(view, local, global);
         }
@@ -143,10 +154,13 @@ void Server::dispatchMouseEvent(Display *origin, QMouseEvent *e)
  */
 void Server::dispatchWheelEvent(Display *origin, QWheelEvent *e)
 {
-    auto item = findFocusableSurface(origin, e->globalPos());
+    SurfaceItem *focusSurface = nullptr;
+    WaylandWindow *window = nullptr;
+
+    window = findFocusableWindow(origin, e->pos(), &focusSurface);
     QPointF local, global;
 
-    if (!item) {
+    if (!window) {
         return;
     }
 
@@ -155,7 +169,7 @@ void Server::dispatchWheelEvent(Display *origin, QWheelEvent *e)
 
     Qt::Orientation orient = angleDelta.x() == 0 ? Qt::Vertical : Qt::Horizontal;
     delta = ((orient == Qt::Vertical ? angleDelta.y() : angleDelta.x()));
-    rewriteMousePosition(origin, item, e->globalPos(), local, global);
+    rewriteMousePosition(origin, focusSurface, e->globalPos(), local, global);
     m_seat->sendMouseWheelEvent(orient, delta);
 }
 
