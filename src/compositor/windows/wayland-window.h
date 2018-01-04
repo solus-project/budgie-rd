@@ -76,6 +76,13 @@ namespace Budgie::Compositor
         void opacityChanged();
         void scaleChanged();
 
+        /**
+         * Emitted for compositor implemenations whenever a Window needs repainting,
+         * not necessarily bound to the surface redraw. This is to enable us to apply
+         * our own transforms to the surface and render animations.
+         */
+        void animationTick();
+
     protected:
         /**
          * Construct a new WaylandWindow instance for the given WlShellSurface

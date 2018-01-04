@@ -9,11 +9,9 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include <QAbstractAnimation>
 #include <QDebug>
 #include <QList>
 #include <QOpenGLFunctions>
-#include <QPropertyAnimation>
 
 #include "renderer-display.h"
 #include "surface-item.h"
@@ -68,7 +66,7 @@ QWaylandView *OpenGLDisplay::mapSurfaceItem(Compositor::SurfaceItem *item)
     qDebug() << "Mapped:" << view;
 
     // Time to redraw
-    update();
+    refreshScreen();
     return view;
 }
 
@@ -82,30 +80,14 @@ void OpenGLDisplay::mapWindow(WaylandWindow *window)
         m_layers[window->layer()] << window;
     }
 
-    // This is just a super basic example to show we can do animations too.
-    // The rendering is done with the shader
-
-    auto animation = new QPropertyAnimation(window, "opacity");
-    animation->setDuration(250);
-    connect(animation, &QVariantAnimation::valueChanged, [this] { update(); });
-    animation->setStartValue(0.0);
-    animation->setEndValue(1.0);
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
-
-    // Incredibly childish animation, couldn't help it
-    animation = new QPropertyAnimation(window, "scale");
-    animation->setEasingCurve(QEasingCurve::OutElastic);
-    animation->setDuration(900);
-    connect(animation, &QVariantAnimation::valueChanged, [this] { update(); });
-    animation->setStartValue(QVector2D(0.3, 0.3));
-    animation->setEndValue(QVector2D(1.0, 1.0));
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
+    // We have a new window, when it updates, update us
+    connect(window, &WaylandWindow::animationTick, this, &OpenGLDisplay::refreshScreen);
 
     // Rebuild our input layers and such
     rebuildPresentables();
 
     // Now redraw.
-    update();
+    refreshScreen();
 }
 
 /**
@@ -114,6 +96,8 @@ void OpenGLDisplay::mapWindow(WaylandWindow *window)
 void OpenGLDisplay::unmapWindow(WaylandWindow *window)
 {
     std::lock_guard<std::mutex> lock(m_listLock);
+
+    disconnect(window, &WaylandWindow::animationTick, this, &OpenGLDisplay::refreshScreen);
 
     // Remove from input + rendering
     m_renderables.removeAll(window);
@@ -139,7 +123,7 @@ void OpenGLDisplay::unmapSurfaceItem(Compositor::SurfaceItem *item)
     m_views.remove(item);
 
     // Time to redraw
-    update();
+    refreshScreen();
 }
 
 /**
@@ -166,7 +150,7 @@ void OpenGLDisplay::currentModeChanged()
     qDebug() << "New mode:" << geom;
 
     // Redraw.
-    update();
+    refreshScreen();
 }
 
 /**
@@ -372,6 +356,14 @@ void OpenGLDisplay::raiseWindow(WaylandWindow *window)
 {
     moveWindowToIndex(window, -1);
     rebuildPresentables();
+    refreshScreen();
+}
+
+/**
+ * Slot provided to just do a redraw.
+ */
+void OpenGLDisplay::refreshScreen()
+{
     update();
 }
 

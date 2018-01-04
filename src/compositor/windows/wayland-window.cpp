@@ -121,6 +121,7 @@ void WaylandWindow::setOpacity(double opacity)
     }
     m_opacity = opacity;
     emit opacityChanged();
+    emit animationTick();
 }
 
 QVector2D WaylandWindow::scale()
@@ -135,6 +136,7 @@ void WaylandWindow::setScale(QVector2D scale)
     }
     m_scale = scale;
     emit scaleChanged();
+    emit animationTick();
 }
 
 /*

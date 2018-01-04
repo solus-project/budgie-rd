@@ -59,7 +59,7 @@ QOpenGLTextureBlitter::Origin OpenGLView::textureOrigin()
 
 void OpenGLView::surfaceRedraw()
 {
-    m_display->update();
+    m_display->refreshScreen();
 }
 
 /*

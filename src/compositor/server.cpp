@@ -9,7 +9,9 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
+#include <QAbstractAnimation>
 #include <QCoreApplication>
+#include <QPropertyAnimation>
 
 #include "compositor-renderer-interface.h"
 #include "display.h"
@@ -103,9 +105,31 @@ void Server::promoteWindow(WaylandWindow *window)
     // Store this guy so its deleted later.
     m_windows.insert(window->rootSurface(), QSharedPointer<WaylandWindow>(window));
 
+    // Preset some properties for the animation before the first frame is drawn
+    // otherwise it'll jank.
+    window->setOpacity(0.0);
+    window->setScale(QVector2D(0.3, 0.3));
+
     // TODO: Find out where the feck this thing is meant to be showing.
     // We'll need to store each Display in the window structure..
     initialDisplay(window->rootSurface())->mapWindow(window);
+
+    // This is just a super basic example to show we can do animations too.
+    // The rendering is done with the shader
+    auto animation1 = new QPropertyAnimation(window, "opacity");
+    animation1->setDuration(250);
+    animation1->setStartValue(0.0);
+    animation1->setEndValue(1.0);
+
+    // Incredibly childish animation, couldn't help it
+    auto animation2 = new QPropertyAnimation(window, "scale");
+    animation2->setEasingCurve(QEasingCurve::OutElastic);
+    animation2->setDuration(900);
+    animation2->setStartValue(QVector2D(0.3, 0.3));
+    animation2->setEndValue(QVector2D(1.0, 1.0));
+
+    animation1->start(QAbstractAnimation::DeleteWhenStopped);
+    animation2->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 /*

@@ -71,6 +71,9 @@ namespace Budgie::Compositor
 
         void renderSurface(WaylandWindow *rootWindow, SurfaceItem *item);
 
+    public slots:
+        void refreshScreen();
+
     protected:
         void mouseMoveEvent(QMouseEvent *e) override;
         void mousePressEvent(QMouseEvent *e) override;
