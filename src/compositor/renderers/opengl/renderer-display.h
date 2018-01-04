@@ -69,6 +69,8 @@ namespace Budgie::Compositor
         void moveWindowToIndex(WaylandWindow *window, int index = -1);
         void rebuildPresentables();
 
+        void renderSurface(WaylandWindow *rootWindow, SurfaceItem *item);
+
     protected:
         void mouseMoveEvent(QMouseEvent *e) override;
         void mousePressEvent(QMouseEvent *e) override;

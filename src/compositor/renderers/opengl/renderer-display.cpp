@@ -151,6 +151,48 @@ void OpenGLDisplay::paintGL()
 }
 
 /**
+ * For each window, we'll foreach the surfaces in their natural order according
+ * to the WaylandWindow. Here we'll just blit that to the display and apply any
+ * transforms relative to the rootWindow.
+ */
+void OpenGLDisplay::renderSurface(WaylandWindow *rootWindow, SurfaceItem *item)
+{
+    // TODO: Render surface coordinate relative to window coordinate
+    Q_UNUSED(rootWindow);
+
+    auto view = m_views.value(item, nullptr);
+    if (!view) {
+        return;
+    }
+    auto texture = view->texture();
+    if (!texture) {
+        return;
+    }
+    auto origin = view->textureOrigin();
+
+    auto bindID = GL_TEXTURE_2D;
+    auto ourSize = size();
+
+    if (texture->format() != bindID) {
+        m_blitter.bind(bindID);
+    }
+
+    auto surface = item->surface();
+
+    // Rectangle for the whole texture size
+    const QRect targetRect(QPoint(0, 0), item->size());
+
+    // Position expected in our screen space
+    const QRect positionRect(-item->position(), ourSize);
+    const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(targetRect, positionRect);
+
+    // Draw the texture
+    surface->frameStarted();
+    m_blitter.blit(texture->textureId(), target, origin);
+    surface->sendFrameCallbacks();
+}
+
+/**
  * Our main render routine
  *
  * TODO: Suck less. Considerably.
@@ -167,39 +209,9 @@ void OpenGLDisplay::render()
     funcs->glEnable(GL_BLEND);
     funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    auto bindID = GL_TEXTURE_2D;
-    auto ourSize = size();
-
-    // Render all textures here now.
+    // Pass all of our window surfaces off to the main render function
     for (auto renderable : m_renderables) {
-        // TODO: Handle subsurfaces!
-        auto view = m_views.value(renderable->rootSurface(), nullptr);
-        if (!view) {
-            continue;
-        }
-        auto texture = view->texture();
-        if (!texture) {
-            continue;
-        }
-        auto origin = view->textureOrigin();
-        if (texture->format() != bindID) {
-            m_blitter.bind(bindID);
-        }
-
-        auto item = view->item();
-        auto surface = item->surface();
-
-        // Rectangle for the whole texture size
-        const QRect targetRect(QPoint(0, 0), item->size());
-
-        // Position expected in our screen space
-        const QRect positionRect(-item->position(), ourSize);
-        const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(targetRect, positionRect);
-
-        // Draw the texture
-        surface->frameStarted();
-        m_blitter.blit(texture->textureId(), target, origin);
-        surface->sendFrameCallbacks();
+        renderable->surfaceForeach(this, (SurfaceFunctor)&OpenGLDisplay::renderSurface);
     }
 
     funcs->glDisable(GL_BLEND);

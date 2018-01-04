@@ -22,6 +22,10 @@
 
 namespace Budgie::Compositor
 {
+    class WaylandWindow;
+
+    typedef void (QObject::*SurfaceFunctor)(WaylandWindow *rootWindow, SurfaceItem *item);
+
     /**
      * Wrap up a Wayland surface as a toplevel window object within our view
      * and input model. Effectively this maps a root surface (owned by the
@@ -50,6 +54,11 @@ namespace Budgie::Compositor
          * Return the current rendering layer for this window.
          */
         RenderLayer layer();
+
+        /**
+         * Call the following function with the correct rendering order
+         */
+        void surfaceForeach(QObject *instance, SurfaceFunctor f);
 
     protected:
         /**

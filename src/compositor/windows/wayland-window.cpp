@@ -87,6 +87,21 @@ RenderLayer WaylandWindow::layer()
     return m_layer;
 }
 
+/**
+ * This is to help the renderers perform drawing in a correct fashion
+ * and making sure each surface gets the frames sent to it in the right
+ * order.
+ */
+void WaylandWindow::surfaceForeach(QObject *instance, SurfaceFunctor f)
+{
+    if (!f) {
+        return;
+    }
+
+    // For now we're just going to pass the rootSurface
+    (instance->*f)(this, rootSurface());
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *
