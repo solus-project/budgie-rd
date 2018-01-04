@@ -31,7 +31,6 @@ namespace Budgie::Compositor
         FULLSCREEN,     /* Fullscreen window */
         NOTIFICATION,   /* OSD/Notification */
         DND,            /* Drag & Drop */
-        CURSOR,         /* Cursor surface */
     };
 
     Q_ENUM_NS(RenderLayer)
@@ -44,7 +43,7 @@ namespace Budgie::Compositor
     /**
      * Helper to define the top rendering layer
      */
-    static const RenderLayer MaxLayer = RenderLayer::CURSOR;
+    static const RenderLayer MaxLayer = RenderLayer::DND;
 }
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
