@@ -367,6 +367,15 @@ void OpenGLDisplay::refreshScreen()
     update();
 }
 
+/**
+ * We've been instructed by the compositor to adjust our displayed cursor
+ * surface.
+ */
+void OpenGLDisplay::setCursorSurface(SurfaceItem *surface, int hotX, int hotY)
+{
+    qDebug() << "Surface set to : " << surface;
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

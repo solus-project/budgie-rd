@@ -86,6 +86,7 @@ namespace Budgie::Compositor
         void wlShellCreated(QWaylandWlShellSurface *shell);
         void xdgShellv5Created(QWaylandXdgSurfaceV5 *shell);
         void wlSeatChanged(QWaylandSeat *newSeat, QWaylandSeat *oldSeat);
+        void wlCursorChanged(QWaylandSurface *surface, int hotX, int hotY);
 
         void wlCreated();
     };

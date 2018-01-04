@@ -48,6 +48,7 @@ namespace Budgie::Compositor
         void raiseWindow(WaylandWindow *window) override;
         void mapWindow(WaylandWindow *window) override;
         void unmapWindow(WaylandWindow *window) override;
+        void setCursorSurface(SurfaceItem *surface, int hotX, int hotY) override;
 
     private:
         Compositor::ServerInterface *m_server;

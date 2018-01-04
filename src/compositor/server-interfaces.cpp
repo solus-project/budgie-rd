@@ -136,9 +136,12 @@ void Server::wlCreated()
  */
 void Server::wlSeatChanged(QWaylandSeat *newSeat, QWaylandSeat *oldSeat)
 {
-    Q_UNUSED(oldSeat);
+    if (oldSeat) {
+        disconnect(oldSeat, &QWaylandSeat::cursorSurfaceRequest, this, &Server::wlCursorChanged);
+    }
     qDebug() << "Seat set to: " << newSeat;
     m_seat = newSeat;
+    connect(m_seat, &QWaylandSeat::cursorSurfaceRequest, this, &Server::wlCursorChanged);
 }
 
 /* Subsurfaces */

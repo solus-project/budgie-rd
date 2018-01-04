@@ -193,6 +193,23 @@ void Server::dispatchKeyEvent(Display *origin, QKeyEvent *e)
     m_seat->sendFullKeyEvent(e);
 }
 
+/**
+ * The surface has requested a cursor change.
+ */
+void Server::wlCursorChanged(QWaylandSurface *surface, int hotX, int hotY)
+{
+    auto item = m_surfaces.value(surface, nullptr);
+    if (!item) {
+        qWarning() << "Missing surface for :" << surface;
+        return;
+    }
+
+    // TODO: Only do this on the displays that the surface is bound to
+    for (auto display : m_displays) {
+        display->setCursorSurface(item.data(), hotX, hotY);
+    }
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

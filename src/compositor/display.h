@@ -105,6 +105,16 @@ namespace Budgie::Compositor
         virtual void unmapWindow(WaylandWindow *window) = 0;
 
         /**
+         * Instruct the display to adjust their cursor surface to match the
+         * given item.
+         *
+         * Typically cursors do not directly enter the rendering layer, and this
+         * is a specialist function. Note that passing nullptr here will effectively
+         * ask the implementation to unset the special cursor surface.
+         */
+        virtual void setCursorSurface(SurfaceItem *surface, int hotX, int hotY) = 0;
+
+        /**
          * A Wayland display knows its index in Budgie
          */
         uint index() override;
