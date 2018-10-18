@@ -43,7 +43,7 @@ Core notions:
  
 
 
-![logo](https://solus-project.com/imgs/budgie-small.png)
+![logo](https://getsol.us/imgs/budgie-small.png)
 
 IRC: #budgie-desktop-dev on irc.freenode.net
 
@@ -112,6 +112,6 @@ Authors
 
 Copyright © 2017-2018 Budgie Desktop Developers
 
-Budgie Desktop is primarily authored by the [Solus](https://solus-project.com) project which oversees
+Budgie Desktop is primarily authored by the [Solus](https://getsol.us) project which oversees
 the development and leadership of the Budgie Desktop to ensure the delivery of a distribution agnostic
 and open source Desktop Environment for everyone to enjoy and contribute to.
